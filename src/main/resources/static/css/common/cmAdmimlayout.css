@@ -1,0 +1,30 @@
+@charset "UTF-8";
+
+
+/*전체 바디 */
+body{background-color:var(--admin-body-color); }
+
+
+
+
+
+
+/*메인네브*/
+header{position: fixed; left: 0; top: 0; padding: 30px 30px 0px 30px; width: 310px; height: 100vh; background-image: url("https://media.istockphoto.com/id/878809578/ko/%EB%B2%A1%ED%84%B0/%EC%B6%94%EC%83%81-%ED%9A%8C%EC%83%89-%EC%B5%9C%EC%86%8C%ED%95%9C%EC%9D%98-%EB%AF%B8%EB%9E%98-%EA%B3%B5-%EB%B0%B0%EA%B2%BD.jpg?s=612x612&w=0&k=20&c=gD6w8QUFvDaWfkFj2qbrtHVFD9D5XdgaTflUHE40ZcA="); background-repeat: no-repeat; background-size: cover;background-position: center;}
+.main-nav-wrap{width:250px; height: 93vh; background-color: rgba( 255, 255, 255, 0.25 );backdrop-filter: blur( 8px ); box-shadow: 0 8px 20px 0 rgba( 31, 38, 135, 0.37 ); border-radius: 10px;padding: 15px; overflow-y:auto;position: relative; border: 1px solid rgba( 255, 255, 255, 0.18 );}
+
+/*헤더*/
+.logo{width: 100%}
+.logo > h1 > a{ width:80%; margin: 0 auto;}
+.logo > h1 > a > img{width: 100%; height: 70px;}
+.logo{ margin-bottom: 10px}
+.Search{position: relative;}
+.Search input{width: 100%; height: 30px; border: 2px solid var(--sub-color3) ; border-radius: 15px; padding: 10px}
+.Search form label{position: absolute;right:12px; top:2px;}
+
+
+
+.gnb{width:100%; position: absolute; left: 0; bottom: 20px; display: flex; justify-content: space-between; padding: 0px 10px}
+
+main{position: fixed; top: 0; left: 310px;width: calc(100% - 300px); height:100vh; padding: 30px}
+
