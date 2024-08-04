@@ -1,0 +1,46 @@
+@charset "UTF-8";
+
+.admin-index {
+	display: grid;  grid-template-columns:1fr 0.3fr 1.7fr; grid-template-rows:40% 58%;
+	grid-template-areas: 
+	'a b c' 
+	'd d e';
+	gap: 20px;
+	
+	overflow-y:auto; 
+}
+
+.admin-index > section>div>p{font-size: 18px; font-weight: 600; color: var(--font-color3);}
+
+
+/*전자결제*/
+.admin-index > section:nth-child(1) {
+	grid-area: a;
+}
+
+.e-payment div:nth-child(2){padding-top: 40px;display: flex;justify-content: space-around;}
+.e-payment div:nth-child(2)>div{width: 28%; height: 180px; border-radius: 50%}
+
+
+/*신규 가입자*/
+.admin-index > section:nth-child(2) {grid-area: b;display: flex;flex-direction: column; justify-content: space-between;}
+.admin-index > section:nth-child(2) >div {height: 31%;}
+
+
+/*최근 가입률 차트*/
+
+.admin-index > section:nth-child(3) {grid-area: c;}
+
+
+
+
+
+
+
+.admin-index > section:nth-child(4) {
+	grid-area: d;
+}
+
+.admin-index > section:nth-child(5) {
+	grid-area: e;
+}
