@@ -2,22 +2,144 @@
 <html xmlns:th="http://www.thymeleaf.org" th:replace="~{views/common/layout :: layout(~{::head} ,~{::main} ) }">
 
 <head>
-
-
 	<link rel="stylesheet" href="/css/index.css">
 	<script src="/js/index.js"></script>
-
 </head>
 
 <body>
 	<main>
-	
-	<h1>인덱스 입니다.</h1>
+		<section class="banner">
+			<div class="container">
+				<div class="banner-text">
+					<h1>나는 어디에서 와서 어디로 가는가?</h1>
+					<h2>당신을 위한 <span>최고의 선택</span>, <span class="highlight">방_it</span></h2>
+				</div>
+			</div>
+		</section>
+		<!-- Search Section -->
+		<section class="search">
+			<div class="search-container">
+				<h2>여행 일정 맞춤 검색</h2>
+				<p>당신의 일정을 검색하세요</p>
+				<div class="search-options">
+					<div class="search-item">
+						<span class="icon">📅</span>
+						<div>
+							<p>체크인 날짜</p>
+							<input type="text" id="checkin-date" class="datepicker" placeholder="날짜 선택">
+						</div>
+					</div>
+					<div class="search-item">
+						<span class="icon">📅</span>
+						<div>
+							<p>체크아웃 날짜</p>
+							<input type="text" id="checkout-date" class="datepicker" placeholder="날짜 선택">
+						</div>
+					</div>
+					<div class="search-item">
+						<span class="icon">👤</span>
+						<div>
+							<p>인원</p>
+							<div class="guest-picker">
+								<button type="button" id="guest-minus">-</button>
+								<input type="text" id="guest-count" value="1" readonly>
+								<button type="button" id="guest-plus">+</button>
+							</div>
+						</div>
+					</div>
+					<div class="search-button">
+						<button type="button">예약하기</button>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- Hotel Section -->
+		<section class="hotels">
+			<div class="container">
+				<h2>럭셔리를 좋아하는 당신을 위한 최고의 선택</h2>
+				<div class="hotel-cards">
+					<div class="hotel-card">
+						<a href="#"><img src="/images/hotel.png" alt="Hotel 1"></a>
+					</div>
+					<div class="hotel-card">
+						<a href="#"><img src="/images/hotel.png" alt="Hotel 2"></a>
+					</div>
+					<div class="hotel-card">
+						<a href="#"><img src="/images/hotel.png" alt="Hotel 3"></a>
+					</div>
+					<div class="hotel-card">
+						<a href="#"><img src="/images/hotel.png" alt="Hotel 4"></a>
+					</div>
+				</div>
+			</div>
+		</section>
 
+		<!-- Profile Section -->
+		<section class="profiles">
+			<div>
+				<h2>이번달 인기 숙소 탑5</h2>
+				<div class="profile-cards">
+					<div class="profile-card">
+						<a href="hotel-details/5"><img src="/images/hotel.png" alt="Profile 1"></a>
+						<div class="overlay">
+							<h3>숙소 이름</h3>
+							<p>숙소 설명, 가격</p>
+						</div>
+					</div>
+					<div class="profile-card">
+						<a href="#"><img src="/images/hotel.png" alt="Profile 2"></a>
+					</div>
+					<div class="profile-card">
+						<a href="#"><img src="/images/hotel.png" alt="Profile 3"></a>
+					</div>
+					<div class="profile-card">
+						<a href="#"><img src="/images/hotel.png" alt="Profile 4"></a>
+					</div>
+					<div class="profile-card">
+						<a href="#"><img src="/images/hotel.png" alt="Profile 5"></a>
+					</div>
+				</div>
+			</div>
+		</section>
 
-
+		<!-- Premium Picks Section -->
+		<section class="premium-picks">
+			<div class="container">
+				<h2>이번 주 블랙 PICK</h2>
+				<p>나를 위한 근사한 휴가, 여기어때 프리미엄 숙소</p>
+				<div class="pick-cards">
+					<div class="pick-card">
+						<a href="#"><img src="/images/hotel.png" alt="Pick 1"></a>
+						<div class="pick-overlay">
+							<h3>한국판 라스베이거스 인스파이어 리조트</h3>
+							<p>테마리조트로 근사한 휴가를 기획해 보세요</p>
+						</div>
+					</div>
+					<div class="pick-card">
+						<a href="#"><img src="/images/hotel.png" alt="Pick 2"></a>
+						<div class="pick-overlay">
+							<h3>더블트리 바이 힐튼 서울 판교 호텔</h3>
+							<p>차별화된 마운틴 뷰의 도심 속 휴식처</p>
+						</div>
+					</div>
+					<div class="pick-card">
+						<a href="#"><img src="/images/hotel.png" alt="Pick 3"></a>
+						<div class="pick-overlay">
+							<h3>아름다운 풍광 태안 더마레풀빌라</h3>
+							<p>바다와 산이 어우러진 프리미엄 풀빌라</p>
+						</div>
+					</div>
+					<div class="pick-card">
+						<a href="#"><img src="/images/hotel.png" alt="Pick 4"></a>
+						<div class="pick-overlay">
+							<h3>오가닉 스테이 제주 카이로스</h3>
+							<p>자연 속 노트북으로 여유를 만끽하는 시간</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
 	</main>
-
 </body>
 
 </html>
