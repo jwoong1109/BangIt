@@ -2,6 +2,7 @@ $(document).ready(function() {
 	// 챗봇 토글 버튼 클릭 시 챗봇 컨테이너의 표시 상태를 토글합니다
 	$('#chatbot-toggle').click(function() {
 		const $chatbotContainer = $('#chatbot-container');
+		const $chatbotIcon = $('#chatbot-toggle i'); // 아이콘을 변경합니다
 
 		if ($chatbotContainer.hasClass('visible')) {
 			// 챗봇이 이미 보이고 있는 경우, 닫기 애니메이션 적용
@@ -9,6 +10,12 @@ $(document).ready(function() {
 			setTimeout(() => {
 				$chatbotContainer.removeClass('visible bubble-out'); // 애니메이션 완료 후 숨기기
 				$('#chatbot-toggle').removeClass('open'); // 버튼 애니메이션 원래 상태로 복원
+				$chatbotIcon.attr('class', 'fas fa-comment-dots fa-flip-horizontal'); // 버튼 아이콘 원래 상태로 복원
+
+				// 챗봇을 닫을 때 대화 내용과 하위 카테고리 숨기기
+				$('#chatbot-messages').empty(); // 대화 내용 제거
+				$('#chatbot-subcategories').hide(); // 하위 카테고리 숨기기
+				$('#chatbot-categories').show(); // 카테고리 버튼 다시 보이기
 			}, 300); // 애니메이션 시간과 일치시킵니다
 		} else {
 			// 챗봇이 보이지 않는 경우, 열기 애니메이션 적용
@@ -17,6 +24,21 @@ $(document).ready(function() {
 				$chatbotContainer.removeClass('bubble-in'); // 애니메이션 완료 후 클래스 제거
 			}, 300); // 애니메이션 시간과 일치시킵니다
 			$('#chatbot-toggle').addClass('open'); // 버튼 애니메이션 추가
+			$chatbotIcon.attr('class', 'fas fa-times fa-flip-horizontal'); // 버튼 아이콘 변경
+
+			// 챗봇을 열 때 초기 상태로 설정
+			$('#chatbot-messages').html(`
+                <div class="message bot">
+                    <div class="profile">
+                        <img src="/images/chatbot.png" alt="Bot Profile">
+                    </div>
+                    <div class="bubble">
+                        원하시는 질문의 카테고리를 선택해주세요
+                    </div>
+                </div>
+            `); // 초기 메시지 표시
+			$('#chatbot-categories').show(); // 카테고리 버튼 표시
+			$('#chatbot-subcategories').hide(); // 하위 카테고리 숨기기
 		}
 	});
 
@@ -104,12 +126,22 @@ $(document).ready(function() {
 	// 전송 버튼 클릭 이벤트 처리
 	$('#chatbot-send').click(function() {
 		const userInput = $('#chatbot-input').val(); // 입력 상자의 값 가져오기
-		$('#chatbot-messages').append(`<div><strong>사용자:</strong> ${userInput}</div>`); // 사용자 메시지 추가
+		$('#chatbot-messages').append(`
+            <div class="message user">
+                <div class="bubble">
+                    ${userInput}
+                </div>
+            </div>
+        `); // 사용자 메시지 추가
 		$('#chatbot-input').val(''); // 입력 상자 비우기
 	});
 
-	// 초기 메시지 표시
-	$('#chatbot-messages').html('<p>원하시는 질문의 카테고리를 선택해주세요</p>');
+	// Enter 키를 눌렀을 때 메시지 전송
+	$('#chatbot-input').keyup(function(event) {
+		if (event.key === "Enter") {
+			$('#chatbot-send').click();
+		}
+	});
 
 	// 페이지 로드 후 카테고리 버튼 즉시 표시
 	createCategoryButtons();
