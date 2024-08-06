@@ -15,11 +15,6 @@
 	transition: background-image 0.3s ease; /* 이미지 변경 시 부드러운 전환 효과 */
 }
 
-/* 버튼이 클릭된 상태에서의 스타일 */
-#chatbot-toggle.open {
-	background-image: url('/images/chatbot-open.png'); /* 클릭 시 변경될 이미지 경로 */
-}
-
 /* 챗봇 버튼 뒷배경 */
 .chatbot-btn-background {
 	position: fixed; /* 버튼 뒷배경을 화면에 고정시킵니다 */
