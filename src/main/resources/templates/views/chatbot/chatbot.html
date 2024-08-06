@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="/css/common/chatbot.css">
+	<link rel="stylesheet" href="/css/common/reset.css">
+	<title>챗봇</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="/js/common/chatbot.js" defer></script>
+</head>
+
+<body>
+	<!-- 챗봇 UI 추가 -->
+	<div id="chatbot-container">
+		<div id="chatbot-header">챗봇</div>
+		<div id="chatbot-body">
+			<div id="chatbot-messages">
+				<p class="chatbot-question-msg">원하시는 질문의 카테고리를 선택해주세요</p>
+			</div>
+			<!-- 카테고리 버튼을 동적으로 생성합니다 -->
+			<div id="chatbot-categories"></div>
+			<div id="chatbot-subcategories"></div>
+		</div>
+		<div id="chatbot-footer">
+			<input type="text" id="chatbot-input" placeholder="메시지를 입력하세요..." />
+			<button id="chatbot-send">전송</button>
+		</div>
+	</div>
+	<div class="chatbot-btn-background">
+		<button class="chatbot-toggle" id="chatbot-toggle">
+			<img src="close.png" id="chatbot-icon">
+		</button>
+	</div>
+</body>
+
+</html>

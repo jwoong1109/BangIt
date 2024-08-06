@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{views/common/adminlayout :: layout(~{::head} ,~{::main} ) }">
+
+<head>
+	<title>판매자 페이지 - 방잇</title>
+	<!-- 여기에 partner 페이지에만 필요한 추가적인 CSS나 JS 파일을 링크할 수 있습니다 -->
+	<link rel="stylesheet" href="/css/admin/partner/partner.css">
+	<script src="/js/admin/partner/partner.js" defer></script>
+</head>
+
+<body>
+	<main class="partner-index">
+		<!-- 여기에 partner 페이지의 주요 내용을 작성합니다 -->
+		<div class="navbar">
+			<ul class="nav-menu">
+				<li class="nav-menu-area">
+					<a href="#" data-content="list">판매자 목록</a>
+				</li>
+				<li class="nav-menu-area">
+					<a href="#" data-content="approve">판매자 승인</a>
+				</li>
+				<li class="nav-menu-area">
+					<a href="#" data-content="edit">판매자 수정</a>
+				</li>
+				<li class="nav-menu-area">
+					<a href="#" data-content="delete">판매자 삭제</a>
+				</li>
+				<li class="nav-menu-area">
+					<a href="#" data-content="activity">활동 내역 확인</a>
+				</li>
+				<li class="nav-menu-area">
+					<a href="#" data-content="permission">권한 관리&계정 수정</a>
+				</li>
+			</ul>
+			<!--<a href="">등급제 수수료율/환불규정</a>-->
+		</div>
+		<div class="dash">
+
+		</div>
+	</main>
+</body>
+
+</html>
