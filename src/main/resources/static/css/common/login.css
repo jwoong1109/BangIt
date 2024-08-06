@@ -1,0 +1,103 @@
+@charset "UTF-8";
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+.login-container {
+    text-align: center;
+    background-color: #ffffff;
+    width: 420px;
+}
+
+.logo {
+    width: 150px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    margin: 20px 0;
+    color: #666666;
+    font-size: 18px;
+}
+
+hr {
+    margin-bottom: 20px;
+    border: none;
+    border-top: 1px solid #eeeeee;
+}
+
+.social-login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 5px;
+    margin: 15px 0;
+    padding: 10px 15px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+.social-login img {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.social-login.kakao {
+    background-color: #FFEB00;
+    color: #3C1E1E;
+ 
+}
+
+.social-login.naver {
+    background-color: #03C75A;
+    color: #ffffff;
+}
+
+.social-login.apple {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.social-login.facebook {
+    background-color: #3b5998;
+    color: #ffffff;
+}
+
+.social-login.google {
+    background-color: #ffffff;
+    color: #4285F4;
+    border: 1px solid #dddddd;
+}
+
+.social-login.google img {
+    margin-right: 15px;
+}
+
+.social-login.email {
+    background-color: #e8eaf6;
+    color: #333333;
+    border: 1px solid #d9d9d9;
+}
+
+.business-login {
+    display: block;
+    margin-top: 20px;
+    color: #888888;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.business-login:hover {
+    text-decoration: underline;
+}
