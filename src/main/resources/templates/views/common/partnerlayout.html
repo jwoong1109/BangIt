@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:fragment="layout(pHead,pMain)">
+<head>
+	<meta charset="UTF-8">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- 공통적용-->
+	<link rel="icon" type="image/x-icon" href="/images/logo.ico">
+	<link rel="stylesheet" href="/css/common/reset.css">
+	<link rel="stylesheet" href="/css/common/cmAdmimlayout.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<script src="https://kit.fontawesome.com/890a398c47.js" crossorigin="anonymous"></script>
+
+	
+	<!--각 html 마다 적용-->
+	<th:block th:insert="${pHead}">	
+	
+	<title>방잇-관리자</title>
+</head>
+
+<body>
+	<div id="adminlayoutWrap">
+		<th:block th:replace="~{/views/common/partnerHeader}" />
+		<th:block th:replace="${pMain}" />
+	</div>
+</body>
+
+
+</html>

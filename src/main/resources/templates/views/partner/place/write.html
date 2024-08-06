@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{views/common/layout :: layout(~{::head} ,~{::main} ) }">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/user/place/place.css" >
+    <link rel="stylesheet" href="/css/user/room/room.css" >
+</head>
+<body> 
+    <main>
+        <section class="write-form">
+            <h2>새로운 숙소 등록하기</h2>
+            <form action="submit_listing.php" method="post" enctype="multipart/form-data">
+                <!-- 숙소 이름 -->
+                <div class="form-group">
+                    <label for="listing-title">숙소 이름:</label>
+                    <input type="text" id="listing-title" name="listing-title" required>
+                </div>
+
+                <!-- 숙소 설명 -->
+                <div class="form-group">
+                    <label for="listing-description">숙소 설명:</label>
+                    <textarea id="listing-description" name="listing-description" rows="4" required></textarea>
+                </div>
+
+                <!-- 숙소 위치 -->
+                <div class="form-group">
+                    <label for="location">숙소 위치:</label>
+                    <input type="text" id="location" name="location" required>
+                </div>
+
+                <!-- 숙소 이미지 업로드 -->
+                <div class="form-group">
+                    <label for="images">숙소 이미지:</label>
+                    <input type="file" id="images" name="images[]" multiple accept="image/*" required>
+                </div>
+
+                <!-- 방 정보 섹션 -->
+                <section class="room-section">
+                    <h2>방 정보 등록하기</h2>
+
+                    <!-- 방 1 -->
+                    <div class="room-group">
+                        <h3>방 1</h3>
+                        <div class="form-group">
+                            <label for="room1-title">방 이름:</label>
+                            <input type="text" id="room1-title" name="room1-title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="room1-description">방 설명:</label>
+                            <textarea id="room1-description" name="room1-description" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="room1-images">방 이미지:</label>
+                            <input type="file" id="room1-images" name="room1-images[]" multiple accept="image/*" required>
+                        </div>
+                    </div>
+
+                    <!-- 방 2 -->
+                    <div class="room-group">
+                        <h3>방 2</h3>
+                        <div class="form-group">
+                            <label for="room2-title">방 이름:</label>
+                            <input type="text" id="room2-title" name="room2-title">
+                        </div>
+                        <div class="form-group">
+                            <label for="room2-description">방 설명:</label>
+                            <textarea id="room2-description" name="room2-description" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="room2-images">방 이미지:</label>
+                            <input type="file" id="room2-images" name="room2-images[]" multiple accept="image/*">
+                        </div>
+                    </div>
+
+                    <!-- 방 3 -->
+                    <div class="room-group">
+                        <h3>방 3</h3>
+                        <div class="form-group">
+                            <label for="room3-title">방 이름:</label>
+                            <input type="text" id="room3-title" name="room3-title">
+                        </div>
+                        <div class="form-group">
+                            <label for="room3-description">방 설명:</label>
+                            <textarea id="room3-description" name="room3-description" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="room3-images">방 이미지:</label>
+                            <input type="file" id="room3-images" name="room3-images[]" multiple accept="image/*">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 등록 버튼 -->
+                <button type="submit" class="submit-btn">숙소 등록하기</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 숙박업소</p>
+    </footer>
+</body>
+</html>
