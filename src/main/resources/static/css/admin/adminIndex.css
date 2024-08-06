@@ -10,7 +10,7 @@
 	overflow-y:auto; 
 }
 
-.admin-index > section>div>p{font-size: 18px; font-weight: 600; color: var(--font-color3);}
+.admin-index > section>div>p{  font-size:0.7vw; font-weight: 600; color: var(--font-color3);}
 
 
 /*전자결제*/
