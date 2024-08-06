@@ -2,7 +2,6 @@ $(document).ready(function() {
 	// 챗봇 토글 버튼 클릭 시 챗봇 컨테이너의 표시 상태를 토글합니다
 	$('#chatbot-toggle').click(function() {
 		const $chatbotContainer = $('#chatbot-container');
-		const $chatbotIcon = $('#chatbot-icon');
 
 		if ($chatbotContainer.hasClass('visible')) {
 			// 챗봇이 이미 보이고 있는 경우, 닫기 애니메이션 적용
@@ -10,7 +9,6 @@ $(document).ready(function() {
 			setTimeout(() => {
 				$chatbotContainer.removeClass('visible bubble-out'); // 애니메이션 완료 후 숨기기
 				$('#chatbot-toggle').removeClass('open'); // 버튼 애니메이션 원래 상태로 복원
-				$chatbotIcon.attr('src', 'button.png'); // 버튼 이미지 원래 상태로 복원
 			}, 300); // 애니메이션 시간과 일치시킵니다
 		} else {
 			// 챗봇이 보이지 않는 경우, 열기 애니메이션 적용
@@ -19,7 +17,6 @@ $(document).ready(function() {
 				$chatbotContainer.removeClass('bubble-in'); // 애니메이션 완료 후 클래스 제거
 			}, 300); // 애니메이션 시간과 일치시킵니다
 			$('#chatbot-toggle').addClass('open'); // 버튼 애니메이션 추가
-			$chatbotIcon.attr('src', 'close.png'); // 버튼 이미지 변경
 		}
 	});
 
