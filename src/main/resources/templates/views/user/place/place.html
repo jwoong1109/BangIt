@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{views/common/layout :: layout(~{::head} ,~{::main} ) }">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/user/place/place.css" >
+    <link rel="stylesheet" href="/css/user/room/room.css" >
+    <script>
+        // 모달 열기 함수
+        function openModal() {
+            document.getElementById('roomModal').style.display = "block";
+        }
+
+        // 모달 닫기 함수
+        function closeModal() {
+            document.getElementById('roomModal').style.display = "none";
+        }
+
+        // 모달 창 외부 클릭 시 닫기
+        window.onclick = function(event) {
+            var modal = document.getElementById('roomModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+</head>
+<body>
+    <main>
+        <!-- 이미지 갤러리 섹션 -->
+        <section class="image-gallery">
+            <img src="image1.jpg" alt="숙소 이미지 1">
+            <img src="image2.jpg" alt="숙소 이미지 2">
+            <img src="image3.jpg" alt="숙소 이미지 3">
+        </section>
+        
+        <!-- 숙소 상세 정보 섹션 -->
+        <section class="details">
+            <h2>방잇 숙소</h2>
+            <p>간단한 편의시설 제공 정보</p>
+            <h3>가격: ₩100,000 / 박</h3>
+            <button class="reserve-btn">객실선택</button>
+        </section>
+        <hr/>
+        
+        <!-- 날짜 검색 섹션 -->
+        <section class="date-search">
+             <h2>날짜 및 인원수 선택</h2>
+            <form>
+                <div class="form-group">
+                    <label for="checkin-date">체크인 / 체크아웃 날짜:</label>
+                    <input type="date" id="checkin-date" name="checkin-date" required>
+                    <span>부터</span>
+                    <input type="date" id="checkout-date" name="checkout-date" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="adults">성인:</label>
+                    <select id="adults" name="adults">
+                        <option value="1">1명</option>
+                        <option value="2">2명</option>
+                        <option value="3">3명</option>
+                        <option value="4">4명</option>
+                    </select>
+
+                    <label for="children">어린이:</label>
+                    <select id="children" name="children">
+                        <option value="0">0명</option>
+                        <option value="1">1명</option>
+                        <option value="2">2명</option>
+                        <option value="3">3명</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="search-btn">검색</button>
+            </form>
+        </section>
+        <!-- 방 정보 섹션 -->
+        <section class="rooms">
+            <hr/><h2>객실 선택</h2>
+            <!-- 방 1 -->
+            <div class="room">
+            <h3>방 1</h3>
+            <p>방 1은 넓고 밝으며, 더블 침대가 있는 아늑한 공간입니다.</p>
+            <button class="details-btn" onclick="openModal()">상세 정보 보기</button>
+            <button class="reserve-btn">예약하기</button>
+        	</div>
+            
+            <!-- 방 2 -->
+            <div class="room">
+            <h3>방 2</h3>
+            <p>방 2은 넓고 밝으며, 더블 침대가 있는 아늑한 공간입니다.</p>
+            <button class="details-btn" onclick="openModal()">상세 정보 보기</button>
+            <button class="reserve-btn">예약하기</button>
+      		</div>
+            
+            <!-- 방 3 -->
+            <div class="room">
+            <h3>방 3</h3>
+            <p>방 1은 넓고 밝으며, 더블 침대가 있는 아늑한 공간입니다.</p>
+            <button class="details-btn" onclick="openModal()">상세 정보 보기</button>
+            <button class="reserve-btn">예약하기</button>
+      	  	</div>
+        </section>
+        <hr/>
+        <!-- 모달 창 구조 -->
+        <div id="roomModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <div id="modal-body">
+                	<h2>방1</h2>
+                	<br>
+                    <hr/>
+                    <h2>방 1 상세 정보</h2>
+                    <p>이 방은 넓고 밝으며, 더블 침대가 있는 아늑한 공간입니다.</p>
+                    <ul>
+                        <li>면적: 30m²</li>
+                        <li>침대: 퀸 사이즈 1개</li>
+                        <li>최대 수용 인원: 2명</li>
+                        <li>욕실: 개인 욕실 1개</li>
+                    </ul>
+                    <br>
+                    <hr/>
+                    <h3>편의 시설</h3>
+                    <ul>
+                        <li>에어컨</li>
+                        <li>무료 Wi-Fi</li>
+                        <li>평면 TV</li>
+                        <li>미니 냉장고</li>
+                    </ul>
+                    <!-- 추가 정보 -->
+                </div>
+            </div>
+        </div>        
+        
+        <!-- 숙소 상세 정보 섹션 -->
+        <section class="details">
+            <h2>방잇 숙소</h2>
+            <p>이곳은 매우 편안하고 아늑한 숙소입니다. 여행자들에게 필요한 모든 것을 제공합니다.</p>
+        </section>
+        <hr/>
+        
+        <!-- 숙소 상세 정보 섹션 -->
+        <section class="details">
+            <h2>취소 및 환불규정</h2>
+            <p>객실별 취소 정책이 상이하니 객실 상세정보에서 확인해주세요.</p>
+        </section>
+        <hr/>
+
+        <!-- 리뷰 섹션 -->
+        <section class="reviews">
+            <h2>리뷰</h2>
+            <div class="review">
+                <p><strong>사용자1:</strong> 아주 좋은 숙소였습니다!</p>
+            </div>
+            <div class="review">
+                <p><strong>사용자2:</strong> 위치도 좋고 깨끗했어요.</p>
+            </div>
+        </section>
+    </main>
+
+</body>
+</html>
