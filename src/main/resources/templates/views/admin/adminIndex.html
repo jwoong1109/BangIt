@@ -3,8 +3,11 @@
 
 <head>
 	<link rel="stylesheet" href="/css/admin/adminIndex.css">
-    <link rel="stylesheet" href="https://uicdn.toast.com/chart/latest/toastui-chart.min.css" />
-	<script src="https://uicdn.toast.com/chart/latest/toastui-chart.min.js"></script>
+<script src="https://code.highcharts.com/maps/modules/map.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/offline-exporting.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
 	<script src="/js/admin/adminIndex.js"></script> 
 
 
@@ -16,26 +19,15 @@
 
 		<section class="dash e-payment">
 			<div>
-				<p>new 전자결제</p>
+				<p>총 회원구성</p>
 			</div>
-			
-			<div>
-				<div class="dash">
-				
-				</div>
-				
-				<div class="dash">
-				
-				</div>
-				
-				<div class="dash">
-				
-				</div>
-				
-			
-			</div>
-			
-		
+
+			<figure class="highcharts-figure">
+				<div id="container2"></div>
+				<p class="highcharts-description"></p>
+			</figure>
+
+
 		</section>
 
 
@@ -43,15 +35,18 @@
 		<section>
 			<div class="dash">
 				<p>Today 신규직원</p>
+				<p>5</p>
 				
 
 			</div>
 			<div class="dash">
 				<p>Today 신규파트너</p>
+				<p>20</p>
 
 			</div>
 			<div class="dash">
 				<p>Today 신규유저</p>
+			    <p>85</p>
 
 
 			</div>
@@ -60,22 +55,35 @@
 		</section>
 
 
-		<section  class="dash">
+		<section class="dash">
 			<div>
 				<p>월별 가입률</p>
 			</div>
-			<div id="chart-area">
-			
-			</div>
-		
+			<figure class="highcharts-figure">
+				<div id="container"></div>
+				<p class="highcharts-description"></p>
+			</figure>
+
 
 		</section>
 
 
-		<section class="dash"></section>
+		<section class="dash">
+			<div>
+				<p>이번달 매출</p>
+				<div id="container3" style="height: 500px; width: 800px;"></div>
+			</div>
+		
+		
+		</section>
 
 
-		<section class="dash"></section>
+		<section class="dash">
+			<div>
+				<p>월별 가입률</p>
+			</div>
+		
+		</section>
 
 
 

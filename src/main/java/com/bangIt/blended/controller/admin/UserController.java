@@ -11,7 +11,7 @@ public class UserController {
 	
 	@GetMapping("/admin/user")
 	public String adminPartner() {
-		return "/views/admin/partner/partner";
+		return "views/admin/user/user";
 	}
 	
 	
