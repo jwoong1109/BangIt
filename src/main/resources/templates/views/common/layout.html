@@ -21,22 +21,29 @@
 	<script src="https://kit.fontawesome.com/890a398c47.js" crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-	<!--각 html 마다 적용-->
-	<th:block th:insert="${pHead}">
-		<th:replace="~{/views/common/footer}">
+	<!-- 헤더 -->
+	<th:block th:replace="~{/views/common/header}" />
 
+	<!-- 메인 콘텐츠 -->
+	<th:block th:insert="${pHead}">
+		<th:replace="~{ /views/common/footer}">
 			<title>방잇</title>
-</head>
+	</th:block>
 
 <body>
 
 	<div id="layoutWrap">
 
-		<th:block th:replace="~{/views/common/header}" />
-
-
+		<!-- 메인 콘텐츠 -->
 		<th:block th:replace="${pMain}" />
+		
+		<!-- Chatbot 삽입-->
+		<th:block th:replace="~{/views/chatbot/chatbot}" /> 	
 
+		<!-- 푸터 -->
+		<th:block th:replace="~{/views/common/footer}" />
+
+	</div>
 
 </body>
 

@@ -215,8 +215,10 @@ nav a:hover::after {
 .hotels {
     display: flex;
     justify-content: center;
+    align-items:center;
     padding: 40px 0;
     text-align: center;
+    min-height: 600px;
 }
 
 .hotels h2 {
@@ -249,8 +251,11 @@ nav a:hover::after {
 .profiles {
     display: flex;
     justify-content: center;
+    align-items:center;
     padding: 40px 0;
     text-align: center;
+    min-height: 800px;
+    background-color: var(--admin-body-color);
 }
 
 .profiles h2 {
@@ -313,8 +318,12 @@ nav a:hover::after {
 
 /***********************섹션3 ****************************/
 .premium-picks {
+	display: flex;
+    justify-content: center;
+    align-items:center;
     padding: 40px 0;
     text-align: center;
+    min-height: 600px;
 }
 
 .picks-container {
@@ -322,6 +331,7 @@ nav a:hover::after {
     max-width: 1200px;
     margin: 0 auto;
     text-align: center;
+    min-height: 600px;
 }
 
 .premium-picks h2 {
