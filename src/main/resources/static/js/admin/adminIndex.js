@@ -1,4 +1,7 @@
 $(document).ready(function(){
+	
+	
+	
 	  const el = document.getElementById('chart-area');
 	  
 	  
