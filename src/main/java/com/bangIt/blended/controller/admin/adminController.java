@@ -10,10 +10,14 @@ public class adminController {
 	
 	@GetMapping("/admin")
 	public String list() {
-		
-		
 		return "views/admin/adminIndex";
 	}
+	
+	@GetMapping("/admin/partner")
+	public String adminPartner() {
+		return "/views/admin/partner/partner";
+	}
+	
 	
 
 }
