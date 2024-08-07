@@ -1,16 +1,160 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:replace="~{views/common/partnerlayout :: layout(~{::head} ,~{::main} ) }">
+
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="/css/partner/place/place.css" >
+    <title>판매자 페이지 - 방잇</title>
+    <link rel="stylesheet" href="/css/partner/reservation/reservation.css">
+    <script src="/js/admin/ user/user.js" defer></script>
 </head>
-<body> 
-    <main>
-		<!-- 여기에 partner 페이지의 주요 내용을 작성합니다 -->
-		<div class="dash">
-            <h2>예약관리</h2>
-	            
-		</div>    
-    </main>
+
+<body>
+    <main class="cmindex">
+        <th:block th:replace="~{/views/admin/user/cmsubnav}" />
+
+        <section class="contents">
+        	<div class="dash user-search">
+                <h2>사용자 검색</h2>
+                <form class="search-form">
+                    <input type="text" placeholder="사용자 이름 또는 이메일 검색" class="search-input">
+                    <select class="filter-select">
+                        <option value="">모든 사용자</option>
+                        <option value="active">활성 사용자</option>
+                        <option value="inactive">비활성 사용자</option>
+                    </select>
+                    <button type="submit" class="search-button">검색</button>
+                </form>
+                <div class="search-results">
+                    <ul>
+                        <li class="header">
+                            <span>성명</span>
+                            <span>이메일</span>
+                            <span>가입일</span>
+                            <span>상태</span>
+                        </li>
+                        <li class="user-item">
+                            <span>김뚜띠</span>
+                            <span>thdgml42@gmail.com</span>
+                            <span>2024-08-11</span>
+                            <span>활성</span>
+                        </li>
+                          <li class="user-item">
+                            <span>김뚜띠</span>
+                            <span>thdgml42@gmail.com</span>
+                            <span>2024-08-11</span>
+                            <span>활성</span>
+                        </li>
+                          <li class="user-item">
+                            <span>김뚜띠</span>
+                            <span>thdgml42@gmail.com</span>
+                            <span>2024-08-11</span>
+                            <span>활성</span>
+                        </li>
+                          <li class="user-item">
+                            <span>김뚜띠</span>
+                            <span>thdgml42@gmail.com</span>
+                            <span>2024-08-11</span>
+                            <span>활성</span>
+                        </li>
+                      
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="dash user-activity">
+                <h2>최근 활동</h2>
+                <p class="no-user-selected"><i class="fa-solid fa-user-plus"></i><br>사용자를<br> 선택하세요</p>
+                <div class="activity-details">
+                	<ul>
+                        <li class="header">
+                            <span>일자</span>
+                            <span>시간</span>
+                            <span>활동종류</span>
+                            <span>세부사항</span>
+                        </li>
+                        <li class="user-item">
+                            <span>2024-08-11</span>
+                            <span>16:02:33</span>
+                            <span>숙박검색</span>
+                            <span>재미니모텔</span>
+                        </li>
+                        <li class="user-item">
+              				<span>2024-08-11</span>
+                            <span>17:02:33</span>
+                            <span>카테고리 클릭</span>
+                            <span>반려견</span>
+                        </li>
+                      </ul>
+                    
+                </div>
+            </div>
+            
+            <div class="dash reservation-info">
+                <h2>예약 정보</h2>
+                <p class="no-user-selected"><i class="fa-solid fa-user-plus"></i><br>사용자를<br> 선택하세요</p>
+                <div class="reservation-details">
+                	 <ul>
+                        <li class="header">
+                            <span>결제일</span>
+                            <span>체크인</span>
+                            <span>체크아웃</span>
+                            <span>숙소명</span>
+                            <span>방</span>
+                        </li>
+                        <li class="user-item">
+                            <span>2024-08-11</span>
+                            <span>2024-08-12</span>
+                            <span>2024-08-13</span>
+                            <span>쁘띠가보네타</span>
+                            <span>력셔리룸</span>
+                        </li>
+                              <li class="user-item">
+                            <span>2024-08-11</span>
+                            <span>2024-08-12</span>
+                            <span>2024-08-13</span>
+                            <span>쁘띠가보네타</span>
+                            <span>력셔리룸</span>
+                        </li>
+                              <li class="user-item">
+                            <span>2024-08-11</span>
+                            <span>2024-08-12</span>
+                            <span>2024-08-13</span>
+                            <span>쁘띠가보네타</span>
+                            <span>력셔리룸</span>
+                        </li>
+                      </ul>                
+                </div>
+            </div>
+      
+        </section>
+
+
+			<div class="reservation-popup" style="display: none;">
+			    <div class="popup-content">
+			        <h3>예약 상세내역</h3>
+			        <div class="popup-grid">
+			            <div class="popup-section">
+			                <h4>숙소 정보</h4>
+			                <p><strong>숙소명:</strong> <span id="popup-accommodation"></span></p>
+			                <p><strong>룸:</strong> <span id="popup-room"></span></p>
+			            </div>
+			            <div class="popup-section">
+			                <h4>예약 일정</h4>
+			                <p><strong>체크인:</strong> <span id="popup-checkin-date"></span> <span id="popup-checkin-time"></span></p>
+			                <p><strong>체크아웃:</strong> <span id="popup-checkout-date"></span> <span id="popup-checkout-time"></span></p>
+			            </div>
+			            <div class="popup-section">
+			                <h4>결제 정보</h4>
+			                <p><strong>결제일:</strong> <span id="popup-payment-date"></span></p>
+			                <p><strong>결제 방법:</strong> <span id="popup-payment-info"></span></p>
+			            </div>
+			            <div class="popup-section">
+			                <h4>예약 상태</h4>
+			                <p><strong>상태:</strong> <span id="popup-status"></span></p>
+			            </div>
+			        </div>
+			        <button class="close-popup">닫기</button>
+			    </div>
+			</div>
+	</main>
 </body>
 </html>
