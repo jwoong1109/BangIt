@@ -29,6 +29,15 @@ ext {
 }
 
 dependencies {
+	// OAuth2 클라이언트 및 소셜 로그인 지원
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+
+	// JWT 지원
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5' // or use 'io.jsonwebtoken:jjwt-gson'
+
 	// 웹 프론트엔드 관련 의존성
     implementation 'org.webjars:webjars-locator-core:0.59'  // WebJar 리소스 로케이터
     implementation 'org.webjars:jquery:3.7.1'  // jQuery 라이브러리
