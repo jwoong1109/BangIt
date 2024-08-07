@@ -23,24 +23,44 @@ repositories {
 	mavenCentral()
 }
 
+
+ext {
+	set('springCloudVersion', "2023.0.3")
+}
+
 dependencies {
-	implementation 'org.webjars:jquery:3.7.1'
-	implementation 'org.webjars:sockjs-client:1.5.1'
-	implementation 'org.webjars:stomp-websocket:2.3.4'
+	// 웹 프론트엔드 관련 의존성
+    implementation 'org.webjars:webjars-locator-core:0.59'  // WebJar 리소스 로케이터
+    implementation 'org.webjars:jquery:3.7.1'  // jQuery 라이브러리
+    implementation 'org.webjars:sockjs-client:1.5.1'  // WebSocket 클라이언트
+    implementation 'org.webjars:stomp-websocket:2.3.4'  // STOMP over WebSocket
+    
+    implementation 'com.github.mwiede:jsch:0.2.18' 
+    
+     // 메시징 및 실시간 통신 관련 의존성
+    implementation 'org.springframework.boot:spring-boot-starter-amqp'  // AMQP 지원 (RabbitMQ 등)
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'  // WebSocket 지원
 
-	//주로 AMQP 지원을 쉽게 설정하고 사용할 수 있도록 도와주는 스타터
-	implementation 'org.springframework.boot:spring-boot-starter-amqp'
-	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-web-services'
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
 }
 
 tasks.named('test') {
