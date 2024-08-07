@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{views/common/layout :: layout(~{::head} ,~{::main} ) }">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/user/placeList/placeList.css" >
+    <script src="/js/user/placeList/placeList.js" defer></script>
+ 
+</head>
+<body>
+    <main class="place-list">
+    
+    	<section class="search-options-wrap">
+    		<div class="search-options">
+					<div class="search-item">
+						<span class="icon">📅</span>
+						<div>
+							<p>체크인 날짜</p>
+							<input type="text" id="checkin-date" class="datepicker" placeholder="날짜 선택">
+						</div>
+					</div>
+					<div class="search-item">
+						<span class="icon">📅</span>
+						<div>
+							<p>체크아웃 날짜</p>
+							<input type="text" id="checkout-date" class="datepicker" placeholder="날짜 선택">
+						</div>
+					</div>
+					<div class="search-item">
+						<span class="icon">👤</span>
+						<div>
+							<p>인원</p>
+							<div class="guest-picker">
+								<button type="button" id="guest-minus">-</button>
+								<input type="text" id="guest-count" value="1" readonly>
+								<button type="button" id="guest-plus">+</button>
+							</div>
+						</div>
+					</div>
+					<div class="search-button">
+						<button type="button">예약하기</button>
+					</div>
+				</div>
+    	
+    	</section>
+    	
+    	<section class="catagori">
+    		<h2>'서울' 숙소 566개</h2>
+    		<div class="dash">
+    			
+    			
+    		</div>
+    	
+    	
+    	</section>
+    	
+    	
+    	<section class="place-list-contents">
+	
+   				
+    			
+    		<div class="accommodation-wrap ">
+    		
+    			<ul class="accommodation ">
+    				<li class="dash"><a>
+    					<div>
+    						<img alt="" src="https://pix10.agoda.net/hotelImages/14652635/-1/a7855cc933c1bfa1bf9a6b28526e267b.jpg?ce=0&s=414x232&ar=16x9">
+    					</div>
+    					<div>
+    						<ul>
+    							<li>호텔</li>
+    							<li>여수 오션 힐 호텔</li>
+    							<li>여수시 엑스포역</li>
+    							<li>108,000</li>
+    						
+    						</ul>
+    					</div>
+    				</a></li>
+    				
+    				<li class="dash"><a>
+    					<div>
+    						<img alt="" src="https://pix10.agoda.net/hotelImages/14652635/-1/a7855cc933c1bfa1bf9a6b28526e267b.jpg?ce=0&s=414x232&ar=16x9">
+    					</div>
+    					<div>
+    						<ul>
+    							<li>호텔</li>
+    							<li>여수 오션 힐 호텔</li>
+    							<li>여수시 엑스포역</li>
+    							<li>108,000</li>
+    						
+    						</ul>
+    					</div>
+    				</a></li>
+    				
+    				<li class="dash"><a>
+    					<div>
+    						<img alt="" src="https://pix10.agoda.net/hotelImages/14652635/-1/a7855cc933c1bfa1bf9a6b28526e267b.jpg?ce=0&s=414x232&ar=16x9">
+    					</div>
+    					<div>
+    						<ul>
+    							<li>호텔</li>
+    							<li>여수 오션 힐 호텔</li>
+    							<li>여수시 엑스포역</li>
+    							<li>108,000</li>
+    						
+    						</ul>
+    					</div>
+    				</a></li>
+    			</ul>
+    		</div>
+    	
+    	
+    	
+    	</section>
+      
+    </main>
+
+</body>
+</html>

@@ -6,16 +6,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
-public class PlaceController {
-
-	@GetMapping("/place")
-	public String place() {
-		return "views/user/place/place";
+public class PlaceListController {
+	
+	
+	@GetMapping("/placeslist")
+	public String getMethodName() {
+		return "/views/user/placeList/placelist";
 	}
-
-	@GetMapping("/new")
-	public String write() {
-		return "/views/partner/place/write";
-	}
+	
 
 }
