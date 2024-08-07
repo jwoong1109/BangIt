@@ -13,7 +13,13 @@
 
 .place-list-contents{ max-width: 600px;margin-left: 300px; padding-top: 44px;}
 
-.accommodation>li{margin-bottom: 10px}
+.accommodation>li{margin-bottom: 15px;display: flex; justify-content: space-between; width: 100%}
+.accommodation>li>a{display: flex; justify-content: space-between; width: 100%}
+
+.accommodation>li>div:nth-child(1){width: 48%}
+.accommodation>li>div:nth-child(1)>img{width: 48%}
+.accommodation>li>div:nth-child(2){width: 48%}
+
 
 
 
