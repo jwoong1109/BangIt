@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{views/common/partnerlayout :: layout(~{::head} ,~{::main} ) }">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/partner/place/place.css" >
+</head>
+<body> 
+    <main>
+		<div class="dash">
+			<section class="write-form">
+            <h2>새로운 숙소 등록하기</h2>
+	            <form action="submit_listing.php" method="post" enctype="multipart/form-data">
+	                <!-- 숙소 이름 -->
+	                <div class="form-group">
+	                    <label for="listing-title">숙소 이름:</label>
+	                    <input type="text" id="listing-title" name="listing-title" required>
+	                </div>
+	
+	                <!-- 숙소 설명 -->
+	                <div class="form-group">
+	                    <label for="listing-description">숙소 설명:</label>
+	                    <textarea id="listing-description" name="listing-description" rows="4" required></textarea>
+	                </div>
+	
+	                <!-- 숙소 위치 -->
+	                <div class="form-group">
+	                    <label for="location">숙소 위치:</label>
+	                    <input type="text" id="location" name="location" required>
+	                </div>
+	
+	                <!-- 숙소 이미지 업로드 -->
+	                <div class="form-group">
+	                    <label for="images">숙소 이미지:</label>
+	                    <input type="file" id="images" name="images[]" multiple accept="image/*" required>
+	                </div>
+	
+	
+	                <!-- 등록 버튼 -->
+	                <button type="submit" class="submit-btn">숙소 등록하기</button>
+	            </form>
+        	</section>
+		</div>    
+    </main>
+</body>
+</html>
