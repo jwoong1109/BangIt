@@ -1,6 +1,6 @@
 @charset "UTF-8";
 .banner {
-    background-image: url('/images/banner.jpg');
+    background-image: url('/images/banner2.jpg');
     background-size: cover;
     background-position: center;
     height: 75vh; 
@@ -102,6 +102,91 @@ nav a:hover::after {
 
 
 /**************************************** 검색 섹션 *********************/
+
+/***************************date-picker-custom************************/
+/* Datepicker 기본 스타일 */
+.ui-datepicker {
+    background: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    font-family: 'Arial', sans-serif;
+    padding: 10px;
+    width: auto; /* 자동 크기 조정 */
+}
+
+/* 헤더 스타일 */
+.ui-datepicker-header {
+    background: #007bff;
+    color: #fff;
+    padding: 10px;
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+}
+
+/* 내비게이션 버튼 스타일 */
+.ui-datepicker-prev, .ui-datepicker-next {
+    background: transparent;
+    color: #fff;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.ui-datepicker-prev:hover, .ui-datepicker-next:hover {
+    color: #e2e2e2;
+}
+
+/* 요일 이름 스타일 */
+.ui-datepicker-calendar th {
+    background: #f8f9fa;
+    color: #333;
+    font-weight: normal;
+    padding: 8px;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+/* 날짜 스타일 */
+.ui-datepicker-calendar td a {
+    background: #f8f9fa;
+    color: #333;
+    padding: 8px;
+    text-align: center;
+    border-radius: 6px;
+    transition: background 0.3s, color 0.3s;
+}
+
+.ui-datepicker-calendar td a:hover {
+    background: #007bff;
+    color: #fff;
+}
+
+/* 오늘 날짜 스타일 */
+.ui-datepicker-today a {
+    background: #ffc107;
+    color: #333;
+}
+
+/* 비활성화된 날짜 스타일 */
+.ui-datepicker-unselectable .ui-state-disabled {
+    background: #e9ecef;
+    color: #6c757d;
+    pointer-events: none;
+    border-radius: 6px;
+}
+
+/* Datepicker 팝업 위치 조정 */
+.ui-datepicker {
+    position: absolute;
+    z-index: 1000;
+}
+
+/***************************************************/
 .search {
     background-color: #fef7f3; /* 배경 색상 */
     padding: 50px 0;
