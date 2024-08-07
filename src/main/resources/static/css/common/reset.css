@@ -32,7 +32,7 @@ button:hover{cursor: pointer;}
   --trans-background-color:rgba( 255, 255, 255, 0.55 );
   /*메인*/
   --mian-color:#FE5B5C;
-  
+
   /*글*/
   --font-color:#2B2D2F;
   --font-color2:#44474A;
@@ -45,7 +45,7 @@ button:hover{cursor: pointer;}
   --sub-color5:#cfd8e2;
   --sub-color6:rgba(0,0,0, 0.2);
   --sub-color7:#efeafc;
-  
+  --sub-color8:#2CAFFE;
   /*투명도 적용 서브*/
   --trans-sub-color:rgba(246,198,198,1);
 }
@@ -58,11 +58,17 @@ button:hover{cursor: pointer;}
 
 
 /*대시보드 서브 메뉴 */
-.cmindex {display: grid;grid-template-rows: 8% 89%;gap: 20px;overflow-y: auto;}
-.cmsubnav {display: flex;justify-content:space-around;background-color: rgba(255, 255, 255, 0.55);box-shadow: 0 4px 15px 0 rgba(31, 38, 135, 0.37);border-radius: 10px;padding: 10px 0;align-items: center;}
+.cmindex {display: grid;grid-template-rows: 5% 91.5%;gap: 20px;overflow-y: auto;}
 .cmsubnav > ul {display: flex;}
-.cmsubnav > ul >li {display: flex;padding: 0 40px;}
-.cmsubnav > ul >li>a {    white-space: nowrap;overflow: hidden;text-overflow: ellipsis;border-radius: 10px;color: #333;padding: 10px 15px;
+.cmsubnav > ul >li {display: flex;margin-right:20px;  background-color:rgba( 255, 255, 255, 1 ); backdrop-filter: blur( 8px ); box-shadow: 0 4px 10px 0 rgba( 31, 38, 135, 0.37 ); border-radius: 10px; overflow-y:auto;position: relative; }
+
+.cmsubnav > ul >li>a {white-space: nowrap;overflow: hidden;text-overflow: ellipsis;border-radius: 10px;color: #333;padding: 10px 15px;
 	text-align: center;text-decoration: none;font-size: 16px;transition: background-color 0.3s, color 0.3s;}
 	
-.cmsubnav > ul >li>a:hover{	background-color: var(--mian-color);border-radius: 10px;color: white;}
+.cmsubnav > ul > li > a:hover,
+.cmsubnav > ul > li > a.active {
+  background-color: var(--mian-color);
+  border-radius: 10px;
+  color: white;
+  border: none;
+}
