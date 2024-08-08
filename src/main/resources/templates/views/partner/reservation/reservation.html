@@ -9,20 +9,9 @@
 
 <body>
     <main class="cmindex">
-        <th:block th:replace="~{/views/admin/user/cmsubnav}" />
-
         <section class="contents">
         	<div class="dash user-search">
-                <h2>사용자 검색</h2>
-                <form class="search-form">
-                    <input type="text" placeholder="사용자 이름 또는 이메일 검색" class="search-input">
-                    <select class="filter-select">
-                        <option value="">모든 사용자</option>
-                        <option value="active">활성 사용자</option>
-                        <option value="inactive">비활성 사용자</option>
-                    </select>
-                    <button type="submit" class="search-button">검색</button>
-                </form>
+                <h2>사용자</h2>
                 <div class="search-results">
                     <ul>
                         <li class="header">

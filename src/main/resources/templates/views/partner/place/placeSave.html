@@ -21,16 +21,28 @@
 	                    <label for="listing-description">숙소 설명:</label>
 	                    <textarea id="listing-description" name="listing-description" rows="4" required></textarea>
 	                </div>
+	                
+	                <!-- 테마 설명 -->
+	                <div class="form-group">
+	                    <label for="listing-description">테마:</label>
+	                    <textarea id="listing-description" name="listing-description" rows="4" required></textarea>
+	                </div>
 	
 	                <!-- 숙소 위치 -->
 	                <div class="form-group">
-	                    <label for="location">숙소 위치:</label>
+	                    <label for="location">숙소 위치 등록:</label>
 	                    <input type="text" id="location" name="location" required>
 	                </div>
 	
 	                <!-- 숙소 이미지 업로드 -->
 	                <div class="form-group">
-	                    <label for="images">숙소 이미지:</label>
+	                    <label for="images">숙소 메인이미지:</label>
+	                    <input type="file" id="mainImages" name="mainImages[]" multiple accept="image/*" required>
+	                </div>
+	                
+	                <!-- 숙소 이미지 업로드 -->
+	                <div class="form-group">
+	                    <label for="images">숙소 이미지 추가:</label>
 	                    <input type="file" id="images" name="images[]" multiple accept="image/*" required>
 	                </div>
 	

@@ -3,11 +3,11 @@ main {
     padding: 20px;
     width: 1200px;
     margin: 0 auto;
-    margin-top: 15px;
+    margin-top: 10px;
 }
 
 .dash {
-    height: 1000px ;
+    height: 980px ;
 }
 /* 이미지 갤러리 섹션 */
 .image-gallery {

@@ -1,15 +1,116 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:replace="~{views/common/partnerlayout :: layout(~{::head} ,~{::main} ) }">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="/css/partner/place/place.css" >
-</head>
-<body> 
-    <main>
-		<div class="dash">
-		<h2>숙소목록</h2>
 
-		</div>
+<head>
+    <title>판매자 페이지 - 방잇</title>
+    <link rel="stylesheet" href="/css/partner/reservation/reservation.css">
+    <script src="/js/partner/room/room.js" defer></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const roomBtn = document.querySelector('.room-btn');
+            const roomDetails = document.querySelector('.room-details');
+
+            roomBtn.addEventListener('click', function(event) {
+                event.preventDefault(); // 링크 기본 동작 방지
+
+                // AJAX 요청을 통해 roomSave.html 내용 로드
+                fetch('/roomSave')
+                    .then(response => response.text())
+                    .then(html => {
+                        // 받은 HTML 조각을 roomDetails div에 삽입
+                        roomDetails.innerHTML = html;
+                    })
+                    .catch(error => {
+                        console.error('Error loading roomSave.html:', error);
+                    });
+            });
+        });
+    </script>
+    
+</head>
+
+<body>
+    <main class="cmindex">
+
+        <section class="contents">
+        	<div class="dash user-search">
+                <h2>숙소정보</h2>
+                <div class="search-results">
+                    <ul>
+                        <li class="header">
+                            <span>숙소명</span>
+                            <span>숙소유형</span>
+                            <span>등록일</span>
+                            <span>상태</span>
+                        </li>
+                        <li class="user-item">
+                            <span>더 하얏트 호텔</span>
+                            <span>호텔</span>
+                            <span>2024-08-11</span>
+                            <span>운영중</span>
+                        </li>
+                          <li class="user-item">
+                            <span>그랜드 호텔</span>
+                            <span>호텔</span>
+                            <span>2024-02-15</span>
+                            <span>운영중</span>
+                        </li>
+                          <li class="user-item">
+                            <span>조선 비즈니스</span>
+                            <span>비즈니스 호텔</span>
+                            <span>2022-03-12</span>
+                            <span>운영중</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="dash user-activity">
+                <h2>방 상세정보</h2>
+                <div class="room-details" ></div>
+                
+            </div>
+            
+            <div class="dash reservation-info">
+		        <h2>방 목록</h2>
+                <p class="no-user-selected"><i class="fa-solid fa-skull-crossbones"></i><br>방을<br> 등록하세요</p>
+                <div class="reservation-details">   
+                	 <ul>
+                        <li class="header">
+                            <span>결제일</span>
+                            <span>체크인</span>
+                            <span>체크아웃</span>
+                            <span>숙소명</span>
+                            <span>방</span>
+                        </li>
+                        <li class="user-item">
+                            <span>2024-08-11</span>
+                            <span>2024-08-12</span>
+                            <span>2024-08-13</span>
+                            <span>쁘띠가보네타</span>
+                            <span>력셔리룸</span>
+                        </li>
+                              <li class="user-item">
+                            <span>2024-08-11</span>
+                            <span>2024-08-12</span>
+                            <span>2024-08-13</span>
+                            <span>쁘띠가보네타</span>
+                            <span>력셔리룸</span>
+                        </li>
+                              <li class="user-item">
+                            <span>2024-08-11</span>
+                            <span>2024-08-12</span>
+                            <span>2024-08-13</span>
+                            <span>쁘띠가보네타</span>
+                            <span>력셔리룸</span>
+                        </li>
+                      </ul>
+                   <a href="/roomSave" class="room-btn">방 등록</a>       
+                </div>
+            </div>
+      
+        </section>
+
 	</main>
 </body>
 </html>
