@@ -9,22 +9,48 @@ body{background-color:var(--admin-body-color); }
 
 
 
-/*메인네브*/
-header{position: fixed; left: 0; top: 0; padding: 30px 30px 0px 30px; width: 310px; height: 100vh; background-image: url("https://media.istockphoto.com/id/878809578/ko/%EB%B2%A1%ED%84%B0/%EC%B6%94%EC%83%81-%ED%9A%8C%EC%83%89-%EC%B5%9C%EC%86%8C%ED%95%9C%EC%9D%98-%EB%AF%B8%EB%9E%98-%EA%B3%B5-%EB%B0%B0%EA%B2%BD.jpg?s=612x612&w=0&k=20&c=gD6w8QUFvDaWfkFj2qbrtHVFD9D5XdgaTflUHE40ZcA="); background-repeat: no-repeat; background-size: cover;background-position: center;}
-.main-nav-wrap{width:250px; height: 93vh; background-color: rgba( 255, 255, 255, 0.25 );backdrop-filter: blur( 8px ); box-shadow: 0 8px 20px 0 rgba( 31, 38, 135, 0.37 ); border-radius: 10px;padding: 15px; overflow-y:auto;position: relative; border: 1px solid rgba( 255, 255, 255, 0.18 );}
-
 /*헤더*/
+header{position: fixed; left: 0; top: 0; padding: 30px 30px 0px 30px; width: 310px; height: 100vh; background-image: url("https://img.freepik.com/free-vector/hollogeulaem-huinsaeg-baegyeong-chusang-dijain-begteoui-mujigae-bichkkal-ui-peuleim_53876-157574.jpg?ga=GA1.1.593772290.1722436232&semt=ais_hybrid"); background-repeat: no-repeat; background-size: cover;background-position: center;}
+.main-nav-wrap{width:250px; height: 93vh; background-color: rgba( 255, 255, 255, 0.55 );backdrop-filter: blur( 8px ); box-shadow: 0 4px 15px 0 rgba( 31, 38, 135, 0.37 ); border-radius: 10px;padding: 15px; overflow-y:auto;position: relative; border: 1px solid rgba( 255, 255, 255, 0.18 );}
+
+/*로고*/
 .logo{width: 100%}
-.logo > h1 > a{ width:80%; margin: 0 auto;}
-.logo > h1 > a > img{width: 100%; height: 70px;}
+.logo > h1 > a{ width:80%; margin: 0 auto; padding:10px 0px;}
+.logo > h1 > a > img{width: 100%; height: 65px;}
 .logo{ margin-bottom: 10px}
-.Search{position: relative;}
-.Search input{width: 100%; height: 30px; border: 2px solid var(--sub-color3) ; border-radius: 15px; padding: 10px}
+
+/*서치폼*/
+.Search{position: relative; color:var(--mian-color); margin-bottom: 30px}
+.Search input{outline:none;; width: 100%; height: 30px; border: 2px solid var(--mian-color) ; border-radius: 15px; padding: 10px}
 .Search form label{position: absolute;right:12px; top:2px;}
 
 
+/*유저 정보*/
+.user-information{width: 100%; height: 50px; background-color: var(--trans-background-color); box-shadow: 0 2px 7px 0 rgba( 31, 38, 135, 0.37 ); border-radius: 25px; display: flex;justify-content: space-between;align-items: center; margin-bottom: 50px; }
+.user-information img{width: 30%; height: 50px; border-radius: 50%}
+.user-information p{display: inline-block; width: 55%; font-size: 22px; font-weight: 600; color: var(--font-color2)}
 
-.gnb{width:100%; position: absolute; left: 0; bottom: 20px; display: flex; justify-content: space-between; padding: 0px 10px}
+/*nav*/
+.nav-wrap{height: calc(100vh - 380px); ;display:flex; flex-direction:column; justify-content:space-between;  font-size:clamp(100%, 1.3vw, 120%);; width: 100%; color:var(--font-color); border-top:1px solid var(--background-color);padding-top: 25px;}
+nav{width: 100%; margin: 0 auto;}
+nav> ul > li{width:100%; margin-bottom: 20px; padding: 10px 15px; border-radius: 10px }
+nav> ul > li >a{display: flex;justify-content: space-between;}
+nav> ul > li >a> i{font-size:clamp(100%, 2vw, 120%);; color: var(--font-color3);}
+nav> ul > li:hover{background: var(--mian-color); color: #fff}
+nav> ul > li:hover i{color: #fff}
 
+/*gnb*/
+.gnb{font-weight:600; color:var(--mian-color); width:100%;padding: 0px 10px}
+.gnb li{width:100%; height: 45px; border:2px solid var(--mian-color); border-radius:10px; line-height: 40px; text-align: center;} 
+.gnb li>a>i{margin-right: 10px}
+.gnb li:nth-child(1){margin-bottom: 10px}
+.gnb li:hover{background-color:var(--mian-color); color: #fff; }
+
+
+
+/*main*/
 main{position: fixed; top: 0; left: 310px;width: calc(100% - 300px); height:100vh; padding: 30px}
+
+
+
 

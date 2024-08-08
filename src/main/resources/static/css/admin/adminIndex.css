@@ -1,0 +1,160 @@
+@charset "UTF-8";
+
+.admin-index {
+	display: grid;  grid-template-columns:1fr 0.3fr 1.7fr; grid-template-rows:40% 58%;
+	grid-template-areas: 
+	'a b c' 
+	'd d e';
+	gap: 20px;
+	
+	overflow-y:auto; 
+}
+
+.admin-index > section>div>p{  font-size:0.7vw; font-weight: 600; color: var(--font-color3);}
+
+
+/*총 구성 비율*/
+.admin-index > section:nth-child(1) {
+	grid-area: a; overflow: hidden;
+}
+
+.admin-index > section:nth-child(1) .highcharts-figure,
+.admin-index > section:nth-child(1)  .highcharts-data-table table {
+	width:100%;
+	height: 89%;
+    min-width: 320px;
+    margin: 1em auto;
+}
+
+#container2 {
+    height: 100%;
+    
+}
+
+.admin-index > section:nth-child(1)  .highcharts-data-table table {
+    font-family: Verdana, sans-serif;
+    border-collapse: collapse;
+    border: 1px solid #ebebeb;
+    margin: 10px auto;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+}
+
+.admin-index > section:nth-child(1)  .highcharts-data-table caption {
+    padding: 1em 0;
+    font-size: 1.2em;
+    color: #555;
+}
+
+.admin-index > section:nth-child(1)  .highcharts-data-table th {
+    font-weight: 600;
+    padding: 0.5em;
+}
+
+.admin-index > section:nth-child(1)  .highcharts-data-table td,
+.admin-index > section:nth-child(1)  .highcharts-data-table th,
+.admin-index > section:nth-child(1)  .highcharts-data-table caption {
+    padding: 0.5em;
+}
+
+.admin-index > section:nth-child(1)  .highcharts-data-table thead tr,
+.admin-index > section:nth-child(1)  .highcharts-data-table tr:nth-child(even) {
+    background: #f8f8f8;
+}
+
+.admin-index > section:nth-child(1)  .highcharts-data-table tr:hover {
+    background: #f1f7ff;
+}
+
+
+
+
+
+
+/*신규 가입자*/
+.admin-index > section:nth-child(2) {grid-area: b;display: flex;flex-direction: column; justify-content: space-between;}
+.admin-index > section:nth-child(2) >div {height: 31%;}
+.admin-index > section:nth-child(2) >div>p:nth-child(2){position: absolute;left: 50%;top: 60%;transform: translate(-50%, -50%); font-size: clamp(100%, 4vw, 250%)}
+.admin-index > section:nth-child(2) >div:nth-child(1)>p:nth-child(2){color:var(--sub-color8); }
+.admin-index > section:nth-child(2) >div:nth-child(2)>p:nth-child(2){color:var(--mian-color); }
+.admin-index > section:nth-child(2) >div:nth-child(3)>p:nth-child(2){color:var(--sub-color3); }
+
+
+
+
+
+/*최근 가입률 차트*/
+
+.admin-index > section:nth-child(3) {grid-area: c; overflow: hidden;}
+
+.highcharts-figure,
+.highcharts-data-table table {
+	width:100%;
+    min-width: 310px;
+    margin: 1em auto;
+    height: 95%
+}
+
+#container {
+    height: 100%;
+    
+}
+
+.highcharts-data-table table {
+    font-family: Verdana, sans-serif;
+    border-collapse: collapse;
+    border: 1px solid #ebebeb;
+    margin: 10px auto;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+}
+
+.highcharts-data-table caption {
+    padding: 1em 0;
+    font-size: 1.2em;
+    color: #555;
+}
+
+.highcharts-data-table th {
+    font-weight: 600;
+    padding: 0.5em;
+}
+
+.highcharts-data-table td,
+.highcharts-data-table th,
+.highcharts-data-table caption {
+    padding: 0.5em;
+}
+
+.highcharts-data-table thead tr,
+.highcharts-data-table tr:nth-child(even) {
+    background: #f8f8f8;
+}
+
+.highcharts-data-table tr:hover {
+    background: #f1f7ff;
+}
+
+.highcharts-title,.highcharts-credits,.highcharts-subtitle{display: none;}
+
+
+
+
+
+
+.admin-index > section:nth-child(4) {
+	grid-area: d;
+}
+
+#container3 {
+    max-width: 800px;
+    min-width: 360px;
+    margin: 0 auto;
+}
+
+
+.admin-index > section:nth-child(5) {
+	grid-area: e;
+}

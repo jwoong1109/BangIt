@@ -2,18 +2,90 @@
 <html xmlns:th="http://www.thymeleaf.org" th:replace="~{views/common/adminlayout :: layout(~{::head} ,~{::main} ) }">
 
 <head>
+	<link rel="stylesheet" href="/css/admin/adminIndex.css">
+<script src="https://code.highcharts.com/maps/modules/map.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/offline-exporting.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+	<script src="/js/admin/adminIndex.js"></script> 
 
 
 </head>
 
 <body>
-	<main>
-		<div>
-			<section class="dash">
-			
-			</section>
-		</div>
-	
+	<main class="admin-index">
+
+
+		<section class="dash e-payment">
+			<div>
+				<p>총 회원구성</p>
+			</div>
+
+			<figure class="highcharts-figure">
+				<div id="container2"></div>
+				<p class="highcharts-description"></p>
+			</figure>
+
+
+		</section>
+
+
+
+		<section>
+			<div class="dash">
+				<p>Today 신규직원</p>
+				<p>5</p>
+				
+
+			</div>
+			<div class="dash">
+				<p>Today 신규파트너</p>
+				<p>20</p>
+
+			</div>
+			<div class="dash">
+				<p>Today 신규유저</p>
+			    <p>85</p>
+
+
+			</div>
+
+
+		</section>
+
+
+		<section class="dash">
+			<div>
+				<p>월별 가입률</p>
+			</div>
+			<figure class="highcharts-figure">
+				<div id="container"></div>
+				<p class="highcharts-description"></p>
+			</figure>
+
+
+		</section>
+
+
+		<section class="dash">
+			<div>
+				<p>이번달 매출</p>
+				<div id="container3" style="height: 500px; width: 800px;"></div>
+			</div>
+		
+		
+		</section>
+
+
+		<section class="dash">
+			<div>
+				<p>월별 가입률</p>
+			</div>
+		
+		</section>
+
+
 
 
 

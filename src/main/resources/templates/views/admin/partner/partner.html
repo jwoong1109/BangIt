@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{views/common/adminlayout :: layout(~{::head} ,~{::main} ) }">
+
+<head>
+	<title>판매자 페이지 - 방잇</title>
+	<!-- 여기에 partner 페이지에만 필요한 추가적인 CSS나 JS 파일을 링크할 수 있습니다 -->
+	<link rel="stylesheet" href="/css/admin/partner/partner.css">
+	<script src="/js/admin/partner/partner.js" defer></script>
+</head>
+
+<body>
+	<main class="cmindex">
+		<!-- 여기에 partner 페이지의 주요 내용을 작성합니다 -->
+		<div class="cmsubnav">
+			<ul>
+				<li>
+					<a href="#" data-content="list">판매자 목록</a>
+				</li>
+				<li>
+					<a href="#" data-content="approve">판매자 승인</a>
+				</li>
+				<li>
+					<a href="#" data-content="edit">판매자 수정</a>
+				</li>
+				<li>
+					<a href="#" data-content="delete">판매자 삭제</a>
+				</li>
+				<li>
+					<a href="#" data-content="activity">활동 내역 확인</a>
+				</li>
+				<li>
+					<a href="#" data-content="permission">권한 관리&계정 수정</a>
+				</li>
+			</ul>
+			<!--<a href="">등급제 수수료율/환불규정</a>-->
+		</div>
+		<section class="contents">
+			<div class="dash seller-info">
+				<h2>판매자 정보</h2>
+				<p class="no-seller-selected"><i class="fa-solid fa-user-plus"></i><br>판매자를<br> 선택하세요</p>
+			</div>
+			<div class="dash accommodation-listing">
+				<h2>등록 숙소</h2>
+				<p class="no-seller-selected"><i class="fa-solid fa-user-plus"></i><br>판매자를<br> 선택하세요</p>
+			</div>
+			<div class="dash seller-search">
+				<h2>판매자 검색</h2>
+				<form class="seller-search-form">
+					<input type="text" placeholder="판매자 이름 또는 이메일 검색" class="seller-search-input">
+					<select class="seller-filter-select">
+						<option value="">모든 판매자</option>
+						<option value="active">활성 판매자</option>
+						<option value="inactive">비활성 판매자</option>
+					</select>
+					<button type="submit" class="seller-search-button">검색</button>
+				</form>
+			</div>
+		</section>
+	</main>
+</body>
+
+</html>

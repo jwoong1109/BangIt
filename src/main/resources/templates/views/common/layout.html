@@ -1,25 +1,43 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	th:fragment="layout(pHead,pMain)">
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="layout(pHead, pMain)">
+
 <head>
 	<meta charset="UTF-8">
-	
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<!-- 공통적용-->
+
+	<!-- 공통적용 -->
 	<link rel="icon" type="image/x-icon" href="/images/logo.ico">
 	<link rel="stylesheet" href="/css/common/reset.css">
-	<link rel="stylesheet" href="/css/common/cmlayout.css">
 	<link rel="stylesheet" href="/css/common/header.css">
+	<link rel="stylesheet" href="/css/common/chatbot.css">
+	<link rel="stylesheet" href="/css/common/footer.css">
+
+	<!-- jQuery 라이브러리 -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-	<script src="/js/common/jquery-3.7.1.min.js" defer></script>
+
+	<!-- jQuery UI 라이브러리 -->
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+	<!-- jQuery UI 한국어 로케일 -->
+	<script src="/js/common/datepicker-ko.js"></script>
+
+
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+	<!-- GSAP 라이브러리 -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+
+	<!-- FontAwesome 라이브러리 -->
 	<script src="https://kit.fontawesome.com/890a398c47.js" crossorigin="anonymous"></script>
 
-	
-	<!--각 html 마다 적용-->
-	<th:block th:insert="${pHead}">
-	
-	
+	<!-- Custom JS 파일 -->
+	<script src="/js/common/chatbot.js" defer></script>
+
+	<!-- 페이지 별로 다를 수 있는 헤드 요소 삽입 -->
+	<th:block th:replace="${pHead}" />
+
 	<title>방잇</title>
 </head>
 
@@ -27,25 +45,20 @@
 
 	<div id="layoutWrap">
 
+		<!-- 헤더 -->
 		<th:block th:replace="~{/views/common/header}" />
 
-		<th:block th:replace="~{/views/common/nav}" />
-
-
+		<!-- 메인 콘텐츠 -->
 		<th:block th:replace="${pMain}" />
 
+		<!-- 푸터 -->
+		<th:block th:replace="~{/views/common/footer}" />
 
-		<footer th:replace="~{/views/common/footer}"></footer>
-
-
-
-
+		<!-- Chatbot 삽입 -->
+		<th:block th:replace="~{/views/chatbot/chatbot}" />
 
 	</div>
 
-
-
 </body>
-
 
 </html>

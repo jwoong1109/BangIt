@@ -1,13 +1,17 @@
 
-
+/*담당:전송희*/
 
 @charset "UTF-8";
 /*기본지정 폰트입니다.*/
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
+/*서브폰트*/
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Dongle&family=Jua&display=swap');
 
 
 /*폰트적용*/
 body{font-family: "Noto Sans KR", sans-serif;}
+.juafonts{font-family: "Jua", sans-serif;}
+.donglefonts{font-family: "Dongle", sans-serif;}
 
 
 /*디자인을 위한 리셋 적용*/
@@ -21,25 +25,50 @@ button:hover{cursor: pointer;}
 
 :root {
   /*컬러 변수*/
-  --admin-body-color: #F9F9F9;
-  --sub-color: #fbb106;
-  --sub-color2: #4b4d59;
+  /*백그라운드*/
+  --admin-body-color: rgb(246, 246, 246);
+  --background-color: #E0E0E0;
+  --background-color2: #F3F1F6;
+  --trans-background-color:rgba( 255, 255, 255, 0.55 );
+  /*메인*/
+  --mian-color:#FE5B5C;
+
+  /*글*/
+  --font-color:#2B2D2F;
+  --font-color2:#44474A;
+  --font-color3:#7d8388;
+  
+  /*서브*/
+  --sub-color: #F6C6C6;
   --sub-color3: #fbd546;
   --sub-color4:#bd9ff4;
   --sub-color5:#cfd8e2;
   --sub-color6:rgba(0,0,0, 0.2);
   --sub-color7:#efeafc;
-  --background-color1: #fff;
-  --subnav-background: rgba(255, 255, 255, 0.9);
+  --sub-color8:#2CAFFE;
+  /*투명도 적용 서브*/
+  --trans-sub-color:rgba(246,198,198,1);
 }
 
 
 /*공통 대시보드*/
 
-.dash{background-color: rgba( 255, 255, 255, 1 );backdrop-filter: blur( 8px ); box-shadow: 0 8px 20px 0 rgba( 31, 38, 135, 0.37 ); border-radius: 10px;padding: 15px; overflow-y:auto;position: relative; border: 1px solid rgba( 255, 255, 255, 0.18 );}
+.dash{background-color: rgba( 255, 255, 255, 1 );backdrop-filter: blur( 8px ); box-shadow: 0 4px 10px 0 rgba( 31, 38, 135, 0.37 ); border-radius: 10px;padding: 15px; overflow-y:auto;position: relative; border: 1px solid rgba( 255, 255, 255, 0.18 );}
 
 
 
+/*대시보드 서브 메뉴 */
+.cmindex {display: grid;grid-template-rows: 5% 91.5%;gap: 20px;overflow-y: auto;}
+.cmsubnav > ul {display: flex;}
+.cmsubnav > ul >li {display: flex;margin-right:20px;  background-color:rgba( 255, 255, 255, 1 ); backdrop-filter: blur( 8px ); box-shadow: 0 4px 10px 0 rgba( 31, 38, 135, 0.37 ); border-radius: 10px; overflow-y:auto;position: relative; }
 
-
-
+.cmsubnav > ul >li>a {white-space: nowrap;overflow: hidden;text-overflow: ellipsis;border-radius: 10px;color: #333;padding: 10px 15px;
+	text-align: center;text-decoration: none;font-size: 16px;transition: background-color 0.3s, color 0.3s;}
+	
+.cmsubnav > ul > li > a:hover,
+.cmsubnav > ul > li > a.active {
+  background-color: var(--mian-color);
+  border-radius: 10px;
+  color: white;
+  border: none;
+}
