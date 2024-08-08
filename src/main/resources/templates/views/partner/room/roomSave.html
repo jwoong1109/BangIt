@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+    <main>
+        <div class="">
+            <section class="room-section">
+                <h2>새로운 숙소 등록하기</h2>
+                <form action="/roomSave" method="post" enctype="multipart/form-data">
+                    <!-- 숙소 이름 -->
+                    <div class="room-group">
+                        <label for="room-title">방 이름:</label>
+                        <input type="text" id="listing-title" name="listing-title" required>
+                    </div>
+
+                    <!-- 숙소 설명 -->
+                    <div class="room-group">
+                        <label for="room-description">방 설명:</label>
+                        <textarea id="room-description" name="listing-description" rows="4" required></textarea>
+                    </div>
+                    
+                    <!-- 테마 설명 -->
+                    <div class="room-group">
+                        <label for="theme-description">테마:</label>
+                        <textarea id="room-Thema" name="Thema" rows="4" required></textarea>
+                    </div>
+
+                    <!-- 숙소 이미지 업로드 -->
+                    <div class="room-group">
+                        <label for="mainImages">방 메인이미지:</label>
+                        <input type="file" id="mainImages" name="mainImages[]" multiple accept="image/*" required>
+                    </div>
+                    
+                    <!-- 숙소 이미지 업로드 -->
+                    <div class="room-group">
+                        <label for="images">방 이미지 추가:</label>
+                        <input type="file" id="images" name="images[]" multiple accept="image/*" required>
+                    </div>
+
+                    <!-- 등록 버튼 -->
+                    <button type="submit" class="room-btn">방 등록</button>
+                </form>
+            </section>
+        </div>    
+    </main>
+</body>
+</html>

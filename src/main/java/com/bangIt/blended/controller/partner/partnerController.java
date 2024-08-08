@@ -2,7 +2,6 @@ package com.bangIt.blended.controller.partner;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
@@ -30,5 +29,10 @@ public class partnerController {
 	public String reservation() {
 		return "views/partner/reservation/reservation";
 	}
+	
+	@GetMapping("/roomSave")
+    public String roomSave() {
+        return "/views/partner/room/roomSave"; // 동일한 템플릿을 반환합니다.
+    }
 	
 }
