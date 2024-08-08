@@ -82,19 +82,7 @@ public class UserEntity {
 		for(int i=0; i<=Role.valueOf(role).ordinal(); i++) {
 			roles.add(Role.values()[i]);
 		}
-		
-		/* 2번 방법
-		switch(role) {
-		case "ADMIN": 
-			entity.addRole(Role.ADMIN);
-		
-		case "MGR":
-			entity.addRole(Role.MGR);
-		case "EMP":
-			entity.addRole(Role.EMP);
-		}
-		*/
-		
+
 		
 		return this;
 	}
