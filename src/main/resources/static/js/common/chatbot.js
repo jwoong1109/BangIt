@@ -79,7 +79,7 @@ $(document).ready(function() {
 			$('#chatbot-messages').html(`
                 <div class="message bot">
                     <div class="profile">
-                        <img src="/images/chatbot.png" alt="Bot Profile">
+                        <img src="/images/bangitbot.png" alt="Bot Profile">
                     </div>
                     <div class="bubble">
                         원하시는 질문의 카테고리를 선택해주세요

@@ -5,58 +5,139 @@
 	<title>판매자 페이지 - 방잇</title>
 	<!-- 여기에 partner 페이지에만 필요한 추가적인 CSS나 JS 파일을 링크할 수 있습니다 -->
 	<link rel="stylesheet" href="/css/admin/partner/partner.css">
+	<!-- 예시: Remix Icon -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css">
 	<script src="/js/admin/partner/partner.js" defer></script>
 </head>
 
 <body>
-	<main class="cmindex">
-		<!-- 여기에 partner 페이지의 주요 내용을 작성합니다 -->
-		<div class="cmsubnav">
-			<ul>
-				<li>
-					<a href="#" data-content="list">판매자 목록</a>
-				</li>
-				<li>
-					<a href="#" data-content="approve">판매자 승인</a>
-				</li>
-				<li>
-					<a href="#" data-content="edit">판매자 수정</a>
-				</li>
-				<li>
-					<a href="#" data-content="delete">판매자 삭제</a>
-				</li>
-				<li>
-					<a href="#" data-content="activity">활동 내역 확인</a>
-				</li>
-				<li>
-					<a href="#" data-content="permission">권한 관리&계정 수정</a>
-				</li>
-			</ul>
-			<!--<a href="">등급제 수수료율/환불규정</a>-->
-		</div>
-		<section class="contents">
-			<div class="dash seller-info">
-				<h2>판매자 정보</h2>
-				<p class="no-seller-selected"><i class="fa-solid fa-user-plus"></i><br>판매자를<br> 선택하세요</p>
+	<div id="adminlayoutWrap">
+		<main class="cmindex">
+			<!-- 여기에 partner 페이지의 주요 내용을 작성합니다 -->
+			<th:block th:replace="~{/views/admin/partner/partnersubmenu}" />
+			
+			<section class="contents">
+				<div class="dash accommodation-info">
+					<h2>숙소 위치</h2>
+					<button class="map-icon"><i class="ri-compass-3-line"></i></button>
+					<div class="kakao-map" id="map"></div>
+				</div>
+				<div class="dash accommodation-listing">
+					<h2>등록 숙소</h2>
+					<p class="no-seller-selected"><i class="fa-solid fa-user-plus"></i><br>판매자를<br> 선택하세요</p>
+					<div class="listing-details">
+						<ul>
+							<li class="header">
+								<span>이름</span>
+								<span>위치</span>
+								<span>숙소유형</span>
+								<span>가격</span>
+							</li>
+							<li class="seller-item">
+								<span>더 하얏트</span>
+								<span>서울</span>
+								<span>호텔</span>
+								<span>₩500,000</span>
+							</li>
+							<li class="seller-item">
+								<span>그랜드 호텔</span>
+								<span>강릉</span>
+								<span>호텔</span>
+								<span>₩398,000</span>
+							</li>
+							<li class="seller-item">
+								<span>조선 비즈니스</span>
+								<span>가평</span>
+								<span>모텔</span>
+								<span>₩89,000</span>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="dash seller-search">
+					<h2>판매자 검색</h2>
+					<form class="seller-search-form">
+						<input type="text" placeholder="판매자 이름 또는 이메일 검색" class="seller-search-input">
+						<select class="seller-filter-select">
+							<option value="">모든 판매자</option>
+							<option value="active">활성 판매자</option>
+							<option value="inactive">비활성 판매자</option>
+						</select>
+						<button type="submit" class="seller-search-button">검색</button>
+					</form>
+					<div class="seller-search-results">
+						<ul>
+							<li class="header">
+								<span>성명</span>
+								<span>이메일</span>
+								<span>가입일</span>
+								<span>상태</span>
+							</li>
+							<li>
+								<span>전송희</span>
+								<span>jsh123@naver.com</span>
+								<span>2024-08-07</span>
+								<span>활성</span>
+							</li>
+							<li>
+								<span>이진웅</span>
+								<span>ljw123@naver.com</span>
+								<span>2024-08-07</span>
+								<span>활성</span>
+							</li>
+							<li>
+								<span>김윤석</span>
+								<span>kys123@naver.com</span>
+								<span>2024-08-07</span>
+								<span>활성</span>
+							</li>
+							<li>
+								<span>윤민석</span>
+								<span>yms123@naver.com</span>
+								<span>2024-08-07</span>
+								<span>활성</span>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</section>
+
+			<!-- 등록 숙소 팝업 -->
+			<div class="accommodation-popup" style="display: none;">
+				<div class="accommodation-popup-content">
+					<h3>숙소 정보</h3>
+					<div class="accommodation-popup-grid">
+						<div class="accommodation-popup-section">
+							<h4>숙소 이름</h4>
+							<p><strong>이름:</strong> <span id="popup-accommodation-name"></span></p>
+						</div>
+						<div class="accommodation-popup-section">
+							<h4>숙소 위치</h4>
+							<p><strong>지역:</strong> <span id="popup-accommodation-location"></span></p>
+						</div>
+						<div class="accommodation-popup-section">
+							<h4>숙소 유형</h4>
+							<p><strong>유형:</strong> <span id="popup-accommodation-category"></span></p>
+						</div>
+						<div class="accommodation-popup-section">
+							<h4>가격</h4>
+							<p><strong>가격:</strong> <span id="popup-accommodation-price"></span></p>
+						</div>
+					</div>
+					<button class="close-popup">닫기</button>
+				</div>
 			</div>
-			<div class="dash accommodation-listing">
-				<h2>등록 숙소</h2>
-				<p class="no-seller-selected"><i class="fa-solid fa-user-plus"></i><br>판매자를<br> 선택하세요</p>
+
+			<!-- 지도 팝업 -->
+			<div class="map-popup" style="display: none;">
+				<div class="map-popup-content">
+					<h3>지도</h3>
+					<div class="kakao-map-popup" id="map-popup"></div>
+					<button class="close-map-popup">닫기</button>
+				</div>
 			</div>
-			<div class="dash seller-search">
-				<h2>판매자 검색</h2>
-				<form class="seller-search-form">
-					<input type="text" placeholder="판매자 이름 또는 이메일 검색" class="seller-search-input">
-					<select class="seller-filter-select">
-						<option value="">모든 판매자</option>
-						<option value="active">활성 판매자</option>
-						<option value="inactive">비활성 판매자</option>
-					</select>
-					<button type="submit" class="seller-search-button">검색</button>
-				</form>
-			</div>
-		</section>
-	</main>
+		</main>
+	</div>
 </body>
 
 </html>
