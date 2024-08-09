@@ -1,7 +1,7 @@
 /* 메인 컨텐츠 스타일 */
 main {
     padding: 20px;
-    width: 1200px;
+    width: 1000px;
     margin: 0 auto;
     margin-top: 10px;
 }
@@ -9,161 +9,19 @@ main {
 .dash {
     height: 980px ;
 }
-/* 이미지 갤러리 섹션 */
-.image-gallery {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.image-gallery img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-}
-
-/* 숙소 상세 정보 섹션 */
-.details {
-    margin-bottom: 20px;
-}
-
-.details h2 {
-    margin-bottom: 10px;
-}
-
-.details p {
-    margin-bottom: 15px;
-    line-height: 1.6;
-}
-
-.details h3 {
-    margin-bottom: 20px;
-}
-
-/* 예약 버튼 스타일 */
-.reserve-btn {
-    background-color: #FE5B5C;;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-.details-btn {
-    background-color: white;
-    color: #ff5a5f;
-    padding: 10px 20px;
-    border-color: #ff5a5f;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    margin-right: 10px;
-}
-
-/* 방 정보 섹션 */
-.rooms {
-    margin-top: 30px;
-}
-
-.room {
-    margin-bottom: 20px;
-    padding: 15px;
-    background-color: #f7f7f7;
-    border-radius: 8px;
-}
-
-.room h3 {
-    margin-bottom: 10px;
-}
-
-.room p {
-    margin-bottom: 10px;
-}
-
-/* 리뷰 섹션 */
-.reviews {
-    margin-top: 30px;
-}
-
-.reviews h2 {
-    margin-bottom: 10px;
-}
-
-.review {
-    margin-bottom: 10px;
-    padding: 10px;
-    background-color: #f7f7f7;
-    border-radius: 5px;
-}
-
-/* 날짜 및 인원수 검색 섹션 */
-.date-search {
-    background-color: #f7f7f7;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-}
-
-.date-search h2 {
-    margin-bottom: 15px;
-}
-
-.date-search form {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    flex-wrap: nowrap; /* 줄바꿈을 방지하여 한 줄로 유지 */
-}
-
-.date-search .form-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-direction: row; /* 요소들이 가로로 나열되도록 설정 */
-}
-
-.date-search label {
-    margin-right: 10px; /* 레이블과 입력 요소 간의 간격 추가 */
-    font-weight: bold;
-}
-
-.date-search input[type="date"],
-.date-search select {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-}
-
-.date-search span {
-    margin: 0 10px;
-    font-size: 16px;
-    align-self: center;
-}
-
-.search-btn {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
 
 /*//////////////////숙소 등록//////////////*/
 /*//////////////////숙소 등록//////////////*/
 
 /* 폼 스타일 */
-.write-form {
+.place-save-form {
     background-color: #f7f7f7;
     padding: 20px;
     border-radius: 8px;
     margin-bottom: 20px;
 }
 
-.write-form h2 {
+.place-save-form h2 {
     margin-bottom: 20px;
 }
 
@@ -176,6 +34,21 @@ main {
 label {
     margin-bottom: 5px;
     font-weight: bold;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-item input[type="checkbox"] {
+    margin-right: 5px;
 }
 
 input[type="text"], 
@@ -216,4 +89,44 @@ textarea {
 
 .room-group h3 {
     margin-bottom: 15px;
+}
+
+.radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.radio-item {
+    display: flex;
+    align-items: center;
+}
+
+.radio-item input[type="radio"] {
+    margin-right: 5px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+/* 주소 검색 버튼 스타일 */
+.address-search-btn {
+    padding: 10px 20px;
+    background-color: var(--mian-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    display: block;  /* 버튼을 블록 레벨 요소로 만듭니다 */
+    margin: 0 auto;  /* 좌우 마진을 auto로 설정하여 중앙 정렬합니다 */
+    margin-top : 20px;
+    width: fit-content;  /* 내용에 맞게 너비를 조정합니다 */
 }
