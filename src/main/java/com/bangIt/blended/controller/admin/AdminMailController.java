@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
-public class UserController {
+public class AdminMailController {
 
 	
-	@GetMapping("/admin/user")
+	@GetMapping("/admin/mail")
 	public String adminPartner() {
-		return "views/admin/user/user";
+		return "/views/admin/mail/list";
 	}
 	
 	
