@@ -136,8 +136,8 @@
     position: absolute; /* 절대 위치 설정 */
     top: 0; /* 메시지 박스 상단에 위치 */
     left: -35px; /* 메시지 박스의 왼쪽 상단에서 왼쪽으로 설정 (이미지 크기와 여백 고려) */
-    width: 30px; /* 프로필 이미지 너비 */
-    height: 30px; /* 프로필 이미지 높이 */
+    width: 50px; /* 프로필 이미지 너비 */
+    height: 50px; /* 프로필 이미지 높이 */
 }
 
 
@@ -148,14 +148,22 @@
     object-fit: cover; /* 이미지 비율 유지하면서 잘림 방지 */
 }
 
+/* 챗봇 프로필 이미지 크기 */
+#chatbot-messages > div > div.profile > img {
+	padding: 5px;
+    width: 50px;
+    height: 50px;
+}
+
 /* 챗봇이 입력한 내용 말풍선 */
 .message.bot .bubble {
 	background-color: var(--trans-sub-color); /* 챗봇 메시지 배경색 */
 	color: var(--font-color); /* 챗봇 메시지 텍스트 색상 */
-	border-radius: 20px; /* 메시지 박스의 모서리 둥글게 */
+	border-radius: 10px; /* 메시지 박스의 모서리 둥글게 */
 	padding: 10px; /* 패딩 추가 */
 	max-width: 70%; /* 메시지 박스 최대 너비 */
 	margin-right: auto; /* 챗봇 메시지를 왼쪽으로 정렬 */
+	margin-left: 20px;
 }
 
 /* 사용자가 입력한 내용 말풍선 */
