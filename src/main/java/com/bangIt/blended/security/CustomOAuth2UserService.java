@@ -2,7 +2,9 @@ package com.bangIt.blended.security;
 
 import java.util.Map;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService; //원초적인 OAuth2 implement시 추가 설계를 해야함
@@ -80,7 +82,14 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService{
 				.build().addRole(Role.USER); //userRole 대체
 		return new CustomUserDetails(entity);
 	}
-	
+
+	public String getRegistrationId(Authentication authentication) {
+	    if (authentication instanceof OAuth2AuthenticationToken) {
+	        OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
+	        return oauthToken.getAuthorizedClientRegistrationId(); // OAuth2 공급자의 registrationId 반환
+	    }
+	    return null;
+	}
 
 
 	

@@ -13,34 +13,39 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
- 
-	private final CustomOAuth2UserService customOAuth2UserService;
-	
-	 @Bean
-	    SecurityFilterChain filterChain(HttpSecurity http) throws Exception { 
 
-	        http
-	            .csrf(Customizer.withDefaults())
-	            .authorizeHttpRequests(authorize -> authorize
-	                .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-	                .requestMatchers("/", "/login").permitAll()
-	                .requestMatchers("/partner/**").hasRole("PARTNER")
-	                .requestMatchers("/admin/**").hasRole("ADMIN")
-	                .anyRequest().authenticated()
-	            )
-	            .oauth2Login(oauth2 -> oauth2
-	                    .loginPage("/login")
-	                    .userInfoEndpoint(userInfo -> userInfo
-	                        .userService(customOAuth2UserService)
-	                    )
-	                )
-	                .logout(logout -> logout
-	                    .logoutUrl("/logout")
-	                    .logoutSuccessUrl("/")
-	                    .invalidateHttpSession(true)
-	                    .deleteCookies("JSESSIONID")
-	                );
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
+    
+    @Bean
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-	        return http.build();
-	    }
-	}
+        http
+            .csrf(Customizer.withDefaults())
+            .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/css/**", "/js/**", "/images/**", "/error").permitAll()
+                .requestMatchers("/", "/login").permitAll()
+                .requestMatchers("/partner/**").hasRole("PARTNER")
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
+            )
+            .oauth2Login(oauth2 -> oauth2
+                .loginPage("/login")
+                .userInfoEndpoint(userInfo -> userInfo
+                    .userService(customOAuth2UserService)
+                )
+                .successHandler(customAuthenticationSuccessHandler)
+            )
+            .logout(logout -> logout
+            	.logoutSuccessHandler(customLogoutSuccessHandler)
+                .invalidateHttpSession(true) // 세션 무효화
+                .clearAuthentication(true) // 인증 정보 제거
+                .deleteCookies("JSESSIONID") // 세션 쿠키 삭제
+               
+            );
+        
+
+        return http.build();
+    }
+}

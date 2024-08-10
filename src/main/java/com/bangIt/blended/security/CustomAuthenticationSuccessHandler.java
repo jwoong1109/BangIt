@@ -2,10 +2,11 @@ package com.bangIt.blended.security;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
@@ -16,53 +17,50 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-//config내부에서 메서드를 이용해서 메서드 빈으로 생성 / 빈을 만들지 않았으면 해당 페이지에 @컴포넌트로 진행 후 해당 변수를 쓰는 페이지에서 final 생성자 di 만들어주기
 @Component
 public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-	
-	
-	//RequestCache : 사용자가 인증되지 않았던 페이지에 대한 정보를 저장하는 객체 //인증성공 후 저장된 요청을 복원하여 해당 페이지로 리다렉트
-	private final RequestCache requestCache=new HttpSessionRequestCache();
-	
-	//RedirectStrategy: 리다렉트로 로직을 구현하는데 사용(처리객체)
-	//인증, 인가 가정에서 특정 상황에 따라 사용자를 적절한 페이지로 리다렉트 하기위해 사용 
-	//=> 로그인 성공(실패,로그아웃) 후 특정 페이지로 리다렉트 되도록 할때 쓰려고 한다.
-	private final RedirectStrategy redirectStrategy=new DefaultRedirectStrategy();
-	
-	//private static final String DEFAULT_SUCCESS_URL="/"; //this.getDefaultTargetUrl();
-	
-	@Override
-	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-			Authentication authentication) throws IOException, ServletException {
-		//로그인페이지로 보내는 방법인 크게 2가지 존재 
-		//1. 로그인 버튼을 눌러서 이동하는 방법
-		//2. 로그인이 안된 상태에서 인증이 필요한기능을 요청하면 security에서 redirect 시켜 로그인 창으로 이동 
-		//2번째의 경우 인증이 성공하면 최초 요청한 페이지로 이동 
 
-		clearAuthenticationAttributes(request); //인증실패하거나 인증관련 메시지와 상태정보가 이후 요청에 영향을 미치지 않도록 제거
-		String targetUrl=getDefaultTargetUrl();
-		
-		SavedRequest savedRequest=requestCache.getRequest(request, response);
-		System.out.println("savedRequest: "+savedRequest);
-		
-		String prevPage=(String) request.getSession().getAttribute("prevPage");
-		System.out.println("prevPage: "+prevPage);
-		
-		
-		
-		if(savedRequest != null && !savedRequest.getRedirectUrl().contains("login") ) {
-			targetUrl=savedRequest.getRedirectUrl().split("[?]")[0];
-			
-		}else if(prevPage != null) {
-			targetUrl=prevPage;
-			request.getSession().removeAttribute("prevPage");
-		}
-		
-		System.out.println("targetUrl: "+targetUrl);
-		
-		
-		redirectStrategy.sendRedirect(request, response, targetUrl);
-	
-	}
+    private static final Logger logger = LoggerFactory.getLogger(CustomAuthenticationSuccessHandler.class);
 
+    // RequestCache : 사용자가 인증되지 않았던 페이지에 대한 정보를 저장하는 객체
+    private final RequestCache requestCache = new HttpSessionRequestCache();
+
+    // RedirectStrategy : 리다이렉트 로직을 구현하는 데 사용
+    private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+
+    @Override
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+                                        Authentication authentication) throws IOException, ServletException {
+        // 인증 실패 시 메시지 제거
+        clearAuthenticationAttributes(request);
+
+        // 리다이렉션할 URL 결정
+        String targetUrl = determineTargetUrl(request, response);
+        logger.info("Redirecting to URL: {}", targetUrl);
+
+        // 리다이렉션 수행
+        redirectStrategy.sendRedirect(request, response, targetUrl);
+    }
+
+    protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response) {
+        // 이전 요청을 복원하여 리다이렉션할 URL을 결정
+        SavedRequest savedRequest = requestCache.getRequest(request, response);
+        String targetUrl = getDefaultTargetUrl();
+
+        if (savedRequest != null && !savedRequest.getRedirectUrl().contains("login")) {
+            // 저장된 요청이 있고 로그인 페이지가 아니라면 해당 URL로 리다이렉트
+            targetUrl = savedRequest.getRedirectUrl().split("[?]")[0];
+            logger.debug("Saved request found. Redirecting to saved URL: {}", targetUrl);
+        } else {
+            // 이전 페이지 URL이 세션에 저장되어 있는 경우
+            String prevPage = (String) request.getSession().getAttribute("prevPage");
+            if (prevPage != null) {
+                targetUrl = prevPage;
+                request.getSession().removeAttribute("prevPage");
+                logger.debug("Previous page found in session. Redirecting to: {}", targetUrl);
+            }
+        }
+
+        return targetUrl;
+    }
 }

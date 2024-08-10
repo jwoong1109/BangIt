@@ -46,4 +46,9 @@ public class CustomUserDetails extends User implements OAuth2User{
 		return attributes;
 	}
 	
+	@Override
+	public String getName() {
+	    return name; // 사용자의 고유 식별자를 반환
+	}
+
 }
