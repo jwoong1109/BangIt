@@ -1,4 +1,4 @@
-package com.bangIt.blended.bot;
+package com.bangIt.blended.common.bot;
 
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.core.Queue;

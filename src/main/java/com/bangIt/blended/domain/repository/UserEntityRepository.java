@@ -1,4 +1,4 @@
-package com.bangIt.blended.repository;
+package com.bangIt.blended.domain.repository;
 
 import java.util.Optional;
 

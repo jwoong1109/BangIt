@@ -1,4 +1,4 @@
-package com.bangIt.blended.security;
+package com.bangIt.blended.common.security;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;

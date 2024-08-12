@@ -1,4 +1,4 @@
-package com.bangIt.blended.bot;
+package com.bangIt.blended.common.bot;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
