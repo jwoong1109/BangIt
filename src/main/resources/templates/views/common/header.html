@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta name="_csrf" th:content="${_csrf.token}" />
     <meta name="_csrf_header" th:content="${_csrf.headerName}" />
@@ -27,15 +27,15 @@
 
                     <!-- 사용자 정보 표시 -->
                     <li sec:authorize="isAuthenticated()">
-                        안녕하세요, <span sec:authentication="principal.name"></span>님
-                        <div class="signout">
+						<a href="/logout">로그아웃</a>
+                        <!--<div class="signout">
                             <form action="/logout" method="post">
                                 <button type="submit" title="로그아웃">
                                     <img src="/images/common/logout-icon.png" alt="로그아웃 아이콘">
                                 </button>
                                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                             </form>
-                        </div>
+                        </div>-->
                     </li>
                 </ul>
             </nav>

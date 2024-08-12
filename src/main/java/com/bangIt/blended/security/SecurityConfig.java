@@ -6,6 +6,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,7 +26,7 @@ public class SecurityConfig {
             .csrf(Customizer.withDefaults())
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/css/**", "/js/**", "/images/**", "/error").permitAll()
-                .requestMatchers("/", "/login").permitAll()
+                .requestMatchers("/", "/login","/logout").permitAll()
                 .requestMatchers("/partner/**").hasRole("PARTNER")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
@@ -38,14 +39,15 @@ public class SecurityConfig {
                 .successHandler(customAuthenticationSuccessHandler)
             )
             .logout(logout -> logout
-            	.logoutSuccessHandler(customLogoutSuccessHandler)
+            	.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+            	.logoutSuccessUrl("/")
+            	.logoutSuccessHandler(customLogoutSuccessHandler) // 커스텀 로그아웃 핸들러 설정
                 .invalidateHttpSession(true) // 세션 무효화
                 .clearAuthentication(true) // 인증 정보 제거
                 .deleteCookies("JSESSIONID") // 세션 쿠키 삭제
-               
+                .permitAll()
             );
         
-
         return http.build();
     }
 }
