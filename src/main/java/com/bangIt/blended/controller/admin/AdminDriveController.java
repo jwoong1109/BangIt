@@ -2,18 +2,18 @@ package com.bangIt.blended.controller.admin;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
 @Controller
-public class adminController {
+public class AdminDriveController {
 
-	@GetMapping("/admin")
-	public String list() {
-		return "views/admin/adminIndex";
+	
+	@GetMapping("/admin/drive")
+	public String adminPartner() {
+		return "/views/admin/drive/list";
 	}
-
+	
 	
 
-	
 }
