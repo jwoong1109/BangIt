@@ -20,13 +20,12 @@ public class UserPlaceServiceProcess implements UserPlaceService{
 
 		// 공지사항 조회
         PlaceEntity place = repository.findById(no).orElseThrow(() -> new RuntimeException("Notice not found with id: " + no));
-
+        model.addAttribute("place", place.toPlaceDetailDTO());
 //        // 작성자인지 여부 확인
 //        EmployeesEntity noticeCreator = notice.getEmployee();
 //        boolean isCreator = noticeCreator != null && noticeCreator.getName().equals(currentUserName);
 //
 //        // 모델에 데이터 추가
-        model.addAttribute("detail", place.toPlaceDetailDTO());
 		
 	}
 }

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/user/place/place.css" >
     <link rel="stylesheet" href="/css/user/room/room.css" >
+    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e92dcce6a45cf9533fea83124cc52455&libraries=services"></script>
     <script>
         // 모달 열기 함수
         function openModal() {
@@ -35,10 +36,10 @@
         
         <!-- 숙소 상세 정보 섹션 -->
         <section class="details">
-            <p>숙소 유형: <span th:text="${place.type}"></span></p>
+            <span th:text="${place.type.KoName}"></span>
             <h2 th:text="${place.name}">방잇 숙소</h2>
             <p>테마:
-                <span th:each="theme : ${place.themes}" th:text="${theme} + ' '"></span>
+                <span th:each="theme : ${place.themes}" th:text="${theme.KoName} + ' '"></span>
             </p>
         </section>
         <hr/>
@@ -137,12 +138,49 @@
         </div>        
         
         <!-- 숙소 상세 정보 섹션 -->
+        
         <section class="details">
             <h2 th:text="${place.name}">방잇 숙소</h2>
             <p th:text="${place.description}">간단한 편의시설 제공 정보</p>
+            <div id="map" style="width:100%;height:400px;"></div>
+            <p>위치: <span th:text="${place.detailedAddress}"></span></p>
         </section>
-            <p>주소: <span th:text="${place.detailedAddress}"></span></p>
         <hr/>
+        
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            var mapContainer = document.getElementById('map');
+            var mapOption = {
+                center: new kakao.maps.LatLng(37.537187, 127.005476),
+                level: 5
+            };
+
+            var map = new kakao.maps.Map(mapContainer, mapOption);
+            var geocoder = new kakao.maps.services.Geocoder();
+            var marker = new kakao.maps.Marker({
+                map: map
+            });
+
+            var address = /*[[${place.detailedAddress}]]*/ '기본 주소';
+            var lat = /*[[${place.latitude}]]*/ 37.537187;
+            var lng = /*[[${place.longitude}]]*/ 127.005476;
+
+            if (lat && lng) {
+                var coords = new kakao.maps.LatLng(lat, lng);
+                map.setCenter(coords);
+                marker.setPosition(coords);
+            } else {
+                geocoder.addressSearch(address, function(results, status) {
+                    if (status === kakao.maps.services.Status.OK) {
+                        var result = results[0];
+                        var coords = new kakao.maps.LatLng(result.y, result.x);
+                        map.setCenter(coords);
+                        marker.setPosition(coords);
+                    }
+                });
+            }
+            /*]]>*/
+        </script>
         
         <!-- 숙소 상세 정보 섹션 -->
         <section class="details">

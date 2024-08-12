@@ -16,16 +16,16 @@ public class PlaceController {
 	private final UserPlaceService service;
 
 	@GetMapping("/place")
-	public String place() {
-		return "views/user/place/place";
+	public String listPlaces() {
+		return "views/user/place/placeList";
 	}
 	
 	//숙소 상세정보 조회
 	@GetMapping("/place/detail/{no}")
-	public String placeDetail(@PathVariable("no") long no, Model model) {
+	public String PlaceDetail(@PathVariable("no") long no, Model model) {
 		service.detailProcess(no, model);
 		
-		return "views/user/place/place";
+		return "views/user/place/placeDetail";
 	}
 
 }

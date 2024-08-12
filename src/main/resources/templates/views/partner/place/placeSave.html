@@ -6,7 +6,7 @@
 	<script src="/js/partner/place/address-api.js" defer></script>
     <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e92dcce6a45cf9533fea83124cc52455&libraries=services"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    
+    <script src="/js/partner/place/image-upload.js" defer></script>
 </head>
 <body> 
     <main>
@@ -148,9 +148,10 @@
 
 					<!-- 숙소 메인이미지 업로드 -->
 					<div class="form-group">
-	                    <label for="images">숙소 메인이미지:</label>
-	                    <input type="file" id="mainImages" name="mainImages" multiple accept="image/*" >
-	                </div>
+                        <label for="placeImages">숙소 메인 이미지:</label>
+                        <input type="file" id="placeImages" name="placeImages" multiple accept="image/*" onchange="handleImageUpload(event)">
+                        <div id="imagePreviewContainer"></div>
+                    </div>
 	                
 	                <!-- 숙소 이미지 추가 업로드1 -->
 	                <div class="form-group">
