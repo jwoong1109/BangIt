@@ -35,7 +35,7 @@ public class UserEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@Column(nullable = false, unique = true, length = 50)
+	@Column(nullable = false, length = 50)
 	private String username;
 
 	@Column(nullable = true, length = 255)
@@ -47,7 +47,7 @@ public class UserEntity {
 	@Column(name = "is_active", nullable = false)
 	private boolean isActive;
 
-	@Column(name = "created_at", nullable = false, updatable = false)
+	@Column(name = "created_at", updatable = false)
 	private LocalDateTime createdAt;
 
 	@Column(name = "social_id", nullable = false, unique = true, length = 255)

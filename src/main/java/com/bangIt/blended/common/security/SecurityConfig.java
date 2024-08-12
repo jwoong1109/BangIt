@@ -33,6 +33,7 @@ public class SecurityConfig {
 						 */
                 .anyRequest().authenticated()
             )
+        
             .oauth2Login(oauth2 -> oauth2
                 .loginPage("/login")
                 .userInfoEndpoint(userInfo -> userInfo
@@ -42,8 +43,8 @@ public class SecurityConfig {
             )
             .logout(logout -> logout
             	.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-            	.logoutSuccessUrl("/")
-            	.logoutSuccessHandler(customLogoutSuccessHandler) // 커스텀 로그아웃 핸들러 설정
+            	.logoutSuccessUrl("/login")
+            	//.logoutSuccessHandler(customLogoutSuccessHandler) // 커스텀 로그아웃 핸들러 설정
                 .invalidateHttpSession(true) // 세션 무효화
                 .clearAuthentication(true) // 인증 정보 제거
                 .deleteCookies("JSESSIONID") // 세션 쿠키 삭제

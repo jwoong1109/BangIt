@@ -14,8 +14,8 @@ import com.bangIt.blended.domain.entity.UserEntity;
 import lombok.Getter;
 
 //소셜 로그인도 추가해버려
-@Getter //principal 객체에서 확인 가능 
 //다중상속은 불가하기 때문에 Oauth2에서 상속받았던 DefaultOAuth2UserService는 상속불가하기 때문에 인터페이스를 implements받음
+@Getter //principal 객체에서 확인 가능 
 public class CustomUserDetails extends User implements OAuth2User{
 
 	private static final long serialVersionUID = 1L;
@@ -35,6 +35,7 @@ public class CustomUserDetails extends User implements OAuth2User{
 		
 		email=entity.getEmail();
 		name=entity.getUsername();
+		
 	
 	}
 
