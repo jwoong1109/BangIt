@@ -26,8 +26,6 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
     private static final String LOGOUT_REDIRECT_URI = "http://localhost:8080/";
     private static final String GOOGLE_LOGOUT_URL = "https://accounts.google.com/logout?continue=https://appengine.google.com/_ah/logout?continue=http://localhost:8080/";
     private static final String NAVER_LOGOUT_URL = "https://nid.naver.com/oauth2.0/token";
-    private static final String CLIENT_ID_NAVER = "5pewbg9KJvQ__lPgdwfW";
-    private static final String CLIENT_SECRET_NAVER = "X6S7inyB_p";
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)

@@ -26,9 +26,11 @@ public class SecurityConfig {
             .csrf(Customizer.withDefaults())
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/css/**", "/js/**", "/images/**", "/error").permitAll()
-                .requestMatchers("/", "/login","/logout").permitAll()
-                .requestMatchers("/partner/**").hasRole("PARTNER")
-                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/", "/login","/logout","/**").permitAll()
+						/*
+						 * .requestMatchers("/**").hasRole("PARTNER")
+						 * .requestMatchers("/**").hasRole("ADMIN")
+						 */
                 .anyRequest().authenticated()
             )
             .oauth2Login(oauth2 -> oauth2
