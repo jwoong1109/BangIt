@@ -26,11 +26,12 @@ public class SecurityConfig {
             .csrf(Customizer.withDefaults())
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/css/**", "/js/**", "/images/**", "/error").permitAll()
-                .requestMatchers("/", "/login","/logout","/**").permitAll()
+                .requestMatchers("/", "/login","/logout").permitAll()
 						/*
 						 * .requestMatchers("/**").hasRole("PARTNER")
-						 * .requestMatchers("/**").hasRole("ADMIN")
 						 */
+						 .requestMatchers("/admin/**").hasRole("ADMIN")
+						 
                 .anyRequest().authenticated()
             )
         

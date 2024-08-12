@@ -71,7 +71,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             Map<String, Object> profile = (Map<String, Object>) response.get("profile");
             email = (String) response.get("email");
             name = (String) profile.get("nickname");
-            socialId = String.valueOf(oAuth2User.getAttribute("id")); // 카카오의 고유 ID는 Long으로 반환될 수 있음, String으로 변환
+            Long kakaoId = oAuth2User.getAttribute("id"); // 카카오의 고유 ID를 Long으로 가져옴
+            socialId = String.valueOf(kakaoId); // Long 값을 String으로 변환
             provider = AuthProvider.KAKAO;
         }
 
