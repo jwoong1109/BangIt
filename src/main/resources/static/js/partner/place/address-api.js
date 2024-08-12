@@ -32,6 +32,11 @@ var mapContainer = document.getElementById('map'), // 지도를 표시할 div
                         // 해당 주소에 대한 좌표를 받아서
                         var coords = new daum.maps.LatLng(result.y, result.x);
                         // 지도를 보여준다.
+                        
+                        // 위도와 경도 값을 hidden 필드에 설정
+	                    document.getElementById("latitude").value = coords.getLat();
+	                    document.getElementById("longitude").value = coords.getLng();
+	                    
                         mapContainer.style.display = "block";
                         map.relayout();
                         // 지도 중심을 변경한다.
