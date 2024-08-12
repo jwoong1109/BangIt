@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 
-import com.bangIt.blended.bot.Question;
+import com.bangIt.blended.common.bot.Question;
 
 import lombok.RequiredArgsConstructor;
 

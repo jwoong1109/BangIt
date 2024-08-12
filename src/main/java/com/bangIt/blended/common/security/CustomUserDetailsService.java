@@ -1,4 +1,4 @@
-package com.bangIt.blended.security;
+package com.bangIt.blended.common.security;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -13,7 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.bangIt.blended.repository.UserEntityRepository;
+import com.bangIt.blended.domain.repository.UserEntityRepository;
 
 import lombok.RequiredArgsConstructor;
 

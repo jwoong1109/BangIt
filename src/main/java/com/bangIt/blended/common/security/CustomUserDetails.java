@@ -1,4 +1,4 @@
-package com.bangIt.blended.security;
+package com.bangIt.blended.common.security;
 
 import java.util.Map;
 import java.util.stream.Collectors;
