@@ -33,12 +33,12 @@
             <img src="image2.jpg" alt="숙소 이미지 2">
             <img src="image3.jpg" alt="숙소 이미지 3">
         </section>
-        
         <!-- 숙소 상세 정보 섹션 -->
         <section class="details">
-            <span th:text="${place.type.KoName}"></span>
-            <h2 th:text="${place.name}">방잇 숙소</h2>
-            <p>테마:
+            <span th:text="${place.type.KoName}" style="color: #103333;"></span>
+            <h1 th:text="${place.name}">방잇 숙소</h1>
+            <br/>
+            <p>테마<br/>
                 <span th:each="theme : ${place.themes}" th:text="${theme.KoName} + ' '"></span>
             </p>
         </section>

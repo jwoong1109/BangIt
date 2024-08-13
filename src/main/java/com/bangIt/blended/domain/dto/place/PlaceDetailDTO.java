@@ -20,8 +20,6 @@ public class PlaceDetailDTO {
     private String detailedAddress;
     private PlaceType type;
     private Set<PlaceTheme> themes;
-//    private MultipartFile mainImage;
-//    private List<MultipartFile> additionalImages;
     private Double latitude;
     private Double longitude;
 

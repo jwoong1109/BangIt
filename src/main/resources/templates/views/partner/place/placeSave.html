@@ -7,13 +7,53 @@
     <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e92dcce6a45cf9533fea83124cc52455&libraries=services"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="/js/partner/place/image-upload.js" defer></script>
+	<script>
+	function uploadImage(input, hiddenFieldId) {
+	    const file = input.files[0];
+	    if (file) {
+	        const formData = new FormData();
+	        formData.append('file', file);
+	
+	        fetch('/partner/uploadImage', {
+	            method: 'POST',
+	            body: formData
+	        })
+	        .then(response => response.text())
+	        .then(imageUrl => {
+	            document.getElementById(hiddenFieldId).value = imageUrl;
+	            // 이미지 프리뷰 업데이트
+	            const previewDiv = input.nextElementSibling.nextElementSibling;
+	            previewDiv.innerHTML = `<img src="${imageUrl}" alt="Image preview" style="max-width: 200px;">`;
+	        })
+	        .catch(error => console.error('Error:', error));
+	    }
+	}
+	
+	function submitForm() {
+	    const form = document.getElementById('placeForm');
+	    const formData = new FormData(form);
+	
+	    fetch(form.action, {
+	        method: 'POST',
+	        body: formData
+	    })
+	    .then(response => {
+	        if (response.ok) {
+	            window.location.href = '/partner'; // 성공 시 리다이렉트
+	        } else {
+	            throw new Error('Form submission failed');
+	        }
+	    })
+	    .catch(error => console.error('Error:', error));
+	}
+	</script>
 </head>
 <body> 
     <main>
 		<div class="dash">
 			<section class="place-save-form">
             <h2>새로운 숙소 등록하기</h2>
-	            <form action="placeSave" method="post" enctype="multipart/form-data">
+	            <form action="placeSave" method="post">
 	                <!-- 숙소 이름 -->
 	                <div class="form-group">
 	                    <label for="place-title">숙소 이름:</label>
@@ -146,32 +186,79 @@
 						</div>
 					</div>
 
-					<!-- 숙소 메인이미지 업로드 -->
+					<!-- 숙소 메인 이미지 업로드 -->
 					<div class="form-group">
-                        <label for="placeImages">숙소 메인 이미지:</label>
-                        <input type="file" id="placeImages" name="placeImages" multiple accept="image/*" onchange="handleImageUpload(event)">
-                        <div id="imagePreviewContainer"></div>
+						<label for="mainImage">숙소 메인 이미지:</label> 
+						<input type="file" id="mainImage" accept="image/*" onchange="uploadImage(this, 'mainImageUrl')" required> 
+						<input type="hidden" id="mainImageUrl" name="mainImageUrl">
+						<div id="mainImagePreview" class="image-preview-container"></div>
+					</div>
+					
+					<!-- 숙소 메인 이미지 업로드 -->
+                    <div class="form-group">
+                        <p>메인 이미지</p>
+                        <label class="btn-file">
+                            <input type="file" id="mainImage" onchange="fileupload(this)" style="display: none;">
+                            <input type="hidden" name="mainImageBucketKey" required>
+                            <input type="hidden" name="mainImageOrgName" required>
+                        </label>
                     </div>
-	                
-	                <!-- 숙소 이미지 추가 업로드1 -->
-	                <div class="form-group">
-	                    <label for="images">숙소 이미지 추가1:</label>
-	                    <input type="file" id="images1" name="images1" multiple accept="image/*" >
-	                </div>
-	                <!-- 숙소 이미지 추가 업로드2 -->
-	                <div class="form-group">
-	                    <label for="images">숙소 이미지 추가2:</label>
-	                    <input type="file" id="images2" name="images2" multiple accept="image/*" >
-	                </div>
-	                <!-- 숙소 이미지 추가 업로드3 -->
-	                <div class="form-group">
-	                    <label for="images">숙소 이미지 추가3:</label>
-	                    <input type="file" id="images3" name="images3" multiple accept="image/*" >
-	                </div>
-	
-	
-	                <!-- 등록 버튼 -->
-	                <button type="submit" class="submit-btn">숙소 등록하기</button>
+
+                    <!-- 숙소 추가 이미지 업로드 -->
+                    <div class="form-group">
+                        <p>추가 이미지</p>
+                        <label class="btn-file">
+                            <input type="file" id="addImage1" onchange="fileupload(this)" style="display: none;">
+                            <input type="hidden" name="additionalImageBucketKeys">
+                            <input type="hidden" name="additionalImageOrgNames">
+                            <span>+</span>
+                        </label>
+                        <label class="btn-file">
+                            <input type="file" id="addImage2" onchange="fileupload(this)" style="display: none;">
+                            <input type="hidden" name="additionalImageBucketKeys">
+                            <input type="hidden" name="additionalImageOrgNames">
+                            <span>+</span>
+                        </label>
+                        <label class="btn-file">
+                            <input type="file" id="addImage3" onchange="fileupload(this)" style="display: none;">
+                            <input type="hidden" name="additionalImageBucketKeys">
+                            <input type="hidden" name="additionalImageOrgNames">
+                            <span>+</span>
+                        </label>
+                        <p class="file-guide">
+                            <span>권장 크기 : 1000 X 1000(윈도 대상 750 X 1000), 300 X 300 이상</span><br>
+                            <span>이미지 확대 기능 : 대표 이미지 기준 1000 X 1000 이상 이미지 등록 시, 확대 기능이 제공됩니다.</span><br>
+                        </p>
+                    </div>
+
+					<!-- 숙소 이미지 추가 업로드1 -->
+					<div class="form-group">
+						<label for="addImage1">숙소 이미지 추가1:</label> 
+						<input type="file" id="addImage1" accept="image/*" onchange="uploadImage(this, 'addImageUrl1')"> 
+						<input type="hidden" id="addImageUrl1" name="additionalImageUrls">
+						<div id="addImage1Preview" class="image-preview-container"></div>
+					</div>
+
+					<!-- 숙소 이미지 추가 업로드2 -->
+					<div class="form-group">
+						<label for="addImage2">숙소 이미지 추가2:</label> <input type="file"
+							id="addImage2" accept="image/*"
+							onchange="uploadImage(this, 'addImageUrl2')"> <input
+							type="hidden" id="addImageUrl2" name="additionalImageUrls">
+						<div id="addImage2Preview" class="image-preview-container"></div>
+					</div>
+
+					<!-- 숙소 이미지 추가 업로드3 -->
+					<div class="form-group">
+						<label for="addImage3">숙소 이미지 추가3:</label> <input type="file"
+							id="addImage3" accept="image/*"
+							onchange="uploadImage(this, 'addImageUrl3')"> <input
+							type="hidden" id="addImageUrl3" name="additionalImageUrls">
+						<div id="addImage3Preview" class="image-preview-container"></div>
+					</div>
+
+					<!-- 등록 버튼 -->
+					<button type="button" onclick="submitForm()" class="submit-btn">숙소 등록하기</button>
 	            </form>
         	</section>
 		</div>    

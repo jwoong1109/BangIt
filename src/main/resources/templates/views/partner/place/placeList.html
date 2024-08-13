@@ -43,23 +43,11 @@
                             <span>등록일</span>
                             <span>상태</span>
                         </li>
-                        <li class="user-item">
-                            <span>더 하얏트 호텔</span>
-                            <span>호텔</span>
+                        <li th:each="place : ${places}" class="user-item">
+                        	<span th:text="${place.name}"></span>
+                        	<span th:text="${place.type.KoName}"></span>
                             <span>2024-08-11</span>
-                            <span>운영중</span>
-                        </li>
-                          <li class="user-item">
-                            <span>그랜드 호텔</span>
-                            <span>호텔</span>
-                            <span>2024-02-15</span>
-                            <span>운영중</span>
-                        </li>
-                          <li class="user-item">
-                            <span>조선 비즈니스</span>
-                            <span>비즈니스 호텔</span>
-                            <span>2022-03-12</span>
-                            <span>운영중</span>
+                            <span>2024-08-11</span>
                         </li>
                     </ul>
                 </div>
