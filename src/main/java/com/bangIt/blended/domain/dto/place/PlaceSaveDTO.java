@@ -24,5 +24,11 @@ public class PlaceSaveDTO {
     private List<String> additionalImageUrls;
     private Double latitude;
     private Double longitude;
+    
+ // 이미지 관련 필드 추가
+    private String mainImageBucketKey;
+    private String mainImageOrgName;
+    private List<String> additionalImageBucketKeys;
+    private List<String> additionalImageOrgNames;
 
 }
