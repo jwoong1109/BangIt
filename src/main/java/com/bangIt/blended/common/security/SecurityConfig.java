@@ -27,7 +27,7 @@ public class SecurityConfig {
             .csrf(Customizer.withDefaults())
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/css/**", "/js/**", "/images/**", "/error").permitAll()
-                .requestMatchers("/", "/login","/logout","/partner-login","/business-registration").permitAll()
+                .requestMatchers("/", "/login","/logout","/partner-login","/business-registration","/bangItBot/**").permitAll()
 						/*
 						 * .requestMatchers("/**").hasRole("PARTNER")
 						 */
