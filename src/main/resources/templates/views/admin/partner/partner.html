@@ -15,12 +15,25 @@
 		<main class="cmindex">
 			<!-- 여기에 partner 페이지의 주요 내용을 작성합니다 -->
 			<th:block th:replace="~{/views/admin/partner/partnersubmenu}" />
-			
+
 			<section class="contents">
 				<div class="dash accommodation-info">
-					<h2>숙소 위치</h2>
-					<button class="map-icon"><i class="ri-compass-3-line"></i></button>
-					<div class="kakao-map" id="map"></div>
+					<h2>숙소 정보</h2>
+					<p class="no-seller-selected"><i class="fa-solid fa-user-plus"></i><br>판매자를<br> 선택하세요</p>
+					<div class="accommodation-info-details" style="display: none;">
+						<ul>
+							<li class="header">
+								<span>상세 위치</span>
+								<span>방 갯수</span>
+								<span>방</span>
+							</li>
+							<li>
+								<span id="detail-location"></span>
+								<span id="detail-roomNo"></span>
+								<span id=""></span>
+							</li>
+						</ul>
+					</div>
 				</div>
 				<div class="dash accommodation-listing">
 					<h2>등록 숙소</h2>
@@ -128,14 +141,7 @@
 				</div>
 			</div>
 
-			<!-- 지도 팝업 -->
-			<div class="map-popup" style="display: none;">
-				<div class="map-popup-content">
-					<h3>지도</h3>
-					<div class="kakao-map-popup" id="map-popup"></div>
-					<button class="close-map-popup">닫기</button>
-				</div>
-			</div>
+
 		</main>
 	</div>
 </body>
