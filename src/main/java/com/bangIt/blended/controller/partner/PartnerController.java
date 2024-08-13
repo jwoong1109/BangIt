@@ -1,5 +1,8 @@
 package com.bangIt.blended.controller.partner;
 
+import java.io.IOException;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +16,6 @@ import com.bangIt.blended.service.partner.PartnerPlaceService;
 
 
 import lombok.RequiredArgsConstructor;
-import software.amazon.awssdk.services.s3.S3Client;
 
 
 @RequiredArgsConstructor
@@ -39,6 +41,13 @@ public class PartnerController {
 		placeService.saveProcess(dto);
 		return "redirect:/partner";
 	}
+	
+	//숙소 및 방 이미지 저장
+	@PostMapping("/partner/uploadImage")
+    @ResponseBody
+    public Map<String, String> uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
+        return placeService.s3TempUpload(file);
+    }
 	
 	//숙소목록
 	@GetMapping("partner/placeList")
