@@ -16,12 +16,12 @@ import lombok.ToString;
 public class PartnerSaveDTO {
 
 	private Long userId;
-	private Long businessNumber;
+	private Long businessRegistrationNumber;
 
 	public PartnerEntity toEntity() {
 		
 		return PartnerEntity.builder()
-				.businessNumber(businessNumber)
+				.businessNumber(businessRegistrationNumber)
 				.id(userId)
 				.build();
 	}

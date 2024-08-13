@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.bangIt.blended.domain.dto.partner.PartnerSaveDTO;
+import com.bangIt.blended.domain.entity.AuthProvider;
 import com.bangIt.blended.domain.entity.PartnerEntity;
 import com.bangIt.blended.domain.entity.Role;
 import com.bangIt.blended.domain.entity.UserEntity;
@@ -12,42 +13,52 @@ import com.bangIt.blended.domain.repository.PartnerEntityRepository;
 import com.bangIt.blended.domain.repository.UserEntityRepository;
 import com.bangIt.blended.service.partner.BusinessRegistrationService;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 
 @Service
 @RequiredArgsConstructor
 public class BusinessRegistrationServiceProcess implements BusinessRegistrationService {
-	
-	private final UserEntityRepository userRepository;
-	private final PartnerEntityRepository repository;
 
-	/*
-	 * @Override public void registerBusinessMember(PartnerSaveDTO dto) {
-	 * repository.save(dto.toEntity());
-	 * 
-	 * }
-	 */
+    private final UserEntityRepository userRepository;
+    private final PartnerEntityRepository partnerRepository;
 
-	/*
-	 * @Override public void registerBusiness(Long userId, String businessNumber) {
-	 * Optional<UserEntity> userOptional = userRepository.findById(userId); if
-	 * (userOptional.isPresent()) { UserEntity user = userOptional.get();
-	 * PartnerEntity partner = PartnerEntity.builder()
-	 * .businessNumber(Long.parseLong(businessNumber)) .user(user) .build();
-	 * user.addRole(Role.PARTNER); // Partner 역할 부여 user.addPartner(partner); //
-	 * User와 Partner 연관 repository.save(partner); userRepository.save(user); }
-	 * 
-	 * }
-	 */
+    @Override
+    @Transactional
+    public void registerBusiness(long businessNumber, String socialId, String providerName) {
+        System.out.println("Registering business for socialId: " + socialId + " and provider: " + providerName);
 
-	@Override
-	public void registerBusiness(PartnerSaveDTO dto) {
-        UserEntity user = userRepository.findById(dto.getUserId())
-            .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        // AuthProvider enum  변환 및 확인
+        AuthProvider provider;
+        try {
+            provider = AuthProvider.valueOf(providerName.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid provider name: " + providerName);
+            throw new IllegalArgumentException("Invalid provider name: " + providerName);
+        }
 
-        PartnerEntity partnerEntity = PartnerEntity.createPartner(dto.getBusinessNumber(), user);
+        // 사용자 검색 및 예외 처리
+        Optional<UserEntity> userOptional = userRepository.findBySocialIdAndProvider(socialId, provider);
+        if (userOptional.isEmpty()) {
+            System.out.println("User not found with socialId: " + socialId + " and provider: " + providerName);
+            throw new IllegalArgumentException("User not found with socialId: " + socialId + " and provider: " + providerName);
+        }
 
-        repository.save(partnerEntity);
+        UserEntity user = userOptional.get();
+
+        // 파트너 엔티티 생성 및 저장
+        PartnerEntity partner = PartnerEntity.builder()
+                .businessNumber(businessNumber)
+                .user(user)
+                .build();
+        partnerRepository.save(partner);
+        System.out.println("Partner entity saved for user with socialId: " + socialId);
+
+        // 사용자의 롤 업데이트 (PARTNER 롤 추가)
+        user.addRole(Role.PARTNER);
+        userRepository.save(user);
+        System.out.println("User role updated to PARTNER for socialId: " + socialId);
     }
 }
