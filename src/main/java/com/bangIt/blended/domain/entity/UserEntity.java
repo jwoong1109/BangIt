@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import org.hibernate.annotations.DynamicUpdate;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -15,6 +17,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -66,6 +69,8 @@ public class UserEntity {
 	@Column(name = "role_name") //Role엔티티에서 컬럼명 변경, 변경하지 않을 경우 set콜렉션의 변수 이름으로 들어감 
 	private Set<Role> roles=new HashSet<>(); //role엔터티(테이블)을 만들어 별도 관리(1차 정규화) 그러나 지금 Role 경우 엔터티가 아닌 Enum으로 만들어져있어 테이블이라고 지정 필요
 
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true)
+	private PartnerEntity partner;
 	
 	
 	
@@ -74,6 +79,11 @@ public class UserEntity {
 		roles.add(role);
 		return this;
 	}
+	
+	  // Partner 등록을 위한 편의 메서드 추가
+    public void addPartner(PartnerEntity partner) {
+        this.partner = partner;
+    }
 	
 	//0:사용자,1:판매자, 2:관리자 순차적으로 세팅이되어 있는 경우에 활용할수 있다.
 	//해당하는 롤을 범위 단위로 만든 편의메서드 (중첩 방식)

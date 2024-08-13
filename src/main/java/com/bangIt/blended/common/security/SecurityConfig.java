@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -26,7 +27,7 @@ public class SecurityConfig {
             .csrf(Customizer.withDefaults())
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/css/**", "/js/**", "/images/**", "/error").permitAll()
-                .requestMatchers("/", "/login","/logout").permitAll()
+                .requestMatchers("/", "/login","/logout","/partner-login","/business-registration").permitAll()
 						/*
 						 * .requestMatchers("/**").hasRole("PARTNER")
 						 */
@@ -51,6 +52,7 @@ public class SecurityConfig {
                 .deleteCookies("JSESSIONID") // 세션 쿠키 삭제
                 .permitAll()
             );
+        http.addFilterBefore(new SaveOriginalRequestFilter(), OAuth2LoginAuthenticationFilter.class);
         
         return http.build();
     }

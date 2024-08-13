@@ -22,7 +22,7 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 
     private static final String KAKAO_LOGOUT_URL = "https://kapi.kakao.com/v1/user/logout";
     private static final String KAKAO_LOGOUT_REDIRECT_URL = "https://kauth.kakao.com/oauth/logout";
-    private static final String CLIENT_ID_KAKAO = "0b554b8a5c3b617dfea18aa41160310c";
+    private static final String CLIENT_ID_KAKAO = "";
     private static final String LOGOUT_REDIRECT_URI = "http://localhost:8080/";
     private static final String GOOGLE_LOGOUT_URL = "https://accounts.google.com/logout?continue=https://appengine.google.com/_ah/logout?continue=http://localhost:8080/";
     private static final String NAVER_LOGOUT_URL = "https://nid.naver.com/oauth2.0/token";
