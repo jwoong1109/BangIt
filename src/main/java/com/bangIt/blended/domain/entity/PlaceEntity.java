@@ -67,20 +67,20 @@ public class PlaceEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Set<PlaceTheme> themes;
 
-//    @Column(nullable = false)
-//    private String mainImagePath;
-//
-//    @ElementCollection
-//    @CollectionTable(name = "place_additional_images", joinColumns = @JoinColumn(name = "place_id"))
-//    @Column(name = "image_path")
-//    private List<String> additionalImagePaths;
-
     @Column
     private Double latitude;
 
     @Column
     private Double longitude;
 
+//  @Column(nullable = false)
+//  private String mainImagePath;
+//
+//  @ElementCollection
+//  @CollectionTable(name = "place_additional_images", joinColumns = @JoinColumn(name = "place_id"))
+//  @Column(name = "image_path")
+//  private List<String> additionalImagePaths;
+    
     //숙소 상세 페이지 dto
 	public PlaceDetailDTO toPlaceDetailDTO() {
 		return PlaceDetailDTO.builder()
@@ -95,19 +95,5 @@ public class PlaceEntity extends BaseEntity {
 				.longitude(longitude)
 				.build();
 	}
-	
-	//상세페이지 dto
-//		public NoticeDetailDTO toNoticeDetailDTO() {
-//			return NoticeDetailDTO.builder()
-//					.no(no)
-//					.title(title)
-//					.content(content)
-//					.division(division)
-//					.createdAt(createdAt)
-//					.updatedAt(updatedAt)
-//					.fixed(fixed)
-//					.build();
-//		}
-	
 	
 }

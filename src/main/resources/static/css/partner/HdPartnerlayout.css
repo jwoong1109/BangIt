@@ -4,6 +4,11 @@
 /*전체 바디 */
 body{background-color:var(--admin-body-color); }
 
+
+
+
+
+
 /*헤더*/
 header{position: fixed; left: 0; top: 0; padding: 30px 30px 0px 30px; width: 310px; height: 100vh; background-image: url("https://img.freepik.com/free-vector/hollogeulaem-huinsaeg-baegyeong-chusang-dijain-begteoui-mujigae-bichkkal-ui-peuleim_53876-157574.jpg?ga=GA1.1.593772290.1722436232&semt=ais_hybrid"); background-repeat: no-repeat; background-size: cover;background-position: center;}
 .main-nav-wrap{width:250px; height: 93vh; background-color: rgba( 255, 255, 255, 0.55 );backdrop-filter: blur( 8px ); box-shadow: 0 4px 15px 0 rgba( 31, 38, 135, 0.37 ); border-radius: 10px;padding: 15px; overflow-y:auto;position: relative; border: 1px solid rgba( 255, 255, 255, 0.18 );}

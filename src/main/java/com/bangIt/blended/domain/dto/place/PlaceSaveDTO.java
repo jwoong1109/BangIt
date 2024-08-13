@@ -1,5 +1,6 @@
 package com.bangIt.blended.domain.dto.place;
 
+import java.util.List;
 import java.util.Set;
 
 import com.bangIt.blended.domain.enums.PlaceTheme;
@@ -19,8 +20,8 @@ public class PlaceSaveDTO {
     private String detailedAddress;
     private PlaceType type;
     private Set<PlaceTheme> themes;
-//    private MultipartFile mainImage;
-//    private List<MultipartFile> additionalImages;
+    private String mainImageUrl;
+    private List<String> additionalImageUrls;
     private Double latitude;
     private Double longitude;
 

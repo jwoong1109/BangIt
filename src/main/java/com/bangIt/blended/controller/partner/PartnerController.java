@@ -1,13 +1,19 @@
 package com.bangIt.blended.controller.partner;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.bangIt.blended.domain.dto.place.PlaceSaveDTO;
 import com.bangIt.blended.service.partner.PartnerPlaceService;
 
+
 import lombok.RequiredArgsConstructor;
+import software.amazon.awssdk.services.s3.S3Client;
 
 
 @RequiredArgsConstructor
@@ -40,7 +46,7 @@ public class PartnerController {
 		return "views/partner/place/placeList";
 	}
 	
-	//숙소목록
+	//예약목록
 	@GetMapping("partner/reservation")
 	public String reservation() {
 		return "views/partner/reservation/reservation";
