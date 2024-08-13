@@ -1,6 +1,7 @@
 package com.bangIt.blended.common.security;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.security.core.Authentication;
@@ -15,7 +16,6 @@ import com.bangIt.blended.domain.repository.UserEntityRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 @Component
 public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
@@ -30,23 +30,31 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         String targetUrl = "/";
         
-        System.out.println("Current Request URI: " + request.getRequestURI());
-
-        // 세션에서 원래 요청 URI 가져오기
         String originalRequestUri = (String) request.getSession().getAttribute("originalRequest");
-        System.out.println("Original Request URI from session: " + originalRequestUri);
-
         if (originalRequestUri != null && originalRequestUri.equals("/partner-login")) {
             OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+            String socialId = null;
+            String providerName = null;
 
-            String socialId = oAuth2User.getAttribute("sub");  // Google의 경우 'sub' 사용
-            String providerName = "google"; // Google 로그인 시 고정 값 설정
-
-            if (socialId == null || providerName == null) {
-                throw new IllegalArgumentException("Social ID or provider is missing");
+            if (oAuth2User.getAttribute("sub") != null) {
+                // Google
+                socialId = oAuth2User.getAttribute("sub");
+                providerName = "google";
+            } else if (oAuth2User.getAttribute("response") != null) {
+                // Naver
+                Map<String, Object> responseData = (Map<String, Object>) oAuth2User.getAttribute("response");
+                socialId = (String) responseData.get("id");
+                providerName = "naver";
+            } else if (oAuth2User.getAttribute("id") != null) {
+                // Kakao
+                socialId = oAuth2User.getAttribute("id").toString();
+                providerName = "kakao";
+            } else {
+                throw new IllegalArgumentException("Unsupported provider or Social ID is missing");
             }
 
-            System.out.println("Social ID: " + socialId + ", Provider: " + providerName);
+            System.out.println("Social ID: " + socialId);
+            System.out.println("Provider: " + providerName);
 
             AuthProvider provider = AuthProvider.valueOf(providerName.toUpperCase());
             Optional<UserEntity> userOptional = userRepository.findBySocialIdAndProvider(socialId, provider);
@@ -61,8 +69,6 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 throw new IllegalArgumentException("User not found for social ID: " + socialId + " and provider: " + providerName);
             }
         }
-
-        System.out.println("Final Redirecting to URL: " + targetUrl);
 
         return targetUrl;
     }
