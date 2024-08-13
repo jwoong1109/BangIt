@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class adminPartnerController {
+public class AdminPartnerController {
 
     @GetMapping("/admin/partner")
     public String adminPartner() {

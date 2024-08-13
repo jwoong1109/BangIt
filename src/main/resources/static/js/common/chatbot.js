@@ -1,51 +1,118 @@
-/*************************웹소켓*************************
-// SockJS를 사용하여 WebSocket 연결을 설정합니다.
-// '/bangItBot'은 서버에서 설정한 WebSocket 엔드포인트입니다.
-const socket = new SockJS('/bangItBot');
-const stompClient = Stomp.over(socket);
+/*웹소켓 서버 코드*/
 
-// STOMP 클라이언트를 서버에 연결합니다.
-stompClient.connect({}, function(frame) {
-	console.log('Connected: ' + frame);
+// 전역 변수로 STOMP 클라이언트 선언
+var stompClient = null;
+// 연결 상태를 표시할 요소의 ID
+var connectionStatusElementId = 'connection-status';
 
-	// 메시지를 받았을 때 처리할 콜백 함수를 설정합니다.
-	// 서버가 '/topic/bot' 경로로 메시지를 전송하면 이 함수가 호출됩니다.
-	stompClient.subscribe('/topic/bot', function(message) {
-		// 수신된 메시지를 alert 창으로 표시합니다.
-		alert('Received: ' + message.body);
-	});
+/**
+ * WebSocket 연결 함수
+ * SockJS를 사용하여 웹소켓 연결을 생성하고 STOMP 클라이언트를 초기화합니다.
+ */
+function connect() {
+	// SockJS 객체 생성 (서버의 엔드포인트 URL 지정)
+	var socket = new SockJS('/bangItBot');
+	// STOMP 클라이언트 생성
+	stompClient = Stomp.over(socket);
+	// 연결 시도, 성공 시 onConnected 호출, 실패 시 onError 호출
+	stompClient.connect({}, onConnected, onError);
 
-	// ***** 사용자 정보를 서버에서 가져오는 함수 *****
-	// 이 함수는 서버에서 현재 로그인한 사용자의 정보를 가져옵니다.
-	function getUserName() {
-		return fetch('/api/user/info')  // 사용자 정보를 반환하는 API 엔드포인트
-			.then(response => response.json())
-			.then(data => data.name);    // 사용자 이름을 반환
+	// 연결 시도 중임을 UI에 표시
+	updateConnectionStatus('연결 중...');
+}
+
+/**
+ * 연결 성공 시 호출되는 콜백 함수
+ * 토픽 구독 및 사용자 참가 메시지 전송
+ */
+function onConnected() {
+	// 공개 토픽 구독
+	stompClient.subscribe('/topic/public', onMessageReceived);
+
+	// 사용자 참가 알림 전송
+	stompClient.send("/app/chat.addUser",
+		{},
+		JSON.stringify({ sender: username, type: 'JOIN' })
+	);
+
+	// 연결 성공을 UI에 표시
+	updateConnectionStatus('연결됨');
+	console.log('WebSocket 연결 성공');
+}
+
+/**
+ * 연결 실패 시 호출되는 콜백 함수
+ * @param {Object} error - 에러 객체
+ */
+function onError(error) {
+	console.error('WebSocket 연결 실패:', error);
+	// 연결 실패를 UI에 표시
+	updateConnectionStatus('연결 실패');
+}
+
+/**
+ * 메시지 전송 함수
+ * @param {Event} event - 이벤트 객체
+ */
+function sendMessage(event) {
+	var messageInput = document.getElementById('messageInput'); // 메시지 입력 필드 요소
+	var messageContent = messageInput.value.trim();
+	if (messageContent && stompClient) {
+		var chatMessage = {
+			sender: username,
+			content: messageContent,
+			type: 'CHAT'
+		};
+		// 메시지 전송
+		stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+		messageInput.value = ''; // 입력 필드 초기화
 	}
+	event.preventDefault();
+}
 
-	// 메시지를 서버로 전송하는 함수
-	// content: 메시지의 내용
-	// name: 메시지를 보낸 사람의 이름
-	// key: 메시지의 고유 식별자 (예: 현재 시간)
-	function sendMessage(content, key) {
-		// 사용자 정보를 가져온 후 메시지를 전송합니다.
-		getUserName().then(userName => {
-			// 사용자 이름을 포함한 메시지 내용으로 수정합니다.
-			const messageContent = `안녕하세요, ${userName}!`;
+/**
+ * 메시지 수신 시 호출되는 콜백 함수
+ * @param {Object} payload - 수신된 메시지 페이로드
+ */
+function onMessageReceived(payload) {
+	var message = JSON.parse(payload.body);
+	// 여기에 메시지 표시 로직 구현
+	console.log('메시지 수신:', message);
+}
 
-			// '/app/bot' 경로로 메시지를 전송합니다.
-			// 빈 객체는 추가적인 헤더를 설정할 때 사용될 수 있습니다.
-			// JSON.stringify를 사용하여 JavaScript 객체를 JSON 문자열로 변환하여 서버에 전송합니다.
-			stompClient.send('/app/bot', {}, JSON.stringify({ content: messageContent, name: userName, key: key }));
-		});
+/**
+ * 연결 상태 업데이트 함수
+ * @param {string} status - 현재 연결 상태
+ */
+function updateConnectionStatus(status) {
+	var statusElement = document.getElementById(connectionStatusElementId);
+	if (statusElement) {
+		statusElement.textContent = '연결 상태: ' + status;
 	}
+}
 
-	// 예시로 '안녕하세요, 로그인한 사용자의 이름!'라는 내용의 메시지를 전송합니다.
-	// 현재 시간을 key로 설정합니다.
-	sendMessage('', Date.now());
+/**
+ * 연결 상태 확인 함수
+ * 현재 STOMP 클라이언트의 연결 상태를 확인하고 콘솔에 로그를 출력합니다.
+ */
+function checkConnectionStatus() {
+	if (stompClient && stompClient.connected) {
+		console.log('WebSocket 연결 상태: 연결됨');
+		updateConnectionStatus('연결됨');
+	} else {
+		console.log('WebSocket 연결 상태: 연결되지 않음');
+		updateConnectionStatus('연결되지 않음');
+	}
+}
+
+// 페이지 로드 시 연결 및 주기적 연결 상태 확인
+document.addEventListener('DOMContentLoaded', function() {
+	connect();
+	// 5초마다 연결 상태 확인
+	setInterval(checkConnectionStatus, 5000);
 });
-*/
 
+/********/
 
 $(document).ready(function() {
 	// 챗봇 토글 버튼 클릭 시 챗봇 컨테이너의 표시 상태를 토글합니다
@@ -179,14 +246,14 @@ $(document).on('click', '.subcategory-button', function() {
 
 // 전송 버튼 클릭 이벤트 처리
 $('#chatbot-send').click(function() {
-    const userInput = $('#chatbot-input').val(); // 입력 상자의 값 가져오기
-    console.log('User Input:', userInput); // 콘솔에 입력 값 출력
-    if (userInput.trim() === "") {
-        return; // 입력 값이 비어있을 경우 처리하지 않음
-    }
-    
-    // 사용자 메시지 추가
-    $('#chatbot-messages').append(`
+	const userInput = $('#chatbot-input').val(); // 입력 상자의 값 가져오기
+	console.log('User Input:', userInput); // 콘솔에 입력 값 출력
+	if (userInput.trim() === "") {
+		return; // 입력 값이 비어있을 경우 처리하지 않음
+	}
+
+	// 사용자 메시지 추가
+	$('#chatbot-messages').append(`
         <div class="message user">
             <div class="bubble">
                 ${userInput}
@@ -194,8 +261,8 @@ $('#chatbot-send').click(function() {
         </div>
     `);
 
-    // 입력 상자 비우기
-    $('#chatbot-input').val('');
+	// 입력 상자 비우기
+	$('#chatbot-input').val('');
 });
 
 
