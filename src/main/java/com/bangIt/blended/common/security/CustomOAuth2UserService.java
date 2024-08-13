@@ -3,9 +3,7 @@ package com.bangIt.blended.common.security;
 import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -15,9 +13,10 @@ import org.springframework.stereotype.Service;
 import com.bangIt.blended.domain.entity.AuthProvider;
 import com.bangIt.blended.domain.entity.Role;
 import com.bangIt.blended.domain.entity.UserEntity;
+import com.bangIt.blended.domain.repository.PartnerEntityRepository;
 import com.bangIt.blended.domain.repository.UserEntityRepository;
 
-
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
@@ -26,58 +25,56 @@ import lombok.RequiredArgsConstructor;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserEntityRepository repository;
+    private final PartnerEntityRepository partnerRepository;
     private final PasswordEncoder pw;
     private final HttpSession session;
+    private final HttpServletRequest request;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
-        System.out.println("registrationID:" + registrationId);
-		//구글인 경우, 네이버인 경우 다 다를 수 있음
-		Map<String, Object> attributes = oAuth2User.getAttributes(); //Map으로 attribute를 제공하고 있음
-		
-		
-		System.out.println(">>>>>");
-		 for (String attributeName : attributes.keySet()) {
-	            System.out.println(attributeName + ":" + attributes.get(attributeName));
-	        }
-		System.out.println("<<<<<");
-		
-		
-		return socialUser(oAuth2User, registrationId);
+
+        Map<String, Object> attributes = oAuth2User.getAttributes();
+        System.out.println("registrationID: " + registrationId);
+        attributes.forEach((key, value) -> System.out.println(key + ": " + value));
+
+        return socialUser(oAuth2User, registrationId, attributes);
     }
 
-    private OAuth2User socialUser(OAuth2User oAuth2User, String registrationId) {
+    private OAuth2User socialUser(OAuth2User oAuth2User, String registrationId, Map<String, Object> attributes) {
         String email = null;
         String name = null;
-        String socialId = null; 
+        String socialId = null;
         AuthProvider provider = null;
 
-        // 제공자별로 사용자 정보 추출
         if (registrationId.equals("google")) {
-            email = oAuth2User.getAttribute("email");
-            name = oAuth2User.getAttribute("name");
-            socialId = oAuth2User.getAttribute("sub"); // 구글의 고유 ID는 String으로 반환됨
+            email = (String) attributes.getOrDefault("email", null);
+            name = (String) attributes.getOrDefault("name", null);
+            socialId = (String) attributes.getOrDefault("sub", null);
             provider = AuthProvider.GOOGLE;
         } else if (registrationId.equals("naver")) {
-            Map<String, Object> response = oAuth2User.getAttribute("response");
-            email = (String) response.get("email");
-            name = (String) response.get("name");
-            socialId = String.valueOf(response.get("id")); // 네이버의 고유 ID는 보통 String으로 반환됨
+            Map<String, Object> response = (Map<String, Object>) attributes.get("response");
+            email = (String) response.getOrDefault("email", null);
+            name = (String) response.getOrDefault("name", null);
+            socialId = String.valueOf(response.getOrDefault("id", null));
             provider = AuthProvider.NAVER;
         } else if (registrationId.equals("kakao")) {
-            Map<String, Object> response = oAuth2User.getAttribute("kakao_account");
+            Map<String, Object> response = (Map<String, Object>) attributes.get("kakao_account");
             Map<String, Object> profile = (Map<String, Object>) response.get("profile");
-            email = (String) response.get("email");
-            name = (String) profile.get("nickname");
-            socialId = String.valueOf(oAuth2User.getAttribute("id")); // 카카오의 고유 ID는 Long으로 반환될 수 있음, String으로 변환
+            email = (String) response.getOrDefault("email", null);
+            name = (String) profile.getOrDefault("nickname", null);
+            Long kakaoId = (Long) attributes.getOrDefault("id", null);
+            socialId = String.valueOf(kakaoId);
             provider = AuthProvider.KAKAO;
         }
 
-        Optional<UserEntity> existingUser = repository.findBySocialIdAndProvider(socialId, provider);
+        System.out.println("Social ID: " + socialId);
+        System.out.println("Provider: " + provider);
 
-        if (existingUser.isEmpty()) {
+        Optional<UserEntity> existingUserOptional = repository.findBySocialIdAndProvider(socialId, provider);
+
+        if (existingUserOptional.isEmpty()) {
             UserEntity newUser = UserEntity.builder()
                 .email(email)
                 .username(name)
@@ -87,10 +84,19 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .build()
                 .addRole(Role.USER);
 
-            
-            return new CustomUserDetails(repository.save(newUser));
-        }
+            return new CustomUserDetails(repository.save(newUser), attributes);
+        } else {
+            UserEntity existingUser = existingUserOptional.get();
 
-        return new CustomUserDetails(existingUser.get());
+            // 현재 사용자의 역할을 확인
+            if (existingUser.getRoles().contains(Role.USER) && !existingUser.getRoles().contains(Role.PARTNER)) {
+                // 사용자에게 ROLE_USER만 있고 ROLE_PARTNER가 없는 경우
+                if (request.getRequestURI().equals("/partner-login")) {
+                    session.setAttribute("businessRegistrationUserId", existingUser.getId());
+                }
+            }
+
+            return new CustomUserDetails(existingUser, attributes);
+        }
     }
 }
