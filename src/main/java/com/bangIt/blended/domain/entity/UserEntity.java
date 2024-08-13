@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.Set;
 import org.hibernate.annotations.DynamicUpdate;
 
+import com.bangIt.blended.domain.enums.AuthProvider;
+import com.bangIt.blended.domain.enums.Role;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;

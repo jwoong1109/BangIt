@@ -1,4 +1,4 @@
-package com.bangIt.blended.domain.entity;
+package com.bangIt.blended.domain.enums;
 
 import lombok.RequiredArgsConstructor;
 
