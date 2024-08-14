@@ -1,5 +1,6 @@
 package com.bangIt.blended.domain.dto.place;
 
+import java.util.List;
 import java.util.Set;
 
 import com.bangIt.blended.domain.enums.PlaceTheme;
@@ -22,5 +23,8 @@ public class PlaceDetailDTO {
     private Set<PlaceTheme> themes;
     private Double latitude;
     private Double longitude;
+    // 새로 추가된 필드
+    private String mainImage;
+    private List<String> additionalImages;
 
 }

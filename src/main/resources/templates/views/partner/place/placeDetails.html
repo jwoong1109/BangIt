@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="/css/partner/place/place.css">
+	<script src="/js/partner/place/address-api.js" defer></script>
+	<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e92dcce6a45cf9533fea83124cc52455&libraries=services"></script>
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script src="/js/partner/place/image-upload.js" defer></script>
+</head>
+<body>
+    <div th:fragment="placeDetailsFragment">
+          <section class="place-save-form">
+              <form id="placeUpdateForm">
+                  <input type="hidden" name="id" th:value="${place.id}" />
+
+                  <div class="form-group">
+                      <label for="place-name">숙소 이름:</label>
+                      <input type="text" id="place-name" name="name" th:value="${place.name}" required>
+                  </div>
+
+                  <div class="form-group">
+                      <label for="place-description">숙소 설명:</label>
+                      <textarea id="place-description" name="description" rows="4" th:text="${place.description}" required></textarea>
+                  </div>
+
+                  <!-- 숙소 지역 카테고리 -->
+                  <div class="form-group">
+                      <label>숙소 지역:</label>
+                      <div class="radio-group">
+                          <div class="radio-item" th:each="regionOption : ${T(com.bangIt.blended.domain.enums.Region).values()}">
+                              <input type="radio" th:id="${'region-' + regionOption}" name="region" 
+                                     th:value="${regionOption}" th:checked="${place.region == regionOption}">
+                              <label th:for="${'region-' + regionOption}" th:text="${regionOption.KoName}">지역이름</label>
+                          </div>
+                      </div>
+                  </div>
+
+                  <!-- 숙소 위치 -->
+                  <div class="form-group" id="address-search">
+                      <label for="detailed-address">상세 숙소 위치:</label>
+                      <input type="text" id="detailed-address" name="detailedAddress"
+                             th:value="${place.detailedAddress}" placeholder="도로명 주소" readonly required>
+                      <input type="button" class="address-search-btn" onclick="address_execDaumPostcode()" value="주소 검색"><br>
+                      <input type="hidden" id="latitude" name="latitude" th:value="${place.latitude}">
+                      <input type="hidden" id="longitude" name="longitude" th:value="${place.longitude}">
+                  </div>
+                  <div id="map" style="width: 400px; height: 300px; margin-top: 10px;"></div>
+
+                  <!-- 숙소 유형 카테고리 -->
+                  <div class="form-group">
+                      <label>숙소 유형:</label>
+                      <div class="radio-group">
+                          <div class="radio-item" th:each="typeOption : ${T(com.bangIt.blended.domain.enums.PlaceType).values()}">
+                              <input type="radio" th:id="${'type-' + typeOption}" name="type" 
+                                     th:value="${typeOption}" th:checked="${place.type == typeOption}">
+                              <label th:for="${'type-' + typeOption}" th:text="${typeOption.KoName}">유형이름</label>
+                          </div>
+                      </div>
+                  </div>
+
+                  <!-- 테마 -->
+                  <div class="form-group">
+                      <label>테마:</label>
+                      <div class="checkbox-group">
+                          <div class="checkbox-item" th:each="themeOption : ${T(com.bangIt.blended.domain.enums.PlaceTheme).values()}">
+                              <input type="checkbox" th:id="${'theme-' + themeOption}" name="themes" 
+                                     th:value="${themeOption}" th:checked="${place.themes.contains(themeOption)}">
+                              <label th:for="${'theme-' + themeOption}" th:text="${themeOption.KoName}">테마이름</label>
+                          </div>
+                      </div>
+                  </div>
+
+                  <!-- 숙소 메인 이미지 업로드 -->
+                  <div class="form-group">
+                      <label for="mainImage">숙소 메인 이미지:</label>
+                      <input type="file" id="mainImage" onchange="fileupload(this)">
+                      <input type="hidden" name="mainImageBucketKey" th:value="${place.mainImage}">
+                      <input type="hidden" name="mainImageOrgName">
+                      <div id="mainImagePreview" class="image-preview-container">
+                          <img th:if="${place.mainImage}" th:src="${place.mainImage}" alt="메인 이미지 미리보기">
+                      </div>
+                      <p class="file-guide">
+                          <span>메인 이미지 필수입력</span><br> <span>최대 용량 : 2MB</span><br>
+                          <span>이미지 확대 기능 : 대표 이미지 기준 1000 X 1000 이상 이미지 등록 시, 확대기능이 제공됩니다.</span>
+                      </p>
+                  </div>
+
+                  <!-- 숙소 추가 이미지 업로드 -->
+                  <div class="form-group">
+                      <p>추가 이미지</p>
+                      <div class="image-upload-container">
+                          <th:block th:each="additionalImage, iterStat : ${place.additionalImages}">
+                              <label class="btn-file">
+                                  <input type="file" onchange="fileupload(this)" style="display: none;">
+                                  <input type="hidden" name="additionalImageBucketKeys" th:value="${additionalImage}">
+                                  <input type="hidden" name="additionalImageOrgNames">
+                                  <div class="image-preview-container">
+                                      <img th:src="${additionalImage}" alt="추가 이미지 미리보기">
+                                  </div>
+                              </label>
+                          </th:block>
+                          <label class="btn-file" th:if="${place.additionalImages.size() < 2}">
+                              <input type="file" onchange="fileupload(this)" style="display: none;">
+                              <input type="hidden" name="additionalImageBucketKeys">
+                              <input type="hidden" name="additionalImageOrgNames">
+                              <span class="plus-icon">+</span>
+                              <div class="image-preview-container"></div>
+                          </label>
+                      </div>
+                      <p class="file-guide">
+                          <span>권장 크기 : 1000 X 1000(윈도 대상 750 X 1000), 300 X 300 이상</span><br>
+                          <span>이미지 확대 기능 : 대표 이미지 기준 1000 X 1000 이상 이미지 등록 시, 확대기능이 제공됩니다.</span><br>
+                      </p>
+                  </div>
+
+                  <!-- 수정 버튼 -->
+                  <button type="button" onclick="updatePlace()" class="submit-btn">숙소 정보 수정</button>
+              </form>
+          </section>
+    </div>
+		<script th:inline="javascript">
+            /*<![CDATA[*/
+            var mapContainer = document.getElementById('map');
+            var mapOption = {
+                center: new kakao.maps.LatLng(37.537187, 127.005476),
+                level: 5
+            };
+
+            var map = new kakao.maps.Map(mapContainer, mapOption);
+            var geocoder = new kakao.maps.services.Geocoder();
+            var marker = new kakao.maps.Marker({
+                map: map
+            });
+
+            var address = /*[[${place.detailedAddress}]]*/ '기본 주소';
+            var lat = /*[[${place.latitude}]]*/ 37.537187;
+            var lng = /*[[${place.longitude}]]*/ 127.005476;
+
+            if (lat && lng) {
+                var coords = new kakao.maps.LatLng(lat, lng);
+                map.setCenter(coords);
+                marker.setPosition(coords);
+            } else {
+                geocoder.addressSearch(address, function(results, status) {
+                    if (status === kakao.maps.services.Status.OK) {
+                        var result = results[0];
+                        var coords = new kakao.maps.LatLng(result.y, result.x);
+                        map.setCenter(coords);
+                        marker.setPosition(coords);
+                    }
+                });
+            }
+        </script>
+</body>
+</html>

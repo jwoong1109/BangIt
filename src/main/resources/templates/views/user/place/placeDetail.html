@@ -26,128 +26,137 @@
     </script>
 </head>
 <body>
-    <main>
-        <!-- 이미지 갤러리 섹션 -->
-        <section class="image-gallery">
-            <img src="image1.jpg" alt="숙소 이미지 1">
-            <img src="image2.jpg" alt="숙소 이미지 2">
-            <img src="image3.jpg" alt="숙소 이미지 3">
-        </section>
-        <!-- 숙소 상세 정보 섹션 -->
-        <section class="details">
-            <span th:text="${place.type.KoName}" style="color: #103333;"></span>
-            <h1 th:text="${place.name}">방잇 숙소</h1>
-            <br/>
-            <p>테마<br/>
-                <span th:each="theme : ${place.themes}" th:text="${theme.KoName} + ' '"></span>
-            </p>
-        </section>
-        <hr/>
-        
-        <!-- 날짜 검색 섹션 -->
-        <section class="date-search">
-             <h2>날짜 및 인원수 선택</h2>
-            <form>
-                <div class="form-group">
-                    <label for="checkin-date">체크인 / 체크아웃</label>
-                    <input type="date" id="checkin-date" name="checkin-date" required>
-                    <span>부터</span>
-                    <input type="date" id="checkout-date" name="checkout-date" required>
-                </div>
+	<main>
+		<!-- 이미지 갤러리 섹션 -->
+		<section class="image-gallery">
+			<!-- 메인 이미지 -->
+			<div class="main-image" th:if="${place.mainImage != null}">
+				<img th:src="${place.mainImage}" alt="메인 숙소 이미지">
+			</div>
 
-                <div class="form-group">
-                    <label for="adults">성인:</label>
-                    <select id="adults" name="adults">
-                        <option value="1">1명</option>
-                        <option value="2">2명</option>
-                        <option value="3">3명</option>
-                        <option value="4">4명</option>
-                    </select>
+			<!-- 추가 이미지들 -->
+			<div class="additional-images"
+				th:if="${place.additionalImages != null and !place.additionalImages.isEmpty()}">
+				<div th:each="imageUrl : ${place.additionalImages}" th:if="${!#strings.isEmpty(imageUrl)}">
+					<img th:src="${imageUrl}" th:alt="'추가 숙소 이미지'">
+				</div>
+			</div>
+		</section>
+		
+		<!-- 숙소 상세 정보 섹션 -->
+		<section class="details">
+			<span th:text="${place.type.KoName}" style="color: #103333;"></span>
+			<h1 th:text="${place.name}">방잇 숙소</h1>
+			<br />
+			<p>테마<br />
+				<span th:each="theme : ${place.themes}" th:text="${theme.KoName} + ' '"></span>
+			</p>
+		</section>
+		<hr />
 
-                    <label for="children">어린이:</label>
-                    <select id="children" name="children">
-                        <option value="0">0명</option>
-                        <option value="1">1명</option>
-                        <option value="2">2명</option>
-                        <option value="3">3명</option>
-                    </select>
-                </div>
+		<!-- 날짜 검색 섹션 -->
+		<section class="date-search">
+			<h2>날짜 및 인원수 선택</h2>
+			<form>
+				<div class="form-group">
+					<label for="checkin-date">체크인 / 체크아웃</label> <input type="date"
+						id="checkin-date" name="checkin-date" required> <span>부터</span>
+					<input type="date" id="checkout-date" name="checkout-date" required>
+				</div>
 
-                <button class="reserve-btn">객실선택</button>
-            </form>
-        </section>
-        <!-- 방 정보 섹션 -->
-        <section class="rooms">
-            <hr/><h2>객실 선택</h2>
-            <!-- 방 1 -->
-            <div class="room">
-            <h3>방 1</h3>
-            <p>방 1은 넓고 밝으며, 더블 침대가 있는 아늑한 공간입니다.</p>
-            <h3>가격: ₩50,000 / 박</h3>
-            <button class="details-btn" onclick="openModal()">상세 정보 보기</button>
-            <button class="reserve-btn">예약하기</button>
-        	</div>
-            
-            <!-- 방 2 -->
-            <div class="room">
-            <h3>방 2</h3>
-            <p>방 2은 넓고 밝으며, 더블 침대가 있는 아늑한 공간입니다.</p>
-            <h3>가격: ₩70,000 / 박</h3>
-            <button class="details-btn" onclick="openModal()">상세 정보 보기</button>
-            <button class="reserve-btn">예약하기</button>
-      		</div>
-            
-            <!-- 방 3 -->
-            <div class="room">
-            <h3>방 3</h3>
-            <p>방 3은 스페셜 럭셔리 방입니다. 외벽이 유리창으로 구성되어 있는 지하방이며 바다 내부에서 생활하는 방입니다.</p>
-            <h3>가격: ₩15,000,000 / 박</h3>
-            <button class="details-btn" onclick="openModal()">상세 정보 보기</button>
-            <button class="reserve-btn">예약하기</button>
-      	  	</div>
-        </section>
-        <hr/>
-        <!-- 모달 창 구조 -->
-        <div id="roomModal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeModal()">&times;</span>
-                <div id="modal-body">
-                	<h2>방1</h2>
-                	<br>
-                    <hr/>
-                    <h2>방 1 상세 정보</h2>
-                    <p>이 방은 넓고 밝으며, 더블 침대가 있는 아늑한 공간입니다.</p>
-                    <ul>
-                        <li>면적: 30m²</li>
-                        <li>침대: 퀸 사이즈 1개</li>
-                        <li>최대 수용 인원: 2명</li>
-                        <li>욕실: 개인 욕실 1개</li>
-                    </ul>
-                    <br>
-                    <hr/>
-                    <h3>편의 시설</h3>
-                    <ul>
-                        <li>에어컨</li>
-                        <li>무료 Wi-Fi</li>
-                        <li>평면 TV</li>
-                        <li>미니 냉장고</li>
-                    </ul>
-                    <!-- 추가 정보 -->
-                </div>
-            </div>
-        </div>        
-        
-        <!-- 숙소 상세 정보 섹션 -->
-        
-        <section class="details">
-            <h2 th:text="${place.name}">방잇 숙소</h2>
-            <p th:text="${place.description}">간단한 편의시설 제공 정보</p>
-            <div id="map" style="width:100%;height:400px;"></div>
-            <p>위치: <span th:text="${place.detailedAddress}"></span></p>
-        </section>
-        <hr/>
-        
-        <script th:inline="javascript">
+				<div class="form-group">
+					<label for="adults">성인:</label> <select id="adults" name="adults">
+						<option value="1">1명</option>
+						<option value="2">2명</option>
+						<option value="3">3명</option>
+						<option value="4">4명</option>
+					</select> <label for="children">어린이:</label> <select id="children"
+						name="children">
+						<option value="0">0명</option>
+						<option value="1">1명</option>
+						<option value="2">2명</option>
+						<option value="3">3명</option>
+					</select>
+				</div>
+
+				<button class="reserve-btn">객실선택</button>
+			</form>
+		</section>
+		<!-- 방 정보 섹션 -->
+		<section class="rooms">
+			<hr />
+			<h2>객실 선택</h2>
+			<!-- 방 1 -->
+			<div class="room">
+				<h3>방 1</h3>
+				<p>방 1은 넓고 밝으며, 더블 침대가 있는 아늑한 공간입니다.</p>
+				<h3>가격: ₩50,000 / 박</h3>
+				<button class="details-btn" onclick="openModal()">상세 정보 보기</button>
+				<button class="reserve-btn">예약하기</button>
+			</div>
+
+			<!-- 방 2 -->
+			<div class="room">
+				<h3>방 2</h3>
+				<p>방 2은 넓고 밝으며, 더블 침대가 있는 아늑한 공간입니다.</p>
+				<h3>가격: ₩70,000 / 박</h3>
+				<button class="details-btn" onclick="openModal()">상세 정보 보기</button>
+				<button class="reserve-btn">예약하기</button>
+			</div>
+
+			<!-- 방 3 -->
+			<div class="room">
+				<h3>방 3</h3>
+				<p>방 3은 스페셜 럭셔리 방입니다. 외벽이 유리창으로 구성되어 있는 지하방이며 바다 내부에서 생활하는 방입니다.</p>
+				<h3>가격: ₩15,000,000 / 박</h3>
+				<button class="details-btn" onclick="openModal()">상세 정보 보기</button>
+				<button class="reserve-btn">예약하기</button>
+			</div>
+		</section>
+		<hr />
+		<!-- 모달 창 구조 -->
+		<div id="roomModal" class="modal">
+			<div class="modal-content">
+				<span class="close" onclick="closeModal()">&times;</span>
+				<div id="modal-body">
+					<h2>방1</h2>
+					<br>
+					<hr />
+					<h2>방 1 상세 정보</h2>
+					<p>이 방은 넓고 밝으며, 더블 침대가 있는 아늑한 공간입니다.</p>
+					<ul>
+						<li>면적: 30m²</li>
+						<li>침대: 퀸 사이즈 1개</li>
+						<li>최대 수용 인원: 2명</li>
+						<li>욕실: 개인 욕실 1개</li>
+					</ul>
+					<br>
+					<hr />
+					<h3>편의 시설</h3>
+					<ul>
+						<li>에어컨</li>
+						<li>무료 Wi-Fi</li>
+						<li>평면 TV</li>
+						<li>미니 냉장고</li>
+					</ul>
+					<!-- 추가 정보 -->
+				</div>
+			</div>
+		</div>
+
+		<!-- 숙소 상세 정보 섹션 -->
+
+		<section class="details">
+			<h2 th:text="${place.name}">방잇 숙소</h2>
+			<p th:text="${place.description}">간단한 편의시설 제공 정보</p>
+			<div id="map" style="width: 100%; height: 400px;"></div>
+			<p>
+				위치: <span th:text="${place.detailedAddress}"></span>
+			</p>
+		</section>
+		<hr />
+
+		<script th:inline="javascript">
             /*<![CDATA[*/
             var mapContainer = document.getElementById('map');
             var mapOption = {
@@ -181,25 +190,29 @@
             }
             /*]]>*/
         </script>
-        
-        <!-- 숙소 상세 정보 섹션 -->
-        <section class="details">
-            <h2>취소 및 환불규정</h2>
-            <p>객실별 취소 정책이 상이하니 객실 상세정보에서 확인해주세요.</p>
-        </section>
-        <hr/>
 
-        <!-- 리뷰 섹션 -->
-        <section class="reviews">
-            <h2>리뷰</h2>
-            <div class="review">
-                <p><strong>사용자1:</strong> 아주 좋은 숙소였습니다!</p>
-            </div>
-            <div class="review">
-                <p><strong>사용자2:</strong> 위치도 좋고 깨끗했어요.</p>
-            </div>
-        </section>
-    </main>
+		<!-- 숙소 상세 정보 섹션 -->
+		<section class="details">
+			<h2>취소 및 환불규정</h2>
+			<p>객실별 취소 정책이 상이하니 객실 상세정보에서 확인해주세요.</p>
+		</section>
+		<hr />
+
+		<!-- 리뷰 섹션 -->
+		<section class="reviews">
+			<h2>리뷰</h2>
+			<div class="review">
+				<p>
+					<strong>사용자1:</strong> 아주 좋은 숙소였습니다!
+				</p>
+			</div>
+			<div class="review">
+				<p>
+					<strong>사용자2:</strong> 위치도 좋고 깨끗했어요.
+				</p>
+			</div>
+		</section>
+	</main>
 
 </body>
 </html>
