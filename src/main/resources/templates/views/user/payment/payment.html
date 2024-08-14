@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	th:replace="~{views/common/layout :: layout(~{::head} ,~{::main} ) }">
 
 <head>
@@ -17,22 +18,9 @@
 				<div class="left-section">
 					<div class="reservation-info">
 						<h2>예약자 정보</h2>
-						<label for="name">예약자 이름</label> <input type="text" id="name"
-							placeholder="홍길동"> <label for="phone">휴대폰 번호</label> <input
+						<label for="name">예약자 정보</label> <input type="text" id="name"
+						th:value="${#authentication.name}" readonly> <label for="phone">휴대폰 번호</label> <input
 							type="text" id="phone" placeholder="010-1234-5678">
-					</div>
-
-
-					<div class="payment-methods">
-						<h2>결제 수단</h2>
-						<div class="methods">
-							<button>네이버페이</button>
-							<button>카카오페이</button>
-							<button>토스페이</button>
-							<button>신용/체크 카드</button>
-							<button>간편 계좌 이체</button>
-							<button>휴대폰 결제</button>
-						</div>
 					</div>
 				</div>
 
