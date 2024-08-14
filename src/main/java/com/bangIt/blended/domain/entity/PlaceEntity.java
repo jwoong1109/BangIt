@@ -1,5 +1,6 @@
 package com.bangIt.blended.domain.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -7,23 +8,26 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.boot.autoconfigure.info.ProjectInfoProperties.Build;
 
 import com.bangIt.blended.domain.dto.place.PlaceDetailDTO;
+import com.bangIt.blended.domain.entity.ImageEntity.ImageType;
 import com.bangIt.blended.domain.enums.PlaceTheme;
 import com.bangIt.blended.domain.enums.PlaceType;
 import com.bangIt.blended.domain.enums.Region;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.JoinColumn;
-
+import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -72,17 +76,26 @@ public class PlaceEntity extends BaseEntity {
 
     @Column
     private Double longitude;
-
-//  @Column(nullable = false)
-//  private String mainImagePath;
-//
-//  @ElementCollection
-//  @CollectionTable(name = "place_additional_images", joinColumns = @JoinColumn(name = "place_id"))
-//  @Column(name = "image_path")
-//  private List<String> additionalImagePaths;
+    
+    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ImageEntity> images;
     
     //숙소 상세 페이지 dto
 	public PlaceDetailDTO toPlaceDetailDTO() {
+		String baseUrl = "https://s3.ap-northeast-2.amazonaws.com/nowon.images.host0521/";
+	    String mainImage = null;
+	    List<String> additionalImages = new ArrayList<>();
+	    for (ImageEntity image : images) {
+	    	if(image.getImageUrl().isEmpty())continue;
+	    	
+	        String fullUrl = baseUrl + image.getImageUrl();
+	        if (image.getImageType() == ImageType.PLACE_MAIN) {
+	            mainImage = fullUrl;
+	        } else if (image.getImageType() == ImageType.PLACE_ADDITIONAL) {
+	            additionalImages.add(fullUrl);
+	        }
+	    }
+	
 		return PlaceDetailDTO.builder()
 				.id(id)
 				.name(name)
@@ -93,6 +106,8 @@ public class PlaceEntity extends BaseEntity {
 				.themes(themes)
 				.latitude(latitude)
 				.longitude(longitude)
+				.mainImage(mainImage)
+				.additionalImages(additionalImages)
 				.build();
 	}
 	

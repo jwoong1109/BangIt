@@ -6,25 +6,35 @@
     <link rel="stylesheet" href="/css/partner/reservation/reservation.css">
     <script src="/js/partner/room/room.js" defer></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const roomBtn = document.querySelector('.room-btn');
-            const roomDetails = document.querySelector('.room-details');
-
-            roomBtn.addEventListener('click', function(event) {
-                event.preventDefault(); // 링크 기본 동작 방지
-
-                // AJAX 요청을 통해 roomSave.html 내용 로드
-                fetch('/roomSave')
-                    .then(response => response.text())
-                    .then(html => {
-                        // 받은 HTML 조각을 roomDetails div에 삽입
-                        roomDetails.innerHTML = html;
-                    })
-                    .catch(error => {
-                        console.error('Error loading roomSave.html:', error);
-                    });
-            });
-        });
+	    document.addEventListener("DOMContentLoaded", function() {
+	        const placeItems = document.querySelectorAll('.user-item');
+	        const placeDetails = document.querySelector('.place-details');
+	
+	        placeItems.forEach(item => {
+	            item.addEventListener('click', function() {
+	                const placeId = this.getAttribute('data-place-id');
+	                if (placeId) {
+	                    fetch(`/partner/placeDetails/${placeId}`)
+	                        .then(response => {
+	                            if (!response.ok) {
+	                                throw new Error('Server responded with status: ' + response.status);
+	                            }
+	                            return response.text();
+	                        })
+	                        .then(html => {
+	                            placeDetails.innerHTML = html;
+	                        })
+	                        .catch(error => {
+	                            console.error('Error loading place details:', error);
+	                            placeDetails.innerHTML = '<p>Error loading place details. Please try again.</p>';
+	                        });
+	                } else {
+	                    console.error('Place ID is missing');
+	                    placeDetails.innerHTML = '<p>Error: Place ID is missing.</p>';
+	                }
+	            });
+	        });
+	    });
     </script>
     
 </head>
@@ -38,23 +48,24 @@
                 <div class="search-results">
                     <ul>
                         <li class="header">
+                            <span>지역</span>
                             <span>숙소명</span>
                             <span>숙소유형</span>
                             <span>등록일</span>
-                            <span>상태</span>
                         </li>
-                        <li th:each="place : ${places}" class="user-item">
-                        	<span th:text="${place.name}"></span>
-                        	<span th:text="${place.type.KoName}"></span>
-                            <span>2024-08-11</span>
-                            <span>2024-08-11</span>
+                        <li th:each="place : ${places}" class="user-item" th:data-place-id="${place.id}">
+                            <span th:text="${place.region.KoName}">지역</span>
+                        	<span th:text="${place.name}">숙소명</span>
+                        	<span th:text="${place.type.KoName}">숙소유형</span>
+                            <span th:text="${place.updatedAt.toLocalDate}">등록일</span>
                         </li>
                     </ul>
                 </div>
             </div>
             
             <div class="dash user-activity">
-                <h2>방 상세정보</h2>
+                <h2>숙소 정보</h2>
+                <div class="place-details" ></div>
                 <div class="room-details" ></div>
                 
             </div>
