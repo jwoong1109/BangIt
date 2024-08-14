@@ -51,6 +51,13 @@ button:hover{cursor: pointer;}
 }
 
 
+/*공통 버튼*/
+.cmbutton1{padding: 5px; border: 1px solid var(--mian-color); background-color: var(--mian-color); color: #fff; border-radius: 5px ;text-align: center;}
+.cmbutton1 i{margin-left: 6px}
+
+.cmbutton2{padding: 5px; border: 1px solid var(--mian-color); background-color:#fff; color: var(--mian-color); border-radius: 5px;text-align: center; }
+.cmbutton2 i{margin-left: 6px}
+
 /*공통 대시보드*/
 
 .dash{background-color: rgba( 255, 255, 255, 1 );backdrop-filter: blur( 8px ); box-shadow: 0 4px 10px 0 rgba( 31, 38, 135, 0.37 ); border-radius: 10px;padding: 15px; overflow-y:auto;position: relative; border: 1px solid rgba( 255, 255, 255, 0.18 );}
@@ -72,3 +79,14 @@ button:hover{cursor: pointer;}
   color: white;
   border: none;
 }
+
+
+
+
+/*공통 lsit(div에 .cmlist 클래스 적용)*/
+.cmlist{flex-grow: 1; overflow-y: auto;}
+.cmlist ul {padding: 0;margin: 0;}
+.cmlist li{display: flex;padding: 10px 0;border-bottom: 1px solid #eee;text-align: center;}
+.cmlist li:nth-child(1) {font-weight: bold;background-color: #f5f5f5;position: sticky;top: 0;z-index: 1;}
+.cmlist span{flex: 1;padding: 0 10px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
+
