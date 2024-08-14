@@ -1,30 +1,44 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{views/common/adminlayout :: layout(~{::head} ,~{::main} ) }">
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{views/common/adminlayout :: layout(~{::head} ,~{::main} ) }">
 
 <head>
-    <title>방잇</title>
-    <link rel="stylesheet" href="/css/admin/mail/mail.css">
- <!--    <script src="/js/admin/user/user.js" defer></script> -->
+<title>방잇</title>
+<link rel="stylesheet" href="/css/admin/mail/mail.css">
+<!--    <script src="/js/admin/user/user.js" defer></script> -->
 </head>
 
 <body>
-    <main class="cmindex">
-        <th:block th:replace="~{/views/admin/employee/cmsubnav}" />
-        
-        <div class="dash">
-        	<section>
-        	
-        	</section>
-        	
-        	<section>
-        	
-        	</section>
-        	
-        	<section>
-        	
-        	</section>
-        
-        </div>
+	<main class="cmindex">
+		<th:block th:replace="~{/views/admin/employee/cmsubnav}" />
+
+		<div class="dash">
+			<section>
+				<h1>구성원 목록</h1>
+
+				<div th:if="${error}" th:text="${error}" style="color: red;"></div>
+
+				<table th:if="${employees}">
+					<thead>
+						<tr>
+							<th>이름</th>
+							<th>이메일</th>
+							<th>휴대폰</th>
+							<th>입사일</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="employee : ${employees}">
+							 <td th:text="${employee.userName.lastName + employee.userName.firstName}"></td>
+							 <td th:text="${employee.email}"></td>
+							 <td th:text="${employee.cellPhone}"></td>
+							 <td th:text="${employee.hiredDate}"></td>
+						</tr>
+					</tbody>
+				</table>
+
+			</section>
+		</div>
 
 	</main>
 </body>
