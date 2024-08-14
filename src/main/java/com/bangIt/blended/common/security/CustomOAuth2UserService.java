@@ -11,9 +11,9 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import com.bangIt.blended.domain.entity.AuthProvider;
-import com.bangIt.blended.domain.entity.Role;
 import com.bangIt.blended.domain.entity.UserEntity;
+import com.bangIt.blended.domain.enums.AuthProvider;
+import com.bangIt.blended.domain.enums.Role;
 import com.bangIt.blended.domain.repository.PartnerEntityRepository;
 import com.bangIt.blended.domain.repository.UserEntityRepository;
 

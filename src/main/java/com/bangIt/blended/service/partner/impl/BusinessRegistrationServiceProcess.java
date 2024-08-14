@@ -5,10 +5,10 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.bangIt.blended.domain.dto.partner.PartnerSaveDTO;
-import com.bangIt.blended.domain.entity.AuthProvider;
 import com.bangIt.blended.domain.entity.PartnerEntity;
-import com.bangIt.blended.domain.entity.Role;
 import com.bangIt.blended.domain.entity.UserEntity;
+import com.bangIt.blended.domain.enums.AuthProvider;
+import com.bangIt.blended.domain.enums.Role;
 import com.bangIt.blended.domain.repository.PartnerEntityRepository;
 import com.bangIt.blended.domain.repository.UserEntityRepository;
 import com.bangIt.blended.service.partner.BusinessRegistrationService;

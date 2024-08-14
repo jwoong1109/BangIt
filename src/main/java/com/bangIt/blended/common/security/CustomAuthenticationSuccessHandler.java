@@ -9,9 +9,9 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import com.bangIt.blended.domain.entity.AuthProvider;
-import com.bangIt.blended.domain.entity.Role;
 import com.bangIt.blended.domain.entity.UserEntity;
+import com.bangIt.blended.domain.enums.AuthProvider;
+import com.bangIt.blended.domain.enums.Role;
 import com.bangIt.blended.domain.repository.UserEntityRepository;
 
 import jakarta.servlet.http.HttpServletRequest;

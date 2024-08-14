@@ -6,8 +6,8 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.bangIt.blended.domain.entity.AuthProvider;
 import com.bangIt.blended.domain.entity.UserEntity;
+import com.bangIt.blended.domain.enums.AuthProvider;
 
 
 public interface UserEntityRepository extends JpaRepository<UserEntity, Long>{
