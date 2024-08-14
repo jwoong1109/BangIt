@@ -9,6 +9,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -86,16 +88,20 @@ public class NaverWorksUtil {
         }
     }
 
-    // 각 서비스에서 제네릭을 사용해 적용될 HTTP 요청 메서드
-    public <T> ResponseEntity<T> get(String accessToken, String endpoint, Class<T> responseType) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + accessToken);
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
+    // 각 서비스에서 적용될 HTTP 요청 get 메서드
+    //이 메서드를 사용해서 토큰과 엔드포인드를 전달 받음
+    public ResponseEntity<JsonNode> get(String accessToken, String endpoint) {
+        HttpHeaders headers = new HttpHeaders();//http 요청 헤더 설정을 위한 객체 
+        headers.set("Authorization", "Bearer " + accessToken);//Authorization"은 HTTP 표준 헤더,"Bearer"는 토큰 기반 인증의 한 유형,억세스토큰
+        HttpEntity<String> entity = new HttpEntity<>(headers);//HttpEntity는 http요청과 응답을 나타내는 클래스,RestTemplate의 메서드들(예: exchange())은 이 객체를 파라미터로 받기를 요구함)
+        
+        //실제 요청할 url주소,요청 메서드, 포함시킬 헤더 정보,요청 후 응답받은 json을 JsonNode 형태로 받기 위함
         String url = API_BASE_URL + endpoint;
-        return restTemplate.exchange(url, HttpMethod.GET, entity, responseType);
+        return restTemplate.exchange(url, HttpMethod.GET, entity, JsonNode.class);
     }
-
+    
+    
+     // 각 서비스에서 제네릭을 사용해 적용될 HTTP 요청 post 메서드
     public <T> ResponseEntity<T> post(String accessToken, String endpoint, Object body, Class<T> responseType) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);

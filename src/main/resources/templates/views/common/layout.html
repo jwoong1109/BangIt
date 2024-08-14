@@ -13,8 +13,11 @@
 	<link rel="stylesheet" href="/css/common/header.css">
 	<link rel="stylesheet" href="/css/common/chatbot.css">
 	<link rel="stylesheet" href="/css/common/footer.css">
-	
+
+    <link rel="stylesheet" href="/css/common/error-model.css">
+
 	<script src="https://js.tosspayments.com/v2/standard"></script>
+
 	<!-- jQuery 라이브러리 -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
@@ -23,6 +26,7 @@
 
 	<!-- jQuery UI 한국어 로케일 -->
 	<script src="/js/common/datepicker-ko.js"></script>
+
 
 
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -36,6 +40,7 @@
 
 	<!-- Custom JS 파일 -->
 	<script src="/js/common/chatbot.js" defer></script>
+	<script src="/js/common/error-model.js"></script>
 
 	<!-- 페이지 별로 다를 수 있는 헤드 요소 삽입 -->
 	<th:block th:replace="${pHead}" />
@@ -58,6 +63,9 @@
 
 		<!-- Chatbot 삽입 -->
 		<th:block th:replace="~{/views/chatbot/chatbot}" />
+		
+		<!--공통 에러 팝업-->
+		<th:block th:replace="~{/views/common/error-modal}"/>
 
 	</div>
 

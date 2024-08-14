@@ -3,43 +3,53 @@
 	th:replace="~{views/common/adminlayout :: layout(~{::head} ,~{::main} ) }">
 
 <head>
-<title>방잇</title>
-<link rel="stylesheet" href="/css/admin/mail/mail.css">
-<!--    <script src="/js/admin/user/user.js" defer></script> -->
+    <title>방잇</title>
+    <link rel="stylesheet" href="/css/admin/employee/employee.css">
+    <script src="/js/admin/employee/employees.js" defer></script> 
 </head>
 
 <body>
-	<main class="cmindex">
-		<th:block th:replace="~{/views/admin/employee/cmsubnav}" />
+    <main class="cmindex">
+        <th:block th:replace="~{/views/admin/employee/cmsubnav}" />
 
-		<div class="dash">
-			<section>
-				<h1>구성원 목록</h1>
-
-				<div th:if="${error}" th:text="${error}" style="color: red;"></div>
-
-				<table th:if="${employees}">
-					<thead>
-						<tr>
-							<th>이름</th>
-							<th>이메일</th>
-							<th>휴대폰</th>
-							<th>입사일</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="employee : ${employees}">
-							 <td th:text="${employee.userName.lastName + employee.userName.firstName}"></td>
-							 <td th:text="${employee.email}"></td>
-							 <td th:text="${employee.cellPhone}"></td>
-							 <td th:text="${employee.hiredDate}"></td>
-						</tr>
-					</tbody>
-				</table>
-
-			</section>
-		</div>
-
-	</main>
+        <div>
+        	<section class="dash title">
+        	    <h2>구성원 목록</h2>
+        	    
+        	    <button class="cmbutton1" id="create-employee">구성원 추가<i class="fa-solid fa-plus"></i></button>
+        	
+        	</section>
+        
+        
+            <section class="dash employee-list-wrap">
+            
+                <div class="cmlist">
+	                  <ul class="employee-list" th:if="${employees}">
+	                    <li class="employee-list-header">
+	                        <span>이름</span>
+	                        <span>직급</span>
+	                        <span>이메일</span>
+	                        <span>휴대폰</span>
+	                        <span>생일</span>
+	                        <span>입사일</span>
+	                        <span>유형</span>
+	                    </li>
+	                    <li th:each="employee : ${employees}" class="employee-list-item">
+	                        <span th:text="${employee.fullName}"></span>
+	                        <span th:text="${employee.levelName}"></span>
+	                        <span th:text="${employee.email}"></span>
+	                        <span th:text="${employee.cellPhone}"></span>
+	                        <span th:text="${employee.birthdayCalendarType}"></span>
+	                        <span th:text="${employee.hiredDate}"></span>
+	                        <span th:text="${employee.employmentTypeName}"></span>
+	                    </li>
+	                </ul>
+                
+                
+                </div>
+          
+            </section>
+        </div>
+    </main>
 </body>
 </html>
