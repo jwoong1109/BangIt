@@ -1,19 +1,21 @@
 package com.bangIt.blended.controller.partner;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bangIt.blended.domain.dto.place.PlaceSaveDTO;
+import com.bangIt.blended.domain.entity.PlaceEntity;
 import com.bangIt.blended.service.partner.PartnerPlaceService;
-
 
 import lombok.RequiredArgsConstructor;
 
@@ -49,10 +51,19 @@ public class PartnerController {
         return placeService.s3TempUpload(file);
     }
 	
-	//숙소목록
+	//숙소 목록 조회
 	@GetMapping("partner/placeList")
-	public String placeList() {
-		return "views/partner/place/placeList";
+	public String placeList(Model model) {
+		placeService.listProcess(model);
+	    return "views/partner/place/placeList";
+	}
+	
+	//숙소 상세정보 조회
+	@GetMapping("/partner/placeDetails/{id}")
+	public String getPlaceDetails(@PathVariable("id") Long id, Model model) {
+	    
+		placeService.detailProcess(id, model);
+	    return "views/partner/place/placeDetails :: placeDetailsFragment";
 	}
 	
 	//예약목록

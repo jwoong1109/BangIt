@@ -13,7 +13,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/bangItBot")
-                .setAllowedOrigins("*") // CORS 설정 추가
                 .withSockJS();
     }
 

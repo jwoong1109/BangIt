@@ -50,24 +50,27 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private OAuth2User socialUser(OAuth2User oAuth2User, String registrationId, Map<String, Object> attributes) {
         String email = null;
+        String username = null;
         String socialId = null;
         AuthProvider provider = null;
 
         if (registrationId.equals("google")) {
             email = (String) attributes.getOrDefault("email", null);
+            username = (String) attributes.getOrDefault("name", null); // Google의 경우 이름을 username으로 설정
             socialId = (String) attributes.getOrDefault("sub", null);
             provider = AuthProvider.GOOGLE;
         } else if (registrationId.equals("naver")) {
-            // Naver의 응답 데이터를 파싱
             Map<String, Object> response = (Map<String, Object>) attributes.get("response");
             if (response != null) {
                 email = (String) response.getOrDefault("email", null);
+                username = (String) response.getOrDefault("nickname", null); // Naver의 경우 닉네임을 username으로 설정
                 socialId = String.valueOf(response.getOrDefault("id", null));
             }
             provider = AuthProvider.NAVER;
         } else if (registrationId.equals("kakao")) {
             Map<String, Object> response = (Map<String, Object>) attributes.get("kakao_account");
             email = (String) response.getOrDefault("email", null);
+            username = (String) ((Map<String, Object>) attributes.get("properties")).get("nickname"); // Kakao의 경우 닉네임을 username으로 설정
             Long kakaoId = (Long) attributes.getOrDefault("id", null);
             socialId = String.valueOf(kakaoId);
             provider = AuthProvider.KAKAO;
@@ -86,6 +89,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         if (existingUserOptional.isEmpty()) {
             UserEntity newUser = UserEntity.builder()
                 .email(email)
+                .username(username)
                 .password(pw.encode(String.valueOf(System.currentTimeMillis())))
                 .socialId(socialId)
                 .provider(provider)

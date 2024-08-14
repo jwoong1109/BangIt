@@ -27,10 +27,11 @@ public class SecurityConfig {
             .csrf(Customizer.withDefaults())
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/css/**", "/js/**", "/images/**", "/error").permitAll()
-                .requestMatchers("/", "/login","/logout","/partner-login","/business-registration","/bangItBot/**").permitAll()
+                .requestMatchers("/", "/login","/logout","/partner-login","/business-registration","/bangItBot/**","/success/**", "/fail/**","/confirm/**").permitAll()
 						/*
 						 * .requestMatchers("/**").hasRole("PARTNER")
 						 */
+                		 .requestMatchers("/admin/").hasRole("USER")
 						 .requestMatchers("/admin/**").hasRole("ADMIN")
 						 
                 .anyRequest().authenticated()
