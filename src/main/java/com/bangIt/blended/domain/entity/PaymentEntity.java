@@ -19,6 +19,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -40,7 +42,7 @@ public class PaymentEntity {
 	private Long id; // 결제 ID
 
 	@Column(nullable = false)
-	private BigDecimal amount; // 결제 금액
+	private long amount; // 결제 금액
 
 	@Column(nullable = false)
 	private LocalDateTime paymentDate; // 결제 일자
@@ -62,6 +64,16 @@ public class PaymentEntity {
 	private String responseCode; // API 응답 코드
 
 	private String responseMessage; // API 응답 메시지
+	
+	// ReservationEntity와 1대1 관계
+    @OneToOne(mappedBy = "payment")
+    private ReservationEntity reservation;
+    
+    // SaleEntity와 1대1 관계
+    @OneToOne
+    @JoinColumn(name = "sale_id")
+    private SaleEntity sale;
+
 
 }
 

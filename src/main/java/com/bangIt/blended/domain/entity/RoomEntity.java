@@ -4,6 +4,8 @@ import java.time.LocalTime;
 
 import org.hibernate.annotations.DynamicUpdate;
 
+import com.bangIt.blended.domain.dto.room.RoomDTO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -64,5 +66,15 @@ public class RoomEntity {
 	public enum RoomStatus {
 		AVAILABLE, BOOKED, MAINTENANCE
 	}
+	
+	public RoomDTO toRoomDTO() {
+		return RoomDTO.builder()
+				.checkInTime(checkInTime)
+				.checkOutTime(checkOutTime)
+				.roomName(roomName)
+				.roomPrice(roomPrice)
+				.build();
+	}
+	
 
 }

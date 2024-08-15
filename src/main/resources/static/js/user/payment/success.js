@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // null 체크 추가
     if (paymentKeyElement && orderIdElement && amountElement) {
         orderIdElement.textContent = orderId;
-        amountElement.textContent = amount;
+        amountElement.textContent = amount  + '원';
         paymentKeyElement.textContent = paymentKey;
     } else {
         console.error("One or more elements are missing");
