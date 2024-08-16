@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import com.bangIt.blended.domain.dto.room.ReservationDTO;
 import com.bangIt.blended.domain.entity.ReservationEntity;
 import com.bangIt.blended.domain.entity.RoomEntity;
 import com.bangIt.blended.domain.repository.ReservationEntityRepository;
@@ -29,6 +30,12 @@ public class ReservationServiceProcess implements ReservationService {
 		 Optional<ReservationEntity> reservedInfo = reservationRepository.findById(reservationId);
 		 model.addAttribute("reservedInfo", reservedInfo.stream().map(ReservationEntity::toReservationDTO)
 					.collect(Collectors.toList()));
+	}
+
+	@Override
+	public ReservationDTO getReservationById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
