@@ -45,6 +45,8 @@
 
 .WritModal-content,.modal-content {
     background-color: #fefefe;
+    overflow-y:auto;
+    height:85.55vh;
     padding: 20px;
     width: 100%;
 }

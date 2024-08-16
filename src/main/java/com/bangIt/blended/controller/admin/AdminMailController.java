@@ -26,6 +26,8 @@ public class AdminMailController {
 
 	private final HttpSession session;
 	
+
+	
 	  // 세션에서 accessToken 가져오는 공통 메서드
     private String getAccessToken() {
         return (String) session.getAttribute("accessToken");
@@ -78,7 +80,7 @@ public class AdminMailController {
 		adminMailService.WritMailProcess(dto,accessToken);
 		
 		
-		return "/admin/mail/0";
+		return "redirect:/admin/mail/0";
 	}
 	
 
