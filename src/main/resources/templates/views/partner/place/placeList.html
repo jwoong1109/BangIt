@@ -3,40 +3,9 @@
 
 <head>
     <title>판매자 페이지 - 방잇</title>
-    <link rel="stylesheet" href="/css/partner/reservation/reservation.css">
+    <link rel="stylesheet" href="/css/partner/place/room.css">
+    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e92dcce6a45cf9533fea83124cc52455&libraries=services"></script>
     <script src="/js/partner/room/room.js" defer></script>
-    <script>
-	    document.addEventListener("DOMContentLoaded", function() {
-	        const placeItems = document.querySelectorAll('.user-item');
-	        const placeDetails = document.querySelector('.place-details');
-	
-	        placeItems.forEach(item => {
-	            item.addEventListener('click', function() {
-	                const placeId = this.getAttribute('data-place-id');
-	                if (placeId) {
-	                    fetch(`/partner/placeDetails/${placeId}`)
-	                        .then(response => {
-	                            if (!response.ok) {
-	                                throw new Error('Server responded with status: ' + response.status);
-	                            }
-	                            return response.text();
-	                        })
-	                        .then(html => {
-	                            placeDetails.innerHTML = html;
-	                        })
-	                        .catch(error => {
-	                            console.error('Error loading place details:', error);
-	                            placeDetails.innerHTML = '<p>Error loading place details. Please try again.</p>';
-	                        });
-	                } else {
-	                    console.error('Place ID is missing');
-	                    placeDetails.innerHTML = '<p>Error: Place ID is missing.</p>';
-	                }
-	            });
-	        });
-	    });
-    </script>
-    
 </head>
 
 <body>
@@ -96,15 +65,8 @@
                             <span>쁘띠가보네타</span>
                             <span>력셔리룸</span>
                         </li>
-                              <li class="user-item">
-                            <span>2024-08-11</span>
-                            <span>2024-08-12</span>
-                            <span>2024-08-13</span>
-                            <span>쁘띠가보네타</span>
-                            <span>력셔리룸</span>
-                        </li>
                       </ul>
-                   <a href="/roomSave" class="room-btn">방 등록</a>       
+                   <a href="/partner/roomSave" class="room-btn">방 등록</a>       
                 </div>
             </div>
       

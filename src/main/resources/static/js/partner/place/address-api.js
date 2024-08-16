@@ -48,3 +48,35 @@ function address_execDaumPostcode() {
 		}
 	}).open();
 }
+
+            /*<![CDATA[*/
+            var mapContainer = document.getElementById('map');
+            var mapOption = {
+                center: new kakao.maps.LatLng(37.537187, 127.005476),
+                level: 5
+            };
+
+            var map = new kakao.maps.Map(mapContainer, mapOption);
+            var geocoder = new kakao.maps.services.Geocoder();
+            var marker = new kakao.maps.Marker({
+                map: map
+            });
+
+            var address = /*[[${place.detailedAddress}]]*/ '기본 주소';
+            var lat = /*[[${place.latitude}]]*/ 37.537187;
+            var lng = /*[[${place.longitude}]]*/ 127.005476;
+
+            if (lat && lng) {
+                var coords = new kakao.maps.LatLng(lat, lng);
+                map.setCenter(coords);
+                marker.setPosition(coords);
+            } else {
+                geocoder.addressSearch(address, function(results, status) {
+                    if (status === kakao.maps.services.Status.OK) {
+                        var result = results[0];
+                        var coords = new kakao.maps.LatLng(result.y, result.x);
+                        map.setCenter(coords);
+                        marker.setPosition(coords);
+                    }
+                });
+            }

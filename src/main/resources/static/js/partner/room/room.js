@@ -24,3 +24,33 @@ document.addEventListener('DOMContentLoaded', function() {
     
     
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+	        const placeItems = document.querySelectorAll('.user-item');
+	        const placeDetails = document.querySelector('.place-details');
+	
+	        placeItems.forEach(item => {
+	            item.addEventListener('click', function() {
+	                const placeId = this.getAttribute('data-place-id');
+	                if (placeId) {
+	                    fetch(`/partner/placeDetails/${placeId}`)
+	                        .then(response => {
+	                            if (!response.ok) {
+	                                throw new Error('Server responded with status: ' + response.status);
+	                            }
+	                            return response.text();
+	                        })
+	                        .then(html => {
+	                            placeDetails.innerHTML = html;
+	                        })
+	                        .catch(error => {
+	                            console.error('Error loading place details:', error);
+	                            placeDetails.innerHTML = '<p>Error loading place details. Please try again.</p>';
+	                        });
+	                } else {
+	                    console.error('Place ID is missing');
+	                    placeDetails.innerHTML = '<p>Error: Place ID is missing.</p>';
+	                }
+	            });
+	        });
+	    });
