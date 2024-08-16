@@ -2,6 +2,7 @@ package com.bangIt.blended.domain.entity;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -20,6 +21,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -75,6 +77,12 @@ public class UserEntity {
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true)
 	private PartnerEntity partner;
 	
+	
+	@OneToMany(mappedBy = "user")
+    private List<ReservationEntity> reservations;
+	
+	@OneToMany(mappedBy = "seller")
+    private List<SaleEntity> sales;
 	
 	
 	//Role 등록하기 위한 편의메서드

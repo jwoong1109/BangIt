@@ -106,7 +106,7 @@ button {
 }
 
 /* 모달 창 스타일 */
-.modal {
+.payment-modal {
 	display: none;
 	position: fixed;
 	z-index: 1000;
@@ -118,7 +118,7 @@ button {
 	background-color: rgba(0, 0, 0, 0.5);
 }
 
-.modal-content {
+.payment-modal-content {
 	background-color: #fefefe;
 	margin: 10% auto;
 	padding: 20px;
