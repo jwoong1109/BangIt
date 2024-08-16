@@ -102,14 +102,14 @@ public class NaverWorksUtil {
     
     
      // 각 서비스에서 제네릭을 사용해 적용될 HTTP 요청 post 메서드
-    public <T> ResponseEntity<T> post(String accessToken, String endpoint, Object body, Class<T> responseType) {
+    public ResponseEntity<JsonNode> post(String accessToken, String endpoint, Object body) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> entity = new HttpEntity<>(body, headers);
 
         String url = API_BASE_URL + endpoint;
-        return restTemplate.exchange(url, HttpMethod.POST, entity, responseType);
+        return restTemplate.exchange(url, HttpMethod.POST, entity, JsonNode.class);
     }
 
     // TokenResponse 클래스 정의
