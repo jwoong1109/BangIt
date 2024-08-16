@@ -99,14 +99,25 @@ public class AdminMailServiceProcess implements AdminMailService {
 		
 		  ObjectMapper objectMapper = new ObjectMapper();
 		    ObjectNode requestBody = objectMapper.createObjectNode();
-		    
-		    requestBody.put("to", dto.getBody());
+
+		    requestBody.put("to", dto.getTo());  // 문자열로 설정
 		    requestBody.put("subject", dto.getSubject());
 		    requestBody.put("body", dto.getBody());
 		    requestBody.put("contentType", dto.getContentType());
 		    requestBody.put("userName", dto.getUserName());
-		
+		    
+		    // 기본값 설정 (필요에 따라 DTO에서 가져오도록 수정 가능)
+		    requestBody.put("isSaveSetMail", true);
+		    requestBody.put("isSaveTracking", true);
+		    requestBody.put("isSendSeparately", false);
+
 			ResponseEntity<JsonNode> response = naverWorksUtil.post(accessToken,"/users/me/mail",requestBody);
+			
+			if (response.getStatusCode().is2xxSuccessful()) {
+		        System.out.println("메일 전송 성공: " + response.getBody());
+		    } else {
+		        System.out.println("메일 전송 실패: " + response.getStatusCode() + " - " + response.getBody());
+		    }
 		
 			
 
