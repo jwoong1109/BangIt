@@ -14,6 +14,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,25 +69,41 @@ public class FileUploadUtil {
     public List<String> s3TempToImages(List<String> tempKeys) {
         List<String> uploadKeys = new ArrayList<>();
         tempKeys.forEach(tempKey -> {
-            String[] str = tempKey.split("/");
-            String destinationKey = upload + str[str.length - 1];
+            try {
+                String objectKey = extractObjectKey(tempKey);
+                String fileName = objectKey.substring(objectKey.lastIndexOf('/') + 1);
+                
+                // upload-src 설정을 그대로 사용
+                String destinationKey = upload + "/" + fileName;
 
-            CopyObjectRequest copyObjectRequest = CopyObjectRequest.builder()
-                    .sourceBucket(bucket)
-                    .sourceKey(tempKey)
-                    .destinationBucket(bucket)
-                    .destinationKey(destinationKey)
-                    .build();
+                System.out.println("Copying from: " + objectKey + " to: " + destinationKey);
 
-            s3Client.copyObject(copyObjectRequest);
-            s3Client.deleteObject(builder -> builder.bucket(bucket).key(tempKey));
+                CopyObjectRequest copyObjectRequest = CopyObjectRequest.builder()
+                		.sourceBucket(bucket)
+                        .sourceKey(objectKey)
+                        .destinationBucket(bucket)
+                        .destinationKey(destinationKey)
+                        .acl(ObjectCannedACL.PUBLIC_READ)  // 공개 읽기 권한 추가
+                        .build();
 
-            String url = s3Client.utilities()
-                    .getUrl(builder -> builder.bucket(bucket).key(destinationKey))
-                    .toString().substring(6);
-            uploadKeys.add(url);
+                s3Client.copyObject(copyObjectRequest);
+                s3Client.deleteObject(builder -> builder.bucket(bucket).key(objectKey));
+
+                uploadKeys.add(destinationKey);
+            } catch (Exception e) {
+                System.err.println("Error processing key: " + tempKey);
+                e.printStackTrace();
+            }
         });
 
         return uploadKeys;
+    }
+
+    private String extractObjectKey(String tempKey) {
+        if (tempKey.startsWith("http://") || tempKey.startsWith("https://")) {
+            String[] parts = tempKey.split("/");
+            return String.join("/", Arrays.copyOfRange(parts, 3, parts.length));
+        }
+        return tempKey;
     }
 }

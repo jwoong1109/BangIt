@@ -61,7 +61,7 @@ public class PartnerController {
 
 	//숙소 상세정보 조회
 	@GetMapping("/partner/placeDetails/{id}")
-	public String getPlaceDetails(@PathVariable("id") Long id, Model model) {
+	public String PlaceDetails(@PathVariable("id") Long id, Model model) {
 
 		placeService.detailProcess(id, model);
 		return "views/partner/place/placeDetails :: placeDetailsFragment";

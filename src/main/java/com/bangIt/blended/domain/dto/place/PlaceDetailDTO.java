@@ -23,8 +23,12 @@ public class PlaceDetailDTO {
     private Set<PlaceTheme> themes;
     private Double latitude;
     private Double longitude;
+    
     // 새로 추가된 필드
+    
     private String mainImage;
+    private String mainImageOrgName;
     private List<String> additionalImages;
+    private List<String> additionalImageOrgNames;
 
 }
