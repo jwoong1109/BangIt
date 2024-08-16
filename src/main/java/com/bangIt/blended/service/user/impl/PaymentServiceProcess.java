@@ -16,7 +16,7 @@ import java.util.Base64;
 @RequiredArgsConstructor
 public class PaymentServiceProcess implements PaymentService {
 	private final TossPaymentConfig tossPaymentConfig;
-	private final RestTemplate restTemplate;
+	private final RestTemplate restTemplate=null;
 	private final PaymentEntityRepository paymentRepository;
 
 	@Override
