@@ -65,8 +65,10 @@ public class PaymentEntity {
 
 	private String responseMessage; // API 응답 메시지
 	
-	// ReservationEntity와 1대1 관계
-    @OneToOne(mappedBy = "payment")
+	
+	 // ReservationEntity와 1대1 관계, 외래 키 추가
+    @OneToOne
+    @JoinColumn(name = "reservation_id", nullable = false) // 외래 키 컬럼 추가
     private ReservationEntity reservation;
     
     // SaleEntity와 1대1 관계
