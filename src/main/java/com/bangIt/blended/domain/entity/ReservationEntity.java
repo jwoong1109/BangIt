@@ -60,11 +60,6 @@ public class ReservationEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ReservationStatus reservationStatus;
-
-    //결제 테이블과 1대1관계
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "payment_id")
-    private PaymentEntity payment;
 	
     @ManyToOne
     @JoinColumn(name = "room_id", nullable = false)
