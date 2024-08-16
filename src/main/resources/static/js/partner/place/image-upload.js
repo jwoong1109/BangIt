@@ -73,7 +73,7 @@ function fileupload(input) {
             const bucketKey = result.bucketKey;
             const orgName = result.orgName;
 
-            if (!url || !bucketKey || !orgName) {
+            if (!bucketKey || !orgName) {
                 console.error("Missing data in server response");
                 return;
             }

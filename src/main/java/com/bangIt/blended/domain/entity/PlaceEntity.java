@@ -33,6 +33,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import software.amazon.awssdk.services.s3.model.Bucket;
 
 @DynamicUpdate
 @SequenceGenerator(name = "gen_place", sequenceName = "seq+place", initialValue = 1, allocationSize = 1)
@@ -81,34 +82,36 @@ public class PlaceEntity extends BaseEntity {
     private List<ImageEntity> images;
     
     //숙소 상세 페이지 dto
-	public PlaceDetailDTO toPlaceDetailDTO() {
-		String baseUrl = "https://s3.ap-northeast-2.amazonaws.com/nowon.images.host0521/";
-	    String mainImage = null;
-	    List<String> additionalImages = new ArrayList<>();
-	    for (ImageEntity image : images) {
-	    	if(image.getImageUrl().isEmpty())continue;
-	    	
-	        String fullUrl = baseUrl + image.getImageUrl();
-	        if (image.getImageType() == ImageType.PLACE_MAIN) {
-	            mainImage = fullUrl;
-	        } else if (image.getImageType() == ImageType.PLACE_ADDITIONAL) {
-	            additionalImages.add(fullUrl);
-	        }
-	    }
-	
-		return PlaceDetailDTO.builder()
-				.id(id)
-				.name(name)
-				.description(description)
-				.detailedAddress(detailedAddress)
-				.region(region)
-				.type(type)
-				.themes(themes)
-				.latitude(latitude)
-				.longitude(longitude)
-				.mainImage(mainImage)
-				.additionalImages(additionalImages)
-				.build();
-	}
-	
+    public PlaceDetailDTO toPlaceDetailDTO() {
+    	String baseUrl = "https://s3.ap-northeast-2.amazonaws.com/nowon.images.host0521/";
+        String mainImage = null;
+        List<String> additionalImages = new ArrayList<>();
+        for (ImageEntity image : images) {
+            if(image.getImageUrl() == null || image.getImageUrl().isEmpty()) continue;
+
+            String imageUrl = image.getImageUrl();
+            // 이미 전체 경로가 포함되어 있으므로 추가 처리 불필요
+            String fullUrl = baseUrl + imageUrl;
+
+            if (image.getImageType() == ImageType.PLACE_MAIN) {
+                mainImage = fullUrl;
+            } else if (image.getImageType() == ImageType.PLACE_ADDITIONAL) {
+                additionalImages.add(fullUrl);
+            }
+        }
+
+        return PlaceDetailDTO.builder()
+                .id(id)
+                .name(name)
+                .description(description)
+                .detailedAddress(detailedAddress)
+                .region(region)
+                .type(type)
+                .themes(themes)
+                .latitude(latitude)
+                .longitude(longitude)
+                .mainImage(mainImage)  // 이 부분이 PlaceDetailDTO의 필드 이름과 일치해야 합니다
+                .additionalImages(additionalImages)  // 이 부분도 마찬가지입니다
+                .build();
+    }
 }

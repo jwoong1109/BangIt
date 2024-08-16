@@ -35,6 +35,22 @@ public class PartnerPlaceServiceProcess implements PartnerPlaceService{
     @Transactional
     public void saveProcess(PlaceSaveDTO dto) {
 		
+		// 메인 이미지 처리
+        if (dto.getMainImageBucketKey() != null && !dto.getMainImageBucketKey().isEmpty()) {
+            List<String> mainImageKeys = new ArrayList<>();
+            mainImageKeys.add(dto.getMainImageBucketKey());
+            List<String> mainImageUrls = fileUploadUtil.s3TempToImages(mainImageKeys);
+            if (!mainImageUrls.isEmpty()) {
+                dto.setMainImageBucketKey(mainImageUrls.get(0));
+            }
+        }
+
+        // 추가 이미지 처리
+        if (dto.getAdditionalImageBucketKeys() != null && !dto.getAdditionalImageBucketKeys().isEmpty()) {
+            List<String> additionalImageUrls = fileUploadUtil.s3TempToImages(dto.getAdditionalImageBucketKeys());
+            dto.setAdditionalImageBucketKeys(additionalImageUrls);
+        }
+		
 		//Place 엔티티 저장
         PlaceEntity placeEntity = toPlaceEntity(dto);
         repository.save(placeEntity);
@@ -45,30 +61,30 @@ public class PartnerPlaceServiceProcess implements PartnerPlaceService{
     }
 	
 	private void saveImages(PlaceEntity place, PlaceSaveDTO dto) {
-        // 메인 이미지 저장
-        if (dto.getMainImageBucketKey() != null) {
+		// 메인 이미지 저장
+        if (dto.getMainImageBucketKey() != null && !dto.getMainImageBucketKey().isEmpty()) {
             ImageEntity mainImage = ImageEntity.builder()
                 .place(place)
-                .imageUrl(dto.getMainImageBucketKey())
+                .imageUrl(dto.getMainImageBucketKey()) // 전체 URL 저장
                 .imageType(ImageEntity.ImageType.PLACE_MAIN)
                 .build();
             imageRepository.save(mainImage);
         }
         
         // 추가 이미지 저장
-        if (dto.getAdditionalImageBucketKeys() != null) {
+        if (dto.getAdditionalImageBucketKeys() != null && !dto.getAdditionalImageBucketKeys().isEmpty()) {
             List<ImageEntity> additionalImages = new ArrayList<>();
-            for (String bucketKey : dto.getAdditionalImageBucketKeys()) {
+            for (String url : dto.getAdditionalImageBucketKeys()) {
                 ImageEntity additionalImage = ImageEntity.builder()
                     .place(place)
-                    .imageUrl(bucketKey)
+                    .imageUrl(url) // 전체 URL 저장
                     .imageType(ImageEntity.ImageType.PLACE_ADDITIONAL)
                     .build();
                 additionalImages.add(additionalImage);
             }
             imageRepository.saveAll(additionalImages);
         }
-    }
+	}
 
 	@Override
 	public Map<String, String> s3TempUpload(MultipartFile file) throws IOException {
@@ -113,15 +129,12 @@ public class PartnerPlaceServiceProcess implements PartnerPlaceService{
     // 상세페이지 조회
 	@Override
 	public void detailProcess(Long id, Model model) {
-
-		
-        PlaceEntity place = repository.findById(id).orElseThrow(() -> new RuntimeException("Notice not found with id: " + id));     
-        
+        PlaceEntity place = repository.findById(id).orElseThrow(() -> new RuntimeException("Notice not found with id: " + id));            
         model.addAttribute("place", place.toPlaceDetailDTO());
 		
 	}
 
-	//no(pk)해당하는 공지사항 DB에서 삭제
+	//no(pk)해당하는 숙소 DB에서 삭제
 	@Override
 	public void deleteProcess(long id) {
 		repository.delete(repository.findById(id).orElseThrow());

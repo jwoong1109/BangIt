@@ -43,9 +43,6 @@ public class RoomEntity {
 	@Column(columnDefinition = "TEXT")
 	private String roomInformation;
 
-	@Column(columnDefinition = "TEXT")
-	private String roomDescription;
-
 	@Column(nullable = false)
 	private Long roomPrice;
 
@@ -61,6 +58,9 @@ public class RoomEntity {
 
 	@Column(nullable = false)
 	private LocalTime checkOutTime;
+	
+	@Column(nullable = false)
+	private Long guests;
 
 	// RoomStatus enum (방 상태를 나타내는 열거형)
 	public enum RoomStatus {
