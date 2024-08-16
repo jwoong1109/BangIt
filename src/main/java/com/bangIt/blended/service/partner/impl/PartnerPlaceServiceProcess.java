@@ -110,14 +110,21 @@ public class PartnerPlaceServiceProcess implements PartnerPlaceService{
             .build();
 	}
 
+    // 상세페이지 조회
 	@Override
 	public void detailProcess(Long id, Model model) {
 
-		// 상세페이지 조회
+		
         PlaceEntity place = repository.findById(id).orElseThrow(() -> new RuntimeException("Notice not found with id: " + id));     
         
         model.addAttribute("place", place.toPlaceDetailDTO());
 		
 	}
 
+	//no(pk)해당하는 공지사항 DB에서 삭제
+	@Override
+	public void deleteProcess(long id) {
+		repository.delete(repository.findById(id).orElseThrow());
+		
+	}
 }

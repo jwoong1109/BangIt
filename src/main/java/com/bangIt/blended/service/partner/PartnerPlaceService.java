@@ -18,4 +18,6 @@ public interface PartnerPlaceService {
 
 	void detailProcess(Long id, Model model);
 
+	void deleteProcess(long id);
+
 }

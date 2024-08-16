@@ -1,0 +1,318 @@
+@charset "UTF-8";
+
+.contents {
+  display: grid;
+  grid-template-columns: 1.5fr 2fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 30px;
+  height: calc(100vh - 75px); /* 헤더/푸터 높이에 따라 조정 */
+  padding-right: 15px
+}
+
+
+.user-search, .reservation-info {
+    position: relative;
+}
+
+.user-activity{
+    grid-column: 2;
+    grid-row: 1 / 3;
+    display: flex;
+    flex-direction: column;
+}
+
+.search-input, .filter-select {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.search-button {
+    padding: 10px 20px;
+    background-color: var(--mian-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search-results {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.search-results ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.search-results li,.reservation-details ul li,.activity-details ul li{
+    display: flex;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+}
+
+.search-results li.header,.reservation-details ul li.header,.activity-details ul li.header {
+    font-weight: bold;
+    background-color: #f5f5f5;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.search-results li:not(.header):hover,.reservation-details ul li:not(.header):hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+.search-results span,.reservation-details ul li span,.activity-details ul li span {
+    flex: 1;
+    padding: 0 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.no-user-selected {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 90%;
+    color: #888;
+    text-align: center;
+}
+
+.no-user-selected i {
+    font-size: 3em;
+    margin-bottom: 10px;
+}
+
+.reservation-details, .activity-details {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #fff;
+    padding: 20px;
+    overflow-y: auto;
+    display: none;
+}
+
+.room-btn {
+    padding: 10px 20px;
+    background-color: var(--mian-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    display: block;  /* 버튼을 블록 레벨 요소로 만듭니다 */
+    margin: 0 auto;  /* 좌우 마진을 auto로 설정하여 중앙 정렬합니다 */
+    margin-top : 20px;
+    width: fit-content;  /* 내용에 맞게 너비를 조정합니다 */
+}
+
+.room-details {
+    width: 100%; /* 너비를 100%로 설정하거나 원하는 너비를 설정하세요 */
+}
+
+#mainImagePreview {
+    width: 100%;
+    max-width: 400px;
+    height: 300px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+#mainImagePreview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-upload-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.btn-file {
+    width: 200px;
+    height: 200px;
+    border: 1px dashed #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.image-preview-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.image-preview-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.plus-icon {
+    font-size: 40px;
+    color: #ccc;
+}
+
+/*//////////////////숙소 등록//////////////*/
+/*//////////////////숙소 등록//////////////*/
+
+/* 폼 스타일 */
+.place-save-form {
+    background-color: #f7f7f7;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.place-save-form h2 {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-item input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+input[type="text"], 
+input[type="number"],
+input[type="file"],
+textarea,
+select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.submit-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* 방 정보 섹션 스타일 */
+.room-section {
+    margin-top: 30px;
+}
+
+.room-group {
+    margin-bottom: 30px;
+}
+
+.room-group h3 {
+    margin-bottom: 15px;
+}
+
+.radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.radio-item {
+    display: flex;
+    align-items: center;
+}
+
+.radio-item input[type="radio"] {
+    margin-right: 5px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+/* 주소 검색 버튼 스타일 */
+.address-search-btn {
+	padding: 10px 20px;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 14px;
+	margin-top: 15px;
+	width: fit-content; /* 내용에 맞게 너비를 조정합니다 */
+}
+
+/* 기존 CSS에 추가 또는 수정 */
+
+.btn-file {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;  /* 100px에서 150px로 증가 */
+    height: 200px; /* 100px에서 150px로 증가 */
+    border: 0.5px dotted #d9d9d9;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 10px;  /* 버튼 간 간격 추가 */
+    position: relative;  /* 자식 요소의 절대 위치 지정을 위해 */
+}
+
+.plus-icon {
+    font-size: 24px;  /* '+' 아이콘 크기 증가 */
+    color: #888;  /* 색상 변경 */
+}
+
+.file-guide {
+	color: green;
+	font-size: 12px;
+}
+
+*/
+

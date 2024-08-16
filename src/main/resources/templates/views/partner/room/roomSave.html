@@ -1,50 +1,68 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>방 등록</title>
 </head>
 <body>
-    <main>
-        <div class="">
-            <section class="room-section">
-                <h2>새로운 숙소 등록하기</h2>
-                <form action="/roomSave" method="post" enctype="multipart/form-data">
-                    <!-- 숙소 이름 -->
-                    <div class="room-group">
-                        <label for="room-title">방 이름:</label>
-                        <input type="text" id="listing-title" name="listing-title" required>
-                    </div>
+<main>
+    <div class="">
+        <section class="room-section">
+            <h2>방 등록하기</h2>
+            <form action="/partner/roomSave" method="post" enctype="multipart/form-data">
+                <!-- 숙소 선택 (place_id) -->
+                <div class="room-group">
+                    <label for="place-id">숙소 선택:</label>
+                    <select id="place-id" name="placeId" required>
+                        <option th:each="place : ${places}" th:value="${place.id}" th:text="${place.name}"></option>
+                    </select>
+                </div>
 
-                    <!-- 숙소 설명 -->
-                    <div class="room-group">
-                        <label for="room-description">방 설명:</label>
-                        <textarea id="room-description" name="listing-description" rows="4" required></textarea>
-                    </div>
-                    
-                    <!-- 테마 설명 -->
-                    <div class="room-group">
-                        <label for="theme-description">테마:</label>
-                        <textarea id="room-Thema" name="Thema" rows="4" required></textarea>
-                    </div>
+                <!-- 방 이름 (room_name) -->
+                <div class="room-group">
+                    <label for="room-name">방 이름:</label>
+                    <input type="text" id="room-name" name="roomName" required>
+                </div>
 
-                    <!-- 숙소 이미지 업로드 -->
-                    <div class="room-group">
-                        <label for="mainImages">방 메인이미지:</label>
-                        <input type="file" id="mainImages" name="mainImages[]" multiple accept="image/*" required>
-                    </div>
-                    
-                    <!-- 숙소 이미지 업로드 -->
-                    <div class="room-group">
-                        <label for="images">방 이미지 추가:</label>
-                        <input type="file" id="images" name="images[]" multiple accept="image/*" required>
-                    </div>
+                <!-- 방 정보 (room_information) -->
+                <div class="room-group">
+                    <label for="room-information">방 정보:</label>
+                    <textarea id="room-information" name="roomInformation" rows="4" required></textarea>
+                </div>
 
-                    <!-- 등록 버튼 -->
-                    <button type="submit" class="room-btn">방 등록</button>
-                </form>
-            </section>
-        </div>    
-    </main>
+                <!-- 가격 (room_price) -->
+                <div class="room-group">
+                    <label for="room-price">가격:</label>
+                    <input type="number" id="room-price" name="roomPrice" required>
+                </div>
+
+                <!-- 방 상태 (room_status) -->
+                <div class="room-group">
+                    <label for="room-status">방 상태:</label>
+                    <select id="room-status" name="roomStatus" required>
+                        <option value="AVAILABLE">이용 가능</option>
+                        <option value="OCCUPIED">사용 중</option>
+                        <option value="MAINTENANCE">유지보수 중</option>
+                    </select>
+                </div>
+
+                <!-- 체크인 시간 (check_in_time) -->
+                <div class="room-group">
+                    <label for="check-in-time">체크인 시간:</label>
+                    <input type="time" id="check-in-time" name="checkInTime" required>
+                </div>
+
+                <!-- 체크아웃 시간 (check_out_time) -->
+                <div class="room-group">
+                    <label for="check-out-time">체크아웃 시간:</label>
+                    <input type="time" id="check-out-time" name="checkOutTime" required>
+                </div>
+
+                <!-- 등록 버튼 -->
+                <button type="submit" class="room-btn">방 등록</button>
+            </form>
+        </section>
+    </div>
+</main>
 </body>
 </html>
