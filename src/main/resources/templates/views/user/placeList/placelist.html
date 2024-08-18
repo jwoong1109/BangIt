@@ -4,26 +4,42 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/user/placeList/placeList.css" >
     <script src="/js/user/placeList/placeList.js" defer></script>
- 
 </head>
 <body>
     <main class="place-list">
-    	<div class="contents-wrap">
-	    	
-	    	<section class="search-options-wrap">
-	    		<div class="search-options">
+        <div class="contents-wrap">
+        <form id="searchForm" action="/search/places" method="post">
+            <section class="search-options-wrap">
+            	<div class="search-options">
+				
+						<div class="search-item">
+
+							<div>
+								<p>지역</p>
+								<select id="region-select" name="region" required>
+									<option value="">지역 선택</option>
+									<option
+										th:each="region : ${T(com.bangIt.blended.domain.enums.Region).values()}"
+										th:value="${region.name()}" th:text="${region.KoName}"
+										th:selected="${searchDto != null and searchDto.region != null and searchDto.region.name() == region.name()}">
+									</option>
+								</select>
+							</div>
+						</div>
 						<div class="search-item">
 							<span class="icon">📅</span>
 							<div>
 								<p>체크인 날짜</p>
-								<input type="text" id="checkin-date" class="datepicker" placeholder="날짜 선택">
+								<input type="date" name="checkinDate" id="checkin-date"
+									th:value="${#temporals.format(searchDto.checkinDate, 'yyyy-MM-dd')}"
+									class="datepicker" placeholder="날짜 선택" required>
 							</div>
 						</div>
 						<div class="search-item">
 							<span class="icon">📅</span>
 							<div>
 								<p>체크아웃 날짜</p>
-								<input type="text" id="checkout-date" class="datepicker" placeholder="날짜 선택">
+								<input type="date" name="checkoutDate" id="checkout-date"  th:value="${#temporals.format(searchDto.checkoutDate, 'yyyy-MM-dd')}"  class="datepicker" placeholder="날짜 선택" required>
 							</div>
 						</div>
 						<div class="search-item">
@@ -32,117 +48,80 @@
 								<p>인원</p>
 								<div class="guest-picker">
 									<button type="button" id="guest-minus">-</button>
-									<input type="text" id="guest-count" value="1" readonly>
+									<input type="text" name="guestCount" id="guest-count" th:value="${searchDto.guestCount}"  readonly required>
 									<button type="button" id="guest-plus">+</button>
 								</div>
 							</div>
 						</div>
 						<div class="search-button">
-							<button type="button">예약하기</button>
-						</div>
-					</div>
-	    	
-	    	</section>
-
-			<section class="catagori">
-				<h2>'서울' 숙소 566개</h2>
-				<div class="dash">
-					<form action="#" method="get">
-						
-						<div class="accommodation-options"style="display: flex; flex-direction: column;">
-							<p>숙소 유형</p>
-							<label><input type="checkbox" name="accommodation" value="hotel"> 호텔</label> 
-							<label><input type="checkbox" name="accommodation" value="motel"> 모텔</label> 
-							<label><input type="checkbox" name="accommodation" value="pension"> 펜션</label>
-							<label><input type="checkbox" name="accommodation" value="resort"> 리조트</label> 
-							<label><input type="checkbox" name="accommodation" value="camping">캠핑/글램핑</label> 
-							<label><input type="checkbox" name="accommodation" value="guesthouse"> 게스트하우스</label>
+							<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+							<button type="submit">예약하기</button>
 						</div>
 						
-						  <div class="theme-options">
-						       <p>숙소 테마</p>
-						       <label><input type="checkbox" name="theme" value="breakfast"> 조식포함</label>
-						       <label><input type="checkbox" name="theme" value="spa"> 스파</label>
-						       <label><input type="checkbox" name="theme" value="pet-friendly"> 반려견동반</label>
-						       <label><input type="checkbox" name="theme" value="in-room-smoking"> 객실내흡연</label>
-						       <label><input type="checkbox" name="theme" value="in-room-cooking"> 객실내취사</label>
-						       <label><input type="checkbox" name="theme" value="couple-pc"> 커플PC</label>
-						       <label><input type="checkbox" name="theme" value="free-parking"> 무료주차</label>
-						       <label><input type="checkbox" name="theme" value="pickup"> 픽업가능</label>
-						     </div>
-						<button type="submit">적용</button>
-					</form>
-
-
+						
+   
 				</div>
+              
+            </section>
 
+            <section class="catagori">
+                
+			   <h2>옵션선택</h2>
+                <div class="dash">
+                   
+                        <div class="accommodation-options">
+                            <p>숙소 유형</p>
+                            <label th:each="type : ${T(com.bangIt.blended.domain.enums.PlaceType).values()}">
+                                <input type="checkbox" name="accommodationTypes" th:value="${type.name()}" 
+                                       th:checked="${searchDto.accommodationTypes != null and searchDto.accommodationTypes.contains(type.name())}"> 
+                                <span th:text="${type.koName}"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="theme-options">
+                            <p>숙소 테마</p>
+                            <label th:each="theme : ${T(com.bangIt.blended.domain.enums.PlaceTheme).values()}">
+                                <input type="checkbox" name="themes" th:value="${theme.name()}"
+                                       th:checked="${searchDto.themes != null and searchDto.themes.contains(theme.name())}">
+                                <span th:text="${theme.koName}"></span>
+                            </label>
+                        </div>
+                       
+                        <button type="submit">적용</button>
+                  
+                </div>
+            </section>
+            
+              </form>
 
-			</section>
+            <section class="place-list-contents">
+                <div class="accommodation-wrap">
+                    <ul class="accommodation">
+                        <li  class="dash places" th:each="place : ${placeList}">
+                            <a th:href="@{'/place/detail/' + ${place.id}}">
+                                <div>
+                                    <img th:src="${'https://s3.ap-northeast-2.amazonaws.com/nowon.images.host0521/'+place.imageUrl}" th:alt="${place.name}">
+                                </div>
+                                <div>
+                                    <ul>
+                                        <li th:text="${place.type.koName}">호텔</li>
+                                        <li class="place-name" th:text="${place.name}">여수 오션 힐 호텔</li>
+                                        <li th:text="${place.detailedAddress}">여수시 엑스포역</li>
+                                        <li th:text="${#numbers.formatInteger(place.lowestPrice, 3, 'COMMA') + '원'}">108,000</li>
+                                    </ul>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </section>
 
-
-			<section class="place-list-contents">
-		
-	   				
-	    			
-	    		<div class="accommodation-wrap ">
-	    		
-	    			<ul class="accommodation ">
-	    				<li class="dash"><a>
-	    					<div>
-	    						<img alt="" src="https://pix10.agoda.net/hotelImages/14652635/-1/a7855cc933c1bfa1bf9a6b28526e267b.jpg?ce=0&s=414x232&ar=16x9">
-	    					</div>
-	    					<div>
-	    						<ul>
-	    							<li>호텔</li>
-	    							<li>여수 오션 힐 호텔</li>
-	    							<li>여수시 엑스포역</li>
-	    							<li>108,000</li>
-	    						</ul>
-	    					</div>
-	    				</a></li>
-	    				
-	    				<li class="dash"><a>
-	    					<div>
-	    						<img alt="" src="https://pix10.agoda.net/hotelImages/14652635/-1/a7855cc933c1bfa1bf9a6b28526e267b.jpg?ce=0&s=414x232&ar=16x9">
-	    					</div>
-	    					<div>
-	    						<ul>
-	    							<li>호텔</li>
-	    							<li>여수 오션 힐 호텔</li>
-	    							<li>여수시 엑스포역</li>
-	    							<li>108,000</li>
-	    						
-	    						</ul>
-	    					</div>
-	    				</a></li>
-	    				
-	    				<li class="dash"><a>
-	    					<div>
-	    						<img alt="" src="https://pix10.agoda.net/hotelImages/14652635/-1/a7855cc933c1bfa1bf9a6b28526e267b.jpg?ce=0&s=414x232&ar=16x9">
-	    					</div>
-	    					<div>
-	    						<ul>
-	    							<li>호텔</li>
-	    							<li>여수 오션 힐 호텔</li>
-	    							<li>여수시 엑스포역</li>
-	    							<li>108,000</li>
-	    						
-	    						</ul>
-	    					</div>
-	    				</a></li>
-	    			</ul>
-	    		</div>
-	    	
-	    	
-	    	
-	    	</section>
-	    	
-	    	
-	    	<section class="price-comparison-wrap">
+            <!-- 가격 비교 섹션은 필요에 따라 추가 -->
+            <section class="price-comparison-wrap">
 	    		<div class="banner">
 	    		</div>
 	    		<ul class="price-comparison ">		
-	    				<li class="dash"><a>
+	    				<li class="dash" id="yanolja"><a>
 	    					<div>
 	    						<img alt="" src="https://pix10.agoda.net/hotelImages/14652635/-1/a7855cc933c1bfa1bf9a6b28526e267b.jpg?ce=0&s=414x232&ar=16x9">
 	    					</div>
@@ -157,7 +136,7 @@
 	    					</div>
 	    				</a></li>
 	    				
-	    				<li class="dash"><a>
+	    				<li class="dash" id="yeogi-eottae"><a>
 	    					<div>
 	    						<img alt="" src="https://pix10.agoda.net/hotelImages/14652635/-1/a7855cc933c1bfa1bf9a6b28526e267b.jpg?ce=0&s=414x232&ar=16x9">
 	    					</div>
@@ -175,12 +154,10 @@
 	    			</ul>
 	    	
 	    	</section>
-    	
-    	
-    	</div>
-    
-    	
-      
+        </div>
+    </main>
+</body>
+</html>
     </main>
 
 </body>
