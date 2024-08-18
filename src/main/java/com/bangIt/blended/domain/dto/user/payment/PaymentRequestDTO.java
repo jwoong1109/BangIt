@@ -1,15 +1,8 @@
 package com.bangIt.blended.domain.dto.user.payment;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
-import com.bangIt.blended.domain.entity.PaymentEntity;
 import com.bangIt.blended.domain.enums.PaymentMethod;
-import com.bangIt.blended.domain.enums.PaymentStatus;
-
 import lombok.Builder;
 import lombok.Getter;
-import net.minidev.json.JSONObject;
+
 
 @Getter
 @Builder
@@ -24,4 +17,6 @@ public class PaymentRequestDTO {
     private String resultCallback;
     private String retUrl;
     private String retCancelUrl;
+    private PaymentMethod paymentMethod; // 기존에 ENUM으로 설정된 결제 방식
+    private String paymentKey; // paymentKey 추가
 }

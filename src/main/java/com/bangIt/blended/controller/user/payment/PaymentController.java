@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import com.bangIt.blended.common.config.TossPaymentConfig;
 import com.bangIt.blended.domain.dto.room.ReservationDTO;
 import com.bangIt.blended.domain.dto.user.payment.PaymentRequestDTO;
-import com.bangIt.blended.domain.entity.ReservationEntity;
+import com.bangIt.blended.domain.enums.PaymentMethod;
 import com.bangIt.blended.service.user.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,125 +23,155 @@ import org.springframework.http.ResponseEntity;
 @RequiredArgsConstructor
 public class PaymentController {
 
-	private static final Logger logger = LoggerFactory.getLogger(PaymentController.class);
+    private static final Logger logger = LoggerFactory.getLogger(PaymentController.class);
 
-	private final TossPaymentConfig tossPaymentConfig;
-	private final PaymentService paymentService;
+    private final TossPaymentConfig tossPaymentConfig;
+    private final PaymentService paymentService;
 
-	@GetMapping("/generate-order-id")
-	public ResponseEntity<Map<String, String>> generateOrderIdEndpoint() {
-		String orderId = generateOrderId();
-		Map<String, String> response = new HashMap<>();
-		response.put("orderId", orderId);
-		return ResponseEntity.ok(response);
-	}
+    @PostMapping("/savePaymentInfo")
+    public ResponseEntity<String> savePaymentInfo(@RequestBody PaymentRequestDTO requestDTO) {
+        try {
+            // 서비스 레이어로 데이터를 전달하여 비즈니스 로직 수행
+            paymentService.savePaymentInfo(
+                requestDTO.getPaymentKey(),
+                requestDTO.getOrderId(),
+                requestDTO.getAmount(),
+                requestDTO.getReservationId(),
+                requestDTO.getPaymentMethod()
+            );
 
-	// 기존의 generateOrderId() 메소드를 그대로 사용
-	private String generateOrderId() {
-		SecureRandom random = new SecureRandom();
-		StringBuilder orderId = new StringBuilder("order-");
-		String allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+            return ResponseEntity.ok("Payment information saved successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Error saving payment information: " + e.getMessage());
+        }
+    }
 
-		for (int i = 0; i < 20; i++) { // 20자 생성
-			orderId.append(allowedChars.charAt(random.nextInt(allowedChars.length())));
-		}
+    @PostMapping("/generate-order-id")
+    public ResponseEntity<Map<String, String>> generateOrderIdEndpoint(@RequestBody Map<String, Object> request) {
+        String orderId = generateOrderId();
+        Map<String, String> response = new HashMap<>();
+        response.put("orderId", orderId);
+        return ResponseEntity.ok(response);
+    }
 
-		return orderId.toString();
-	}
+    private String generateOrderId() {
+        SecureRandom random = new SecureRandom();
+        StringBuilder orderId = new StringBuilder("order-");
+        String allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
 
-	@GetMapping("/payment")
-	public String paymentPage(@RequestParam("reservationId") Long reservationId, Model model) {
-		ReservationDTO reservationDTO = paymentService.getReservationById(reservationId);
+        for (int i = 0; i < 20; i++) { // 20자 생성
+            orderId.append(allowedChars.charAt(random.nextInt(allowedChars.length())));
+        }
 
-		// Custom orderId 생성
-		String orderId = generateOrderId();
+        return orderId.toString();
+    }
 
-		// 모델에 reservationId와 orderId 추가
-		model.addAttribute("reservation", reservationDTO);
-		model.addAttribute("reservationId", reservationDTO.getId());
-		model.addAttribute("orderId", orderId);
-		model.addAttribute("testClientApiKey", tossPaymentConfig.getTestClientApiKey());
-		model.addAttribute("successUrl", tossPaymentConfig.getSuccessUrl());
-		model.addAttribute("failUrl", tossPaymentConfig.getFailUrl());
+    @GetMapping("/payment")
+    public String paymentPage(@RequestParam("reservationId") Long reservationId, Model model) {
+        ReservationDTO reservationDTO = paymentService.getReservationById(reservationId);
 
-		return "views/user/payment/payment";
-	}
+        // Custom orderId 생성
+        String orderId = generateOrderId();
 
-	@GetMapping("/payment/reservation/{id}")
-	@ResponseBody
-	public ResponseEntity<ReservationDTO> getReservationById(@PathVariable Long id) {
-		logger.info("Fetching reservation with ID: {}", id);
+        // 모델에 reservationId와 orderId 추가
+        model.addAttribute("reservation", reservationDTO);
+        model.addAttribute("reservationId", reservationDTO.getId());
+        model.addAttribute("orderId", orderId);
+        model.addAttribute("testClientApiKey", tossPaymentConfig.getTestClientApiKey());
+        model.addAttribute("successUrl", tossPaymentConfig.getSuccessUrl());
+        model.addAttribute("failUrl", tossPaymentConfig.getFailUrl());
 
-		// Service를 통해 ReservationDTO를 가져옴
-		ReservationDTO reservationDTO = paymentService.getReservationById(id);
+        return "views/user/payment/payment";
+    }
 
-		// DTO 반환
-		return ResponseEntity.ok(reservationDTO);
-	}
+    @GetMapping("/payment/reservation/{id}")
+    @ResponseBody
+    public ResponseEntity<ReservationDTO> getReservationById(@PathVariable Long id) {
+        logger.info("Fetching reservation with ID: {}", id);
 
-	@GetMapping("/getAmount")
-	@ResponseBody
-	public ResponseEntity<?> getAmount(@RequestParam("reservationId") Long reservationId) {
-		try {
-			// reservationId를 사용하여 예약 정보를 조회하고 금액을 가져옴
-			Long amount = paymentService.getAmountByReservationId(reservationId);
-			return ResponseEntity.ok(Collections.singletonMap("amount", amount));
-		} catch (Exception e) {
-			logger.error("Amount 조회 중 오류 발생: {}", reservationId, e);
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(Collections.singletonMap("error", e.getMessage()));
-		}
-	}
+        // Service를 통해 ReservationDTO를 가져옴
+        ReservationDTO reservationDTO = paymentService.getReservationById(id);
 
-	@GetMapping("/success")
-	public String paymentSuccess(
-	        @RequestParam("paymentKey") String paymentKey, 
-	        @RequestParam("orderId") String orderId,
-	        @RequestParam("amount") Long amount,
-	        @RequestParam("reservationId") Long reservationId,  // 필수 파라미터
-	        Model model) {
-	    try {
-	        boolean isPaymentValid = paymentService.validatePayment(paymentKey, orderId, amount);
+        // DTO 반환
+        return ResponseEntity.ok(reservationDTO);
+    }
 
-	        if (isPaymentValid) {
-	            paymentService.savePaymentInfo(paymentKey, orderId, amount, reservationId); // reservationId 전달
-	            model.addAttribute("message", "결제가 성공적으로 처리되었습니다.");
-	        } else {
-	            model.addAttribute("message", "결제 검증 실패. 고객센터로 문의해 주세요.");
-	        }
+    @GetMapping("/getAmount")
+    @ResponseBody
+    public ResponseEntity<?> getAmount(@RequestParam("reservationId") Long reservationId) {
+        try {
+            // reservationId를 사용하여 예약 정보를 조회하고 금액을 가져옴
+            Long amount = paymentService.getAmountByReservationId(reservationId);
+            return ResponseEntity.ok(Collections.singletonMap("amount", amount));
+        } catch (Exception e) {
+            logger.error("Amount 조회 중 오류 발생: {}", reservationId, e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Collections.singletonMap("error", e.getMessage()));
+        }
+    }
 
-	        model.addAttribute("paymentKey", paymentKey);
-	        model.addAttribute("orderId", orderId);
-	        model.addAttribute("amount", amount);
+    @GetMapping("/success")
+    public String paymentSuccess(
+            @RequestParam("paymentKey") String paymentKey, 
+            @RequestParam("orderId") String orderId,
+            @RequestParam("amount") Long amount,
+            @RequestParam("reservationId") Long reservationId,
+            @RequestParam("paymentMethod") PaymentMethod paymentMethod,  // 추가된 부분
+            Model model) {
+        try {
+            boolean isPaymentValid = paymentService.validatePayment(paymentKey, orderId, amount);
 
-	        return "views/user/payment/success";
-	    } catch (Exception e) {
-	        logger.error("Error processing payment success for orderId: {}", orderId, e);
-	        model.addAttribute("message", "결제 처리 중 오류가 발생했습니다. 고객센터로 문의해 주세요.");
-	        return "views/user/payment/fail";
-	    }
-	}
+            if (isPaymentValid) {
+                paymentService.savePaymentInfo(paymentKey, orderId, amount, reservationId, paymentMethod);
+                model.addAttribute("message", "결제가 성공적으로 처리되었습니다.");
+            } else {
+                model.addAttribute("message", "결제 검증 실패. 고객센터로 문의해 주세요.");
+            }
+
+            model.addAttribute("paymentKey", paymentKey);
+            model.addAttribute("orderId", orderId);
+            model.addAttribute("amount", amount);
+
+            return "views/user/payment/success";
+        } catch (Exception e) {
+            logger.error("Error processing payment success for orderId: {}", orderId, e);
+            model.addAttribute("message", "결제 처리 중 오류가 발생했습니다. 고객센터로 문의해 주세요.");
+            return "views/user/payment/fail";
+        }
+    }
 
 
-	@GetMapping("/fail")
-	public String paymentFail(@RequestParam String message, @RequestParam String code, Model model) {
-		logger.error("Payment failed - message: {}, code: {}", message, code);
-		model.addAttribute("message", "결제가 실패했습니다: " + message);
-		model.addAttribute("code", code);
-		return "views/user/payment/fail";
-	}
 
-	@PostMapping("/create")
-	@ResponseBody
-	public ResponseEntity<String> createPayment(@RequestBody PaymentRequestDTO paymentRequestDTO) {
-	    try {
-	        String response = paymentService.createPayment(paymentRequestDTO);
-	        return ResponseEntity.ok(response);
-	    } catch (Exception e) {
-	        e.printStackTrace(); // 예외를 콘솔에 출력
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-	                .body("Error creating payment: " + e.getMessage());
-	    }
-	}
+    @GetMapping("/fail")
+    public String paymentFail(
+        @RequestParam String message, 
+        @RequestParam String code, 
+        @RequestParam(required = false) Long reservationId, // reservationId 추가
+        Model model) {
+        
+        logger.error("Payment failed - message: {}, code: {}, reservationId: {}", message, code, reservationId);
+        
+        model.addAttribute("message", "결제가 실패했습니다: " + message);
+        model.addAttribute("code", code);
+        
+        if (reservationId != null) {
+            model.addAttribute("reservationId", reservationId);
+        }
+        
+        return "views/user/payment/fail";
+    }
 
+    @PostMapping("/create")
+    @ResponseBody
+    public ResponseEntity<String> createPayment(@RequestBody PaymentRequestDTO paymentRequestDTO) {
+        try {
+            String response = paymentService.createPayment(paymentRequestDTO);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace(); // 예외를 콘솔에 출력
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error creating payment: " + e.getMessage());
+        }
+    }
 }

@@ -91,11 +91,15 @@ document.addEventListener('DOMContentLoaded', function() {
             // 결제 요청 처리
             modalPaymentBtn.addEventListener("click", async function() {
                 try {
+                    // 결제 방법 선택
+                    const paymentMethodElement = document.querySelector('input[name="paymentMethod"]:checked');
+                    const paymentMethod = paymentMethodElement ? paymentMethodElement.value : 'CARD';
+
                     await widgets.requestPayment({
                         orderId: orderId,
                         orderName: "세인트존스 호텔 숙박 예약",
-                        successUrl: `${window.location.origin}/success`,
-                        failUrl: `${window.location.origin}/fail`,
+                        successUrl: `${window.location.origin}/success?reservationId=${reservationId}&paymentMethod=${paymentMethod}`,
+                        failUrl: `${window.location.origin}/fail?reservationId=${reservationId}&paymentMethod=${paymentMethod}`,
                         customerEmail: "customer123@gmail.com",
                         customerName: "김토스",
                         customerMobilePhone: "01012341234",

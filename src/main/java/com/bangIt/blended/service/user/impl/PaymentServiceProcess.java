@@ -63,7 +63,7 @@ public class PaymentServiceProcess implements PaymentService {
                         .reservation(reservation)
                         .amount(requestDTO.getAmount())
                         .paymentDate(LocalDateTime.now())
-                        .paymentMethod(PaymentMethod.TOSS_PAY)
+                        .paymentMethod(requestDTO.getPaymentMethod())  // DTO에서 PaymentMethod 가져오기
                         .paymentStatus(PaymentStatus.PENDING)
                         .build();
 
@@ -137,8 +137,10 @@ public class PaymentServiceProcess implements PaymentService {
     }
 
     @Override
-    public void savePaymentInfo(String paymentKey, String orderId, Long amount, Long reservationId) {
-        log.info("Saving payment information - paymentKey: {}, orderId: {}, amount: {}, reservationId: {}", paymentKey, orderId, amount, reservationId);
+    @Transactional
+    public void savePaymentInfo(String paymentKey, String orderId, Long amount, Long reservationId, PaymentMethod paymentMethod) {
+        log.info("Saving payment information - paymentKey: {}, orderId: {}, amount: {}, reservationId: {}, paymentMethod: {}",
+                paymentKey, orderId, amount, reservationId, paymentMethod);
 
         ReservationEntity reservation = reservationRepository.findById(reservationId)
             .orElseThrow(() -> new IllegalArgumentException("Reservation not found with ID: " + reservationId));
@@ -151,7 +153,7 @@ public class PaymentServiceProcess implements PaymentService {
                         .reservation(reservation)  // ReservationEntity 설정
                         .amount(amount)
                         .paymentStatus(PaymentStatus.PENDING)
-                        .paymentMethod(PaymentMethod.TOSS_PAY)
+                        .paymentMethod(paymentMethod)  // PaymentMethod 설정
                         .build();
             });
 
