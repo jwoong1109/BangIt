@@ -28,55 +28,52 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Entity
+@Table(name = "payment")
 @DynamicUpdate
 @Getter
 @Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE) // 빌더를 사용하려고 생성자초기화 막아주는것
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
-@Entity
-@Table(name = "payment")
 public class PaymentEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id; // 결제 ID
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id; // 결제 ID
 
-	@Column(nullable = false)
-	private long amount; // 결제 금액
+    @Column(nullable = false, unique = true)
+    private String orderId; // 결제 고유 식별자 (UUID 등으로 생성)
 
-	@Column(nullable = false)
-	private LocalDateTime paymentDate; // 결제 일자
+    @Column(nullable = false)
+    private long amount; // 결제 금액
 
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
-	private PaymentMethod paymentMethod; // 결제 방법
+    @Column(nullable = false)
+    private LocalDateTime paymentDate; // 결제 일자
 
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
-	private PaymentStatus paymentStatus; // 결제 상태
-	
-	private String cancelReason; // 결제 취소 사유
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private PaymentMethod paymentMethod; // 결제 방법
 
-	private LocalDateTime cancelDate; // 결제 취소 일자
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private PaymentStatus paymentStatus; // 결제 상태
 
-	private String tossPaymentId; // 토스페이 고유 식별자
+    private String tossPaymentId; // 토스페이 고유 식별자
 
-	private String responseCode; // API 응답 코드
-
-	private String responseMessage; // API 응답 메시지
-	
-	
-	 // ReservationEntity와 1대1 관계, 외래 키 추가
     @OneToOne
-    @JoinColumn(name = "reservation_id", nullable = false) // 외래 키 컬럼 추가
+    @JoinColumn(name = "reservation_id", nullable = false)
     private ReservationEntity reservation;
-    
-    // SaleEntity와 1대1 관계
+
     @OneToOne
-    @JoinColumn(name = "sale_id")
+    @JoinColumn(name = "sale_id") // SaleEntity와의 연결을 위한 외래키 설정
     private SaleEntity sale;
 
-
+    
+    // 결제 정보 업데이트 메서드
+    public void updatePaymentInfo(String tossPaymentId, PaymentStatus paymentStatus, Long amount) {
+        this.tossPaymentId = tossPaymentId;
+        this.paymentStatus = paymentStatus;
+        this.amount = amount;
+        this.paymentDate = LocalDateTime.now();
+    }
 }
-
-

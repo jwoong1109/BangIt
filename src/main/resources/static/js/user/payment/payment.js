@@ -15,10 +15,10 @@ document.addEventListener('DOMContentLoaded', function() {
         modal.style.display = 'none';
     });
 
-    function initTossPayments() {
-        const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
+    async function initTossPayments() {
+        const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm"; // Toss Payments Client Key
         const tossPayments = TossPayments(clientKey);
-        const customerKey = "3hAXYvqhkTWwG5abB0FWy";
+        const customerKey = "3hAXYvqhkTWwG5abB0FWy"; // Customer Key
         const widgets = tossPayments.widgets({
             customerKey,
         });
@@ -30,46 +30,85 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         const reservationId = reservationIdElement.value;
 
-        fetch(`/getAmount?reservationId=${reservationId}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`서버 응답 오류: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                const amount = data.amount;
-                if (!amount || isNaN(amount)) {
-                    throw new Error("결제 금액이 올바르게 설정되지 않았습니다.");
-                }
+        if (!reservationId) {
+            console.error("유효하지 않은 reservationId");
+            return;
+        }
 
-                widgets.setAmount({
-                    currency: "KRW",
-                    value: amount,
-                });
+        // 서버로부터 orderId 가져오기
+        let orderId;
+        try {
+            const response = await fetch('/generate-order-id', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ reservationId: reservationId })
+            });
 
-                Promise.all([
-                    widgets.renderPaymentMethods({
-                        selector: "#payment-method",
-                        variantKey: "DEFAULT",
-                    }),
-                    widgets.renderAgreement({ selector: "#agreement", variantKey: "AGREEMENT" }),
-                ]);
+            if (!response.ok) {
+                throw new Error(`서버 응답 오류: ${response.status}`);
+            }
+            const data = await response.json();
+            orderId = data.orderId;
+            console.log("Generated Order ID:", orderId);
+        } catch (error) {
+            console.error("orderId 생성 중 오류 발생:", error);
+            return;
+        }
 
-                modalPaymentBtn.addEventListener("click", async function() {
+        try {
+            // 서버로부터 결제 금액 가져오기
+            const response = await fetch(`/getAmount?reservationId=${reservationId}`);
+            if (!response.ok) {
+                throw new Error(`서버 응답 오류: ${response.status}`);
+            }
+            const data = await response.json();
+            const amount = data.amount;
+
+            if (!amount || isNaN(amount)) {
+                throw new Error("결제 금액이 올바르게 설정되지 않았습니다.");
+            }
+
+            // 결제 금액 설정
+            widgets.setAmount({
+                currency: "KRW",
+                value: amount,
+            });
+
+            // 결제 방법과 약관 렌더링
+            await Promise.all([
+                widgets.renderPaymentMethods({
+                    selector: "#payment-method",
+                    variantKey: "DEFAULT",
+                }),
+                widgets.renderAgreement({
+                    selector: "#agreement",
+                    variantKey: "AGREEMENT"
+                }),
+            ]);
+
+            // 결제 요청 처리
+            modalPaymentBtn.addEventListener("click", async function() {
+                try {
                     await widgets.requestPayment({
-                        orderId: reservationId,
+                        orderId: orderId,
                         orderName: "세인트존스 호텔 숙박 예약",
-                        successUrl: window.location.origin + "/success",
-                        failUrl: window.location.origin + "/fail",
+                        successUrl: `${window.location.origin}/success`,
+                        failUrl: `${window.location.origin}/fail`,
                         customerEmail: "customer123@gmail.com",
                         customerName: "김토스",
                         customerMobilePhone: "01012341234",
                     });
-                });
-            })
-            .catch(error => {
-                console.error("결제 금액 설정에 오류가 발생했습니다:", error);
+
+                    // 결제 요청 후 모달 닫기
+                    modal.style.display = 'none';
+                } catch (error) {
+                    console.error("결제 요청 처리 중 오류 발생:", error);
+                }
             });
+        } catch (error) {
+            console.error("결제 금액 설정에 오류가 발생했습니다:", error);
+        }
     }
 });

@@ -7,15 +7,14 @@ import java.time.LocalDateTime;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Base64;
+import java.util.UUID;
 
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bangIt.blended.common.config.TossPaymentConfig;
+import com.bangIt.blended.domain.dto.room.ReservationDTO;
 import com.bangIt.blended.domain.dto.user.payment.PaymentRequestDTO;
 import com.bangIt.blended.domain.entity.PaymentEntity;
 import com.bangIt.blended.domain.entity.ReservationEntity;
@@ -26,113 +25,151 @@ import com.bangIt.blended.domain.repository.ReservationEntityRepository;
 import com.bangIt.blended.service.user.PaymentService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PaymentServiceProcess implements PaymentService {
 
-	private static final Logger logger = LoggerFactory.getLogger(PaymentServiceProcess.class);
+    private final TossPaymentConfig tossPaymentConfig;
+    private final ReservationEntityRepository reservationRepository;
+    private final PaymentEntityRepository paymentRepository;
 
-	private final TossPaymentConfig tossPaymentConfig;
-	private final ReservationEntityRepository reservationRepository;
-	private final PaymentEntityRepository paymentRepository;
+    @Transactional(readOnly = true)
+    public ReservationDTO getReservationById(Long id) {
+        ReservationEntity reservation = reservationRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Reservation not found with ID: " + id));
+        return ReservationDTO.fromEntity(reservation);
+    }
 
-	@Override
-	public String createPayment(PaymentRequestDTO requestDTO) {
-		StringBuilder responseBody = new StringBuilder();
-		try {
-			URL url = new URL(TossPaymentConfig.PAYMENT_URL);
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			connection.addRequestProperty("Content-Type", "application/json");
-			connection.setDoOutput(true);
-			connection.setDoInput(true);
+    @Override
+    @Transactional
+    public String createPayment(PaymentRequestDTO requestDTO) {
+        StringBuilder responseBody = new StringBuilder();
+        String orderId = generateOrderId();
+        try {
+            Long reservationId = requestDTO.getReservationId();
+            ReservationEntity reservation = reservationRepository.findById(reservationId)
+                    .orElseThrow(() -> new RuntimeException("Reservation not found with ID: " + reservationId));
 
-			JSONObject jsonBody = new JSONObject();
-			jsonBody.put("orderNo", requestDTO.getOrderNo());
-			jsonBody.put("amount", requestDTO.getAmount());
-			jsonBody.put("amountTaxFree", requestDTO.getAmountTaxFree());
-			jsonBody.put("productDesc", requestDTO.getProductDesc());
-			jsonBody.put("apiKey", tossPaymentConfig.getTestClientApiKey());
-			jsonBody.put("autoExecute", requestDTO.isAutoExecute());
-			jsonBody.put("resultCallback", requestDTO.getResultCallback());
-			jsonBody.put("retUrl", requestDTO.getRetUrl());
-			jsonBody.put("retCancelUrl", requestDTO.getRetCancelUrl());
+            log.info("Generated Order ID: {}", orderId);
 
-			logger.info("Creating payment with request body: {}", jsonBody);
+            PaymentEntity existingPayment = paymentRepository.findByOrderId(orderId).orElse(null);
 
-			BufferedOutputStream bos = new BufferedOutputStream(connection.getOutputStream());
-			bos.write(jsonBody.toString().getBytes(StandardCharsets.UTF_8));
-			bos.flush();
-			bos.close();
+            if (existingPayment == null) {
+                PaymentEntity payment = PaymentEntity.builder()
+                        .orderId(orderId)
+                        .reservation(reservation)
+                        .amount(requestDTO.getAmount())
+                        .paymentDate(LocalDateTime.now())
+                        .paymentMethod(PaymentMethod.TOSS_PAY)
+                        .paymentStatus(PaymentStatus.PENDING)
+                        .build();
 
-			BufferedReader br = new BufferedReader(
-					new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
-			String line;
-			while ((line = br.readLine()) != null) {
-				responseBody.append(line);
-			}
-			br.close();
+                paymentRepository.save(payment);
+                log.info("Payment entity saved with orderId: {}", payment.getOrderId());
 
-			logger.info("Payment creation response: {}", responseBody.toString());
-		} catch (Exception e) {
-			logger.error("Error during payment creation", e);
-			responseBody.append(e);
-		}
-		return responseBody.toString();
-	}
+                URL url = tossPaymentConfig.getPaymentUrl().toURL();
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.addRequestProperty("Content-Type", "application/json");
+                connection.setDoOutput(true);
+                connection.setDoInput(true);
 
-	@Override
-	public boolean validatePayment(String paymentKey, String orderId, Long amount) {
-		try {
-			logger.info("Validating payment - paymentKey: {}, orderId: {}, amount: {}", paymentKey, orderId, amount);
+                JSONObject jsonBody = new JSONObject();
+                jsonBody.put("orderNo", orderId);
+                jsonBody.put("amount", requestDTO.getAmount());
+                jsonBody.put("amountTaxFree", requestDTO.getAmountTaxFree());
+                jsonBody.put("productDesc", requestDTO.getProductDesc());
+                jsonBody.put("apiKey", tossPaymentConfig.getTestClientApiKey());
+                jsonBody.put("autoExecute", requestDTO.isAutoExecute());
+                jsonBody.put("resultCallback", requestDTO.getResultCallback());
+                jsonBody.put("retUrl", requestDTO.getRetUrl());
+                jsonBody.put("retCancelUrl", requestDTO.getRetCancelUrl());
 
-			// 요청 데이터 설정
-			JSONObject requestBody = new JSONObject();
-			requestBody.put("orderId", orderId);
-			requestBody.put("amount", amount);
-			requestBody.put("paymentKey", paymentKey);
+                log.info("Creating payment with request body: {}", jsonBody);
 
-			// 실제 API 호출 부분 (RestTemplate 코드가 있는 경우 사용)
-			// 해당 부분에 문제가 없다는 가정하에 생략했지만, 로깅이 필요한 경우 아래와 같이 진행
-			logger.info("Payment validation request body: {}", requestBody);
+                try (BufferedOutputStream bos = new BufferedOutputStream(connection.getOutputStream())) {
+                    bos.write(jsonBody.toString().getBytes(StandardCharsets.UTF_8));
+                    bos.flush();
+                }
 
-			// 성공 시 반환값 처리
-			return true;
-		} catch (Exception e) {
-			logger.error("Error validating payment", e);
-			return false;
-		}
-	}
+                try (BufferedReader br = new BufferedReader(
+                        new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        responseBody.append(line);
+                    }
+                }
 
-	@Override
-	@Transactional
-	public void savePaymentInfo(String paymentKey, String orderId, Long amount) {
-	    logger.info("Saving payment information - paymentKey: {}, orderId: {}, amount: {}", paymentKey, orderId, amount);
+                log.info("Payment creation response: {}", responseBody);
+            } else {
+                log.info("Payment with orderId {} already exists.", orderId);
+                responseBody.append("Payment already exists.");
+            }
+        } catch (Exception e) {
+            log.error("Error creating payment", e);
+            responseBody.append(e.getMessage());
+        }
+        
+        // orderId와 응답 본문을 함께 반환
+        return orderId + "|" + responseBody.toString();
+    }
 
-	    // orderId를 Long으로 변환하지 않고 그대로 사용
-	    ReservationEntity reservation = reservationRepository.findByOrderId(orderId)
-	            .orElseThrow(() -> new RuntimeException("Reservation not found with Order ID: " + orderId));
+    @Override
+    public boolean validatePayment(String paymentKey, String orderId, Long amount) {
+        try {
+            log.info("Validating payment - paymentKey: {}, orderId: {}, amount: {}", paymentKey, orderId, amount);
 
-	    PaymentEntity payment = PaymentEntity.builder()
-	            .tossPaymentId(paymentKey)
-	            .reservation(reservation)
-	            .amount(amount)
-	            .paymentDate(LocalDateTime.now())
-	            .paymentMethod(PaymentMethod.TOSS_PAY)
-	            .paymentStatus(PaymentStatus.COMPLETED)
-	            .build();
+            JSONObject requestBody = new JSONObject();
+            requestBody.put("orderId", orderId);
+            requestBody.put("amount", amount);
+            requestBody.put("paymentKey", paymentKey);
 
-	    paymentRepository.save(payment);
-	    logger.info("Payment information saved successfully.");
-	}
+            log.info("Payment validation request body: {}", requestBody);
 
-	@Override
+            // TODO: Implement actual validation logic here
+            return true;
+        } catch (Exception e) {
+            log.error("Error validating payment", e);
+            return false;
+        }
+    }
+
+    @Override
+    public void savePaymentInfo(String paymentKey, String orderId, Long amount, Long reservationId) {
+        log.info("Saving payment information - paymentKey: {}, orderId: {}, amount: {}, reservationId: {}", paymentKey, orderId, amount, reservationId);
+
+        ReservationEntity reservation = reservationRepository.findById(reservationId)
+            .orElseThrow(() -> new IllegalArgumentException("Reservation not found with ID: " + reservationId));
+
+        PaymentEntity payment = paymentRepository.findByOrderId(orderId)
+            .orElseGet(() -> {
+                log.warn("Payment not found with Order ID: {}. Creating new payment entity.", orderId);
+                return PaymentEntity.builder()
+                        .orderId(orderId)
+                        .reservation(reservation)  // ReservationEntity 설정
+                        .amount(amount)
+                        .paymentStatus(PaymentStatus.PENDING)
+                        .paymentMethod(PaymentMethod.TOSS_PAY)
+                        .build();
+            });
+
+        payment.updatePaymentInfo(paymentKey, PaymentStatus.COMPLETED, amount);
+        paymentRepository.save(payment);
+
+        log.info("Payment information saved successfully for orderId: {}", orderId);
+    }
+
+
+    @Transactional(readOnly = true)
     public Long getAmountByReservationId(Long reservationId) {
         ReservationEntity reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new RuntimeException("Reservation not found with ID: " + reservationId));
-        return reservation.getRoom().getRoomPrice(); // 예약된 방의 가격을 반환
+        return reservation.getRoom().getRoomPrice();
     }
 
-	
-
+    private String generateOrderId() {
+        return UUID.randomUUID().toString();
+    }
 }
