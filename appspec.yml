@@ -1,0 +1,15 @@
+version: 0.0
+
+os: linux 
+#배포한 파일 위치 지정/ 지정한 폴더가 존재해야함
+files:
+  - source: /
+    destination: /home/ec2-user/codedeploy/bangIt
+    overwrite: true
+
+#배포한 파일이 ec2-user권한으로 적용됌
+permissions:
+  - object: /
+    pattern: "**"
+    owner: ec2-user
+    group: ec2-user
