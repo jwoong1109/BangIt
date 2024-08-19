@@ -33,7 +33,7 @@ public class SecurityConfig {
 						/*
 						 * .requestMatchers("/**").hasRole("PARTNER")
 						 */
-                		 .requestMatchers("/admin/").hasRole("USER")
+                		 .requestMatchers("/admin").hasRole("USER")
 						 .requestMatchers("/admin/**").hasRole("ADMIN")
 						 
                 .anyRequest().authenticated()
