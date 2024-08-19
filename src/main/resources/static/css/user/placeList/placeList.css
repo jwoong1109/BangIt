@@ -10,10 +10,10 @@
 
 
 /*카테고리 선택*/
-
+#searchForm{width: 22%}
 .catagori> h2{margin-bottom: 20px}
 .catagori {margin-bottom: 20px}
-.catagori{width: 20%; height: 250px}
+.catagori{width: 100%; height: 250px}
 .catagori>div{width: 100%;height: 550px}
 
 .accommodation-options,.theme-options {display: flex;flex-direction: column;}
@@ -69,6 +69,53 @@ footer{position: absolute; bottom: -400px; left: 0; width: 100%}
 
 
 /*서치폼*/
+
+/* 지역 선택 박스 컨테이너 스타일 */
+.region-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 20px;
+}
+/* 제목 스타일 */
+.region-container p {
+    margin: 0;
+    font-weight: bold;
+    color: #333;
+    font-size: 1em;
+}
+
+
+/* 지역 선택 드롭다운 스타일 */
+#region-select {
+    padding: 10px; /* 내부 여백 */
+    border: 1px solid #ccc; /* 테두리 색상 */
+    border-radius: 4px; /* 테두리 둥글게 */
+    background-color: #fff; /* 배경색 */
+    font-size: 1em; /* 글자 크기 */
+    color: #333; /* 글자 색상 */
+    appearance: none; /* 브라우저 기본 스타일 제거 */
+    width: 100%; /* 부모 요소에 맞게 넓이 설정 */
+    max-width: 300px; /* 최대 넓이 설정 */
+    box-sizing: border-box; /* 패딩을 포함한 크기 설정 */
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* 포커스 시 애니메이션 */
+}
+
+/* 드롭다운 포커스 시 스타일 */
+#region-select:focus {
+    border-color: #007bff; /* 포커스 시 테두리 색상 */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* 포커스 시 그림자 */
+    outline: none; /* 포커스 시 외곽선 제거 */
+}
+
+/* 드롭다운 옵션 스타일 */
+#region-select option {
+    padding: 10px;
+    font-size: 1em;
+    text-align:center;
+    color: #333;
+    background-color: #fff;
+}
 
 .ui-datepicker {
     background: #fff;
@@ -176,7 +223,7 @@ footer{position: absolute; bottom: -400px; left: 0; width: 100%}
     color: #666;
 }
 
-.search-options {
+.search-options{
 	 max-width: 1200px;
     display: flex;
     justify-content: space-around;

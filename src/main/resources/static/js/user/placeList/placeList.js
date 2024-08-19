@@ -1,32 +1,35 @@
 document.addEventListener("DOMContentLoaded", function() {
+	//웹 크롤링을 위한 변수
+	let places = document.querySelectorAll('.places');
+	let yanolja = document.querySelector('#yanolja');
+	let yeogiEottae = document.querySelector('#yeogi-eottae');
 
 
-	$.datepicker.setDefaults($.datepicker.regional['ko']);
+	//각 숙소를 배열로 받아 숙소를 호버 했을때 크롤링을 위한 비동기 요청 보내기
+	places.forEach(function(place) {
 
-	$("#checkin-date").datepicker({
-		dateFormat: "yy년 MM dd일",
-		minDate: 0, // 오늘 날짜 이후만 선택 가능
-		onClose: function(selectedDate) {
-			// 체크아웃 날짜의 최소 선택 가능 날짜를 체크인 날짜 이후로 설정
-			$("#checkout-date").datepicker("option", "minDate", selectedDate);
-		}
-	});
+		place.addEventListener('mouseenter', function() {
 
-	$("#checkout-date").datepicker({
-		dateFormat: "yy년 MM dd일",
-		minDate: 1 // 오늘 날짜 이후만 선택 가능
-	});
+			//해당 배열 안에 있는 숙소 이름 가져오기
+			let placeName = place.querySelector('.place-name').textContent.trim(); arguments
 
-	// 인원 수 조정
-	$("#guest-minus").click(function() {
-		let currentCount = parseInt($("#guest-count").val());
-		if (currentCount > 1) {
-			$("#guest-count").val(currentCount - 1);
-		}
-	});
+		     fetch(`/search/places/scrape/${encodeURIComponent(placeName)}`, {
+                method: 'GET'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
 
-	$("#guest-plus").click(function() {
-		let currentCount = parseInt($("#guest-count").val());
-		$("#guest-count").val(currentCount + 1);
-	});
+
+		});
+
+
+	}); //끝
+
+
 });
