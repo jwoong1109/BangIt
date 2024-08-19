@@ -5,8 +5,6 @@ import java.lang.Long;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.bangIt.blended.common.bot.IntentionEntity;
-
 public interface IntentionEntityRepository extends JpaRepository<IntentionEntity, Long> {
 
 	// 주어진 키워드에 해당하는 IntentionEntity를 검색하는 메서드

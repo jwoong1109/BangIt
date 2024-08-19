@@ -3,17 +3,14 @@
 
 <head>
 	<title>판매자 페이지 - 방잇</title>
-	<!-- 여기에 partner 페이지에만 필요한 추가적인 CSS나 JS 파일을 링크할 수 있습니다 -->
 	<link rel="stylesheet" href="/css/admin/partner/partnerManagement.css">
-	<!-- 예시: Remix Icon -->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css">
 	<script src="/js/admin/partner/partner.js" defer></script>
+	<script src="/js/admin/partner/placeManagement.js" defer></script>
 </head>
 
 <body>
-
 	<main class="cmindex">
-		<!-- 여기에 partner 페이지의 주요 내용을 작성합니다 -->
 		<th:block th:replace="~{/views/admin/partner/partnersubmenu}" />
 
 		<div class="dash management-contents">
@@ -23,53 +20,34 @@
 						<span>숙소명</span>
 						<span>숙소유형</span>
 						<span>등록일</span>
-						<span>등록자(판매자)</span>
+						<span>지역</span>
 						<span>상세페이지</span>
 						<span>상태</span>
 					</li>
-					<li>
-						<span>더 하얏트 호텔</span>
-						<span>호텔</span>
-						<span>2024.08.11</span>
-						<span>홍길동</span>
+					<!-- Place 데이터 반복 -->
+					<li th:each="place : ${places}">
+						<span th:text="${place.name}"></span>
+						<span th:text="${place.type}"></span>
+						<span th:text="${#temporals.format(place.createdAt, 'yyyy.MM.dd')}">등록일</span>
+						<span th:text="${place.region}"></span>
 						<span>
 							<button class="show-popup">상세보기</button>
 						</span>
-						<span>승인완료</span>
-					</li>
-					<li>
-						<span>그랜드 호텔</span>
-						<span>호텔</span>
-						<span>2024.02.15</span>
-						<span>최희영</span>
-						<span>
-							<button class="show-popup">상세보기</button>
-						</span>
-						<span>승인완료</span>
-					</li>
-					<li>
-						<span>조선 비즈니스</span>
-						<span>비즈니스 호텔</span>
-						<span>2022.03.12</span>
-						<span>김춘식</span>
-						<span>
-							<button class="show-popup">상세보기</button>
-						</span>
-						<span>승인대기</span>
+						<span></span>
 					</li>
 				</ul>
 			</div>
 		</div>
+
 		<!-- 상세보기 팝업 -->
-		<div class="details-popup" id="details-popup">
-			<button class="close-popup" id="close-popup">닫기</button>
-			<div class="popup-content" id="popup-content">
-				<h2>상세페이지</h2>
+		<div class="slide-container" id="slide-container">
+			<div class="slide-content" id="slide-content">
+				<div class="slide-content-detail">
+					<!-- 여기에 로드된 콘텐츠가 들어갑니다 -->
+				</div>
 			</div>
 		</div>
-
 	</main>
-
 </body>
 
 </html>

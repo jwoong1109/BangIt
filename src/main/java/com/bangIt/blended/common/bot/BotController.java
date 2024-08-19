@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 
 import lombok.RequiredArgsConstructor;
 
-import java.text.MessageFormat;
 
 @Controller
 @RequiredArgsConstructor
@@ -18,17 +17,12 @@ public class BotController {
     // WebSocket 메시지 전송을 위한 템플릿
     private final SimpMessagingTemplate messagingTemplate;
 
-    /**
-     * 사용자의 질문을 처리하는 메소드
-     * @param dto 사용자의 질문 정보를 담은 객체
-     */
-    @MessageMapping("/question")
-    public void bot(Question dto) {
-        System.out.println(">>> 받은 질문: " + dto);
-        // BotService를 통해 질문 처리
-        botService.questionProcess(dto);
+    @MessageMapping("/query")
+    public void handleQuery(Question dto) {
+        System.out.println(">>> 사용자 질문: " + dto);
+        botService.handleUserQuery(dto);
     }
-
+    
     /*
     // 최초인사말
     @MessageMapping("/hello")

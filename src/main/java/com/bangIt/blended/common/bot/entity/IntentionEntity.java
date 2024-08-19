@@ -1,6 +1,4 @@
-package com.bangIt.blended.common.bot;
-
-import com.bangIt.blended.common.bot.entity.AnswerEntity;
+package com.bangIt.blended.common.bot.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
