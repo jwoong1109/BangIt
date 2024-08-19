@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{views/common/partnerlayout :: layout(~{::head} ,~{::main} ) }">
+<head>
+    <title>판매자 페이지 - 방잇</title>
+    <link rel="stylesheet" href="/css/partner/place/room.css">
+    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e92dcce6a45cf9533fea83124cc52455&libraries=services"></script>
+    <script src="/js/partner/room/room.js" defer></script>
+    <script src="/js/partner/place/image-upload2.js" defer></script>
+</head>
+<body>
+    <main class="cmindex">
+		<section class="contents">
+			<div class="dash user-search">
+				<h2>숙소정보</h2>
+				<div class="search-results">
+					<ul>
+						<li class="header">
+							<span>지역</span> 
+							<span>숙소명</span> 
+							<span>숙소유형</span>
+							<span>등록일</span>
+							<span>상태</span>
+						</li>
+						<li th:each="place : ${places}" class="user-item" th:data-place-id="${place.id}" th:data-place-status="${place.status}">
+							<span th:text="${place.region.KoName}">지역</span> 
+							<span th:text="${place.name}">숙소명</span> 
+							<span th:text="${place.type.KoName}">숙소유형</span> 
+							<span th:text="${place.updatedAt.toLocalDate}">등록일</span>
+							<span th:text="${place.status.koName}">숙소상태</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="dash user-activity">
+				<h2>숙소 정보</h2>
+				<div class="place-details"></div>
+				<div class="room-details"></div>
+			</div>
+
+			<div class="dash reservation-info">
+				<h2>방 목록</h2>
+				<p class="no-user-selected">방을 등록하세요</p>
+				<div class="reservation-details" style="display: none;">
+					<ul id="roomList">
+						<!-- 방 목록이 여기에 동적으로 추가됩니다 -->
+					</ul>
+					<button id="roomSave" class="room-btn">방 등록</button>
+				</div>
+
+			</div>
+		</section>
+	</main>
+</body>
+</html>

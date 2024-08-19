@@ -6,14 +6,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
-public class adminController {
+public class AdminDriveController {
+
 	
-	@GetMapping("/admin")
-	public String list() {
-		
-		
-		return "views/admin/adminIndex";
+	@GetMapping("/admin/drive")
+	public String adminPartner() {
+		return "/views/admin/drive/list";
 	}
+	
 	
 
 }

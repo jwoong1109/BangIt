@@ -1,0 +1,156 @@
+/* 메인 컨텐츠 스타일 */
+main {
+    padding: 20px;
+    width: 900px;
+    height: 980px ;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+
+.dash {
+    height: 880px ;
+}
+
+/*//////////////////숙소 등록//////////////*/
+/*//////////////////숙소 등록//////////////*/
+
+/* 폼 스타일 */
+.place-save-form {
+    background-color: #f7f7f7;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.place-save-form h2 {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-item input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+input[type="text"], 
+input[type="number"],
+input[type="file"],
+textarea,
+select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.submit-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* 방 정보 섹션 스타일 */
+.room-section {
+    margin-top: 30px;
+}
+
+.room-group {
+    margin-bottom: 30px;
+}
+
+.room-group h3 {
+    margin-bottom: 15px;
+}
+
+.radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.radio-item {
+    display: flex;
+    align-items: center;
+}
+
+.radio-item input[type="radio"] {
+    margin-right: 5px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+/* 주소 검색 버튼 스타일 */
+.address-search-btn {
+	padding: 10px 20px;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 14px;
+	margin-top: 15px;
+	width: fit-content; /* 내용에 맞게 너비를 조정합니다 */
+}
+
+/* 기존 CSS에 추가 또는 수정 */
+
+.btn-file {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;  /* 100px에서 150px로 증가 */
+    height: 200px; /* 100px에서 150px로 증가 */
+    border: 0.5px dotted #d9d9d9;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 10px;  /* 버튼 간 간격 추가 */
+    position: relative;  /* 자식 요소의 절대 위치 지정을 위해 */
+}
+
+.plus-icon {
+    font-size: 24px;  /* '+' 아이콘 크기 증가 */
+    color: #888;  /* 색상 변경 */
+}
+
+.file-guide {
+	color: green;
+	font-size: 12px;
+}
+
+*/

@@ -1,0 +1,168 @@
+@charset "UTF-8";
+
+.contents {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto 1fr;
+    gap: 20px;
+    height: calc(100vh - 160px);
+    padding-right: 15px;
+}
+
+.total-revenue, .revenue-chart {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.revenue-search {
+    grid-column: 1 / 3;
+    grid-row: 2 / 3;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.revenue-summary {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+}
+
+.summary-item {
+    text-align: center;
+}
+
+.summary-item h3 {
+    margin-bottom: 5px;
+    color: #555;
+    font-size: 14px;
+}
+
+.summary-item .amount, .summary-item .count {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--main-color);
+}
+
+.chart-container {
+    height: 160px;
+    margin-top: 10px;
+}
+
+.search-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.date-range {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.date-range input{
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.search-button, .export-button {
+    padding: 8px 15px;
+    background-color:#FE5B5C;
+    color: #fff;
+    border: 1px solid #FE5B5C;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.export-button {
+    background-color:#fff;
+    color: #FE5B5C;
+}
+
+.search-results {
+    flex-grow: 1;
+    overflow-y: auto;
+    height: calc(100% - 80px); /* 검색 폼의 높이를 고려하여 조정 */
+}
+
+.revenue-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+}
+
+.revenue-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.revenue-item.header {
+    background-color: #f5f5f5;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.revenue-item:hover:not(.header) {
+    background-color: #f0f0f0;
+}
+
+.revenue-item span {
+    flex: 1;
+    padding: 0 10px;
+    text-align: center;
+}
+
+/* 반응형 디자인을 위한 미디어 쿼리 */
+@media (max-width: 1200px) {
+    .contents {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto 1fr;
+    }
+
+    .revenue-search {
+        grid-column: 1;
+        grid-row: 3 / 4;
+    }
+}
+
+@media (max-width: 768px) {
+    .revenue-summary {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .summary-item {
+        margin-bottom: 10px;
+    }
+
+    .search-form {
+        flex-direction: column;
+    }
+
+    .date-range {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .revenue-item {
+        flex-direction: column;
+    }
+
+    .revenue-item span {
+        text-align: left;
+        padding: 5px 10px;
+    }
+
+    .revenue-item.header {
+        display: none;
+    }
+}

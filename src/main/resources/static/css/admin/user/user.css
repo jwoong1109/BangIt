@@ -1,0 +1,201 @@
+@charset "UTF-8";
+
+
+.contents {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 30px;
+  height: calc(100vh - 160px); /* 헤더/푸터 높이에 따라 조정 */
+  padding-right: 15px
+}
+
+
+.reservation-info, .user-activity {
+    position: relative;
+}
+
+.user-search {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    display: flex;
+    flex-direction: column;
+}
+
+.user-search h2{ margin-bottom: 20px}
+
+.search-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-input, .filter-select {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.search-button {
+    padding: 10px 20px;
+    background-color: var(--mian-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search-results {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.search-results ul {
+    padding: 0;
+    margin: 0;
+}
+
+.search-results li,.reservation-details ul li,.activity-details ul li{
+    display: flex;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+}
+
+.search-results li.header,.reservation-details ul li.header,.activity-details ul li.header {
+    font-weight: bold;
+    background-color: #f5f5f5;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.search-results li:not(.header):hover,.reservation-details ul li:not(.header):hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+.search-results span,.reservation-details ul li span,.activity-details ul li span {
+    flex: 1;
+    padding: 0 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.no-user-selected {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 90%;
+    color: #888;
+    text-align: center;
+}
+
+.no-user-selected i {
+    font-size: 3em;
+    margin-bottom: 10px;
+}
+
+.reservation-details, .activity-details {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #fff;
+    padding: 20px;
+    overflow-y: auto;
+    display: none;
+}
+
+
+/*예약 세부사항 팝업*/
+
+.reservation-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.popup-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    max-width: 600px;
+    width: 90%;
+}
+
+.popup-content h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+    text-align: center;
+}
+
+.popup-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.popup-section {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.popup-section h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #0056b3;
+    font-size: 18px;
+}
+
+.popup-section p {
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+.popup-section strong {
+    display: inline-block;
+    width: 100px;
+    color: #555;
+}
+
+.close-popup {
+    display: block;
+    margin:0 auto;
+    width: 30%;
+    margin-top: 25px;
+    padding: 12px 20px;
+    background-color: var(--mian-color);
+    color:#fff;
+    border: 2px solid var(--mian-color);
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+
+
+
+
+
+
+

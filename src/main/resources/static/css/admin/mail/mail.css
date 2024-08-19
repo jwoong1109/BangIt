@@ -1,0 +1,75 @@
+.mail-wrap{display: flex;justify-content: space-between;}
+.mail-nav{width: 15%}
+.mail-list{width: 84%;position: relative;}
+.cmbutton2{width:100%;box-shadow: 0 4px 10px 0 rgba( 31, 38, 135, 0.37 ); margin-bottom: 10px; padding: 13px 0px; font-size: 17px; font-weight: 600}
+
+
+
+.mail-folder-list li{width: 100%; padding: 10px 5px; margin-bottom: 5px; }
+
+.mail-folder-list li>a{display: flex;justify-content: space-between; padding: 10px; border-radius:5px}
+
+.mail-folder-list li:hover > a {
+	background: var(--background-color2);box-shadow: 0 4px 10px 0 rgba( 31, 38, 135, 0.37 );
+}
+
+.mail-folder-list li>a>span:nth-child(2) {
+	display: inline-block; padding: 0px 6px;  background: var(--mian-color); color: #fff; border-radius:5px
+}
+
+.cmlist span{flex: none; font-weight: 600}
+.cmlist li span:nth-child(1){width: 15%}
+.cmlist li span:nth-child(2){width: 15%}
+.cmlist li span:nth-child(3){width: 15%}
+.cmlist li span:nth-child(4){width: 10%}
+
+.cmlist a{flex: none; width: 55%}
+
+.modal-content > .cmlist span{flex: none; font-weight: 600}
+.modal-content>.cmlist li span:nth-child(1){width: 10%}
+.modal-content>.cmlist li span:nth-child(2){width: 10%}
+.modal-content>.cmlist li span:nth-child(3){width: 30%}
+
+
+.WritModal,.modal {
+    display: none;
+    position: absolute;
+    z-index: 300;
+    left:0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.WritModal-content,.modal-content {
+    background-color: #fefefe;
+    overflow-y:auto;
+    height:85.55vh;
+    padding: 20px;
+    width: 100%;
+}
+
+.WritModalclose,.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.WritModal-content input[type="email"],
+.WritModal-content input[type="text"],
+.WritModal-content textarea {
+    width: 100%;
+    padding: 5px;
+    margin-top: 5px;
+}
+

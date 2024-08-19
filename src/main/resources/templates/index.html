@@ -2,22 +2,184 @@
 <html xmlns:th="http://www.thymeleaf.org" th:replace="~{views/common/layout :: layout(~{::head} ,~{::main} ) }">
 
 <head>
-
-
 	<link rel="stylesheet" href="/css/index.css">
 	<script src="/js/index.js"></script>
-
 </head>
 
 <body>
+
 	<main>
-	
-	<h1>인덱스 입니다.</h1>
+		<section class="banner">
+			<div class="container">
+				<div class="banner-text">
+					<h1>나는 어디에서 와서 어디로 가는가?</h1>
+					<h2>당신을 위한 <span>최고의 선택</span>, <span class="highlight">방_it</span></h2>
+				</div>
+			</div>
+		</section>
+		<!-- Search Section -->
+		<section class="search">
+			<div class="search-container">
+				<h2>여행 일정 맞춤 검색</h2>
+				<p>당신의 일정을 검색하세요</p>
+				<div class="search-options">
+					<form action="/search/places" method="post">
+						<div class="search-item">
 
+							<div>
+								<p>지역</p>
+								<select id="region-select" name="region" required>
+									<option value="">지역 선택</option>
+									<option th:each="region : ${T(com.bangIt.blended.domain.enums.Region).values()}"
+										th:value="${region.name()}" th:text="${region.koName}"></option>
+								</select>
+							</div>
+						</div>
+						<div class="search-item">
+							<span class="icon">📅</span>
+							<div>
+								<p>체크인 날짜</p>
+								<input type="date" name="checkinDate" id="checkin-date" class="datepicker"
+									placeholder="날짜 선택" required>
+							</div>
+						</div>
+						<div class="search-item">
+							<span class="icon">📅</span>
+							<div>
+								<p>체크아웃 날짜</p>
+								<input type="date" name="checkoutDate" id="checkout-date" class="datepicker"
+									placeholder="날짜 선택" required>
+							</div>
+						</div>
+						<div class="search-item">
+							<span class="icon">👤</span>
+							<div>
+								<p>인원</p>
+								<div class="guest-picker">
+									<button type="button" id="guest-minus">-</button>
+									<input type="text" name="guestCount" id="guest-count" value="1" readonly required>
+									<button type="button" id="guest-plus">+</button>
+								</div>
+							</div>
+						</div>
+						<div class="search-button">
+							<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+							<button type="submit">예약하기</button>
+						</div>
 
+					</form>
+				</div>
+			</div>
+		</section>
+		<!-- Category Section -->
+		<section class="category">
+			<div class="category-container">
+				<div class="category-item">
+					<a href="#">
+						<img src="/images/hotel-icon.png" alt="호텔/리조트">
+					</a>
+					<p>호텔/리조트</p>
+				</div>
 
+				<div class="category-item">
+					<a href="#">
+						<img src="/images/motel-icon.png" alt="펜션/풀빌라">
+					</a>
+					<p>모텔</p>
+				</div>
+				<div class="category-item">
+					<a href="#">
+						<img src="/images/vacation-icon.png" alt="펜션/풀빌라">
+					</a>
+					<p>펜션/풀빌라</p>
+				</div>
+				<div class="category-item">
+					<a href="#">
+						<img src="/images/family-icon.png" alt="펜션/풀빌라">
+					</a>
+					<p>가족형 숙소</p>
+				</div>
+				<div class="category-item">
+					<a href="#">
+						<img src="/images/animal-icon.png" alt="펜션/풀빌라">
+					</a>
+					<p>애견동반</p>
+				</div>
+				<!-- 추가 카테고리 아이템들 -->
+			</div>
+		</section>
+
+		<!-- Hotel Section -->
+		<section class="hotels">
+			<div class="container">
+				<div class="container-text">
+					<h2>럭셔리를 좋아하는 당신을 위한 최고의 선택</h2>
+					<p>회원님의 검색결과를 토대로 숙소를 추천해드립니다</p>
+				</div>
+				<div class="hotel-cards">
+					<div th:each="hotel : ${nearbyHotels}" class="hotel-card">
+						<a th:href="@{'/hotel/detail/' + ${hotel.id}}">
+							<!-- 호텔의 메인 이미지 URL을 사용하여 이미지를 표시 -->
+							<img th:src="${hotel.imageUrl}" alt="Hotel">
+						</a>
+						<!-- 호텔 이름을 표시 -->
+						<div class="hotel-name">
+							<h3 th:text="${hotel.name}">Hotel Name</h3>
+						</div>
+					</div>
+				</div>
+		</section>
+
+		<!-- Profile Section -->
+		<section class="profiles">
+			<div class="profiles-container">
+				<div class="container-text">
+					<h2>이번달 인기 숙소 탑5</h2>
+					<p>최고로 엄선한 숙소 pick</p>
+				</div>
+				<div class="profile-cards">
+					<div class="profile-card">
+						<a href="hotel-details/5"><img src="/images/hotel.png" alt="Profile 1"></a>
+						<div class="overlay">
+							<h3>숙소 이름</h3>
+							<p>숙소 설명, 가격</p>
+						</div>
+					</div>
+					<div class="profile-card">
+						<a href="#"><img src="/images/hotel.png" alt="Profile 2"></a>
+					</div>
+					<div class="profile-card">
+						<a href="#"><img src="/images/hotel.png" alt="Profile 3"></a>
+					</div>
+					<div class="profile-card">
+						<a href="#"><img src="/images/hotel.png" alt="Profile 4"></a>
+					</div>
+					<div class="profile-card">
+						<a href="#"><img src="/images/hotel.png" alt="Profile 5"></a>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Premium Picks Section -->
+		<section class="premium-picks">
+			<div class="container">
+				<div class="container-text">
+					<h2>이번 주 블랙 PICK</h2>
+					<p>나를 위한 근사한 휴가, 방잇 프리미엄 숙소</p>
+				</div>
+				<div class="pick-cards">
+					<div th:each="hotel : ${HotelList}" class="pick-card">
+						<a th:href="@{'/hotel/' + ${hotel.id}}"><img th:src="${hotel.imageUrl}" alt="Pick"></a>
+						<div class="pick-overlay">
+							<h3 th:text="${hotel.name}">호텔 이름</h3>
+							<p th:text="${hotel.description}">호텔 설명</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
 	</main>
-
 </body>
 
 </html>
