@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.ui.Model;
 
+import com.bangIt.blended.domain.dto.placesList.ScrapePlaceDTO;
 import com.bangIt.blended.domain.dto.placesList.SearchPlaceDTO;
 
 public interface PlaceListService {
@@ -12,6 +13,6 @@ public interface PlaceListService {
 
 	void applyFilters(SearchPlaceDTO dto, List<String> accommodationTypes, List<String> themes, Model model);
 
-	void scrapeProcess(String placeName, Model model);
+	ScrapePlaceDTO scrapeProcess(String placeName);
 
 }

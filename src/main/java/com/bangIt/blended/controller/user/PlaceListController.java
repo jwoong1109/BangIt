@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bangIt.blended.domain.dto.placesList.ScrapePlaceDTO;
 import com.bangIt.blended.domain.dto.placesList.SearchPlaceDTO;
 import com.bangIt.blended.service.user.PlaceListService;
 import org.springframework.ui.Model;
@@ -32,17 +33,14 @@ public class PlaceListController {
     
     @ResponseBody
     @GetMapping("/search/places/scrape/{placeName}")
-    public ResponseEntity<String> scrapePlace(@PathVariable(name = "placeName") String placeName, Model model) {
+    public ScrapePlaceDTO scrapePlace(@PathVariable(name = "placeName") String placeName) {
     	
-        try {
-            placeListService.scrapeProcess(placeName, model);
-            return ResponseEntity.ok("Scraping completed");
-        } catch (Exception e) {
-          
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error during scraping");
-        }
+    	return placeListService.scrapeProcess(placeName);
+        
     }
     
+    
+ 
     
 
 	

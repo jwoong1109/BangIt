@@ -48,7 +48,8 @@
 
 /*가격비교*/
 .price-comparison-wrap{width: 24%; padding-top: 44px;}
-.price-comparison>li{height: 150px; margin-bottom: 30px}
+.price-comparison{display: none;}
+.price-comparison>li{height: 158px; margin-bottom: 30px}
 .price-comparison>li>a>div:nth-child(1)>img{height: 120px;}
 
 .price-comparison>li>a>div:nth-child(2)>ul>li:nth-child(1){font-size: 0.5vw; color: var(--font-color3);}
