@@ -5,7 +5,16 @@ plugins {
 }
 
 group = 'com.bangIt'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0'
+
+bootJar{
+	archiveFileName= "bangIt-${version}.jar"
+	exclude '**/ssh/*'
+}
+
+jar{
+	enabled = false
+}
 
 java {
 	toolchain {
