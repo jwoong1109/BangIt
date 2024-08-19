@@ -1,4 +1,4 @@
-package com.bangIt.blended.domain.dto.room;
+package com.bangIt.blended.domain.dto.user.payment;
 
 import java.time.LocalDateTime;
 

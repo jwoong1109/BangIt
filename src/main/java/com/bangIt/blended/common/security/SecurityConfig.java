@@ -24,10 +24,12 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-            .csrf(Customizer.withDefaults())
+        .csrf(csrf -> csrf
+                .ignoringRequestMatchers("/generate-order-id") // 여기에 경로 추가
+            )
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/css/**", "/js/**", "/images/**", "/error").permitAll()
-                .requestMatchers("/", "/login","/logout","/partner-login","/business-registration","/bangItBot/**","/success/**", "/fail/**","/confirm/**").permitAll()
+                .requestMatchers("/", "/login","/logout","/partner-login","/business-registration","/bangItBot/**","/success/**", "/fail/**","/confirm/**","/generate-order-id").permitAll()
 						/*
 						 * .requestMatchers("/**").hasRole("PARTNER")
 						 */

@@ -2,7 +2,6 @@ package com.bangIt.blended.controller.user.payment;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -12,8 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.bangIt.blended.service.user.PaymentService;
+import com.bangIt.blended.domain.enums.PaymentMethod;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -37,13 +36,19 @@ public class WidgetController {
         String orderId;
         String amount;
         String paymentKey;
+        String reservationId;
+        String paymentMethod;
+
         try {
             // 클라이언트에서 받은 JSON 요청 바디입니다.
             JSONObject requestData = (JSONObject) parser.parse(jsonBody);
             paymentKey = (String) requestData.get("paymentKey");
             orderId = String.valueOf(requestData.get("orderId")); // orderId를 String으로 변환
             amount = String.valueOf(requestData.get("amount"));   // amount도 동일하게 String으로 변환
-            logger.info("요청 데이터 파싱 완료 - paymentKey: {}, orderId: {}, amount: {}", paymentKey, orderId, amount);
+            reservationId = String.valueOf(requestData.get("reservationId")); // reservationId 추가
+            paymentMethod = (String) requestData.get("paymentMethod"); // paymentMethod 추가
+            logger.info("요청 데이터 파싱 완료 - paymentKey: {}, orderId: {}, amount: {}, reservationId: {}, paymentMethod: {}",
+                paymentKey, orderId, amount, reservationId, paymentMethod);
         } catch (ParseException e) {
             logger.error("JSON 파싱 오류: {}", e.getMessage());
             throw new RuntimeException(e);
@@ -53,7 +58,7 @@ public class WidgetController {
         obj.put("orderId", orderId);
         obj.put("amount", amount);
         obj.put("paymentKey", paymentKey);
-        
+
         logger.info("토스페이 API 요청 준비 완료");
 
         // 토스페이먼츠 API는 시크릿 키를 사용자 ID로 사용하고, 비밀번호는 사용하지 않습니다.
@@ -89,9 +94,11 @@ public class WidgetController {
 
         if (isSuccess) {
             // 결제가 성공하면 결제 정보를 DB에 저장합니다.
-            Long amountValue = Long.parseLong(amount);  // amount는 여전히 Long으로 처리
+            Long reservationIdValue = Long.parseLong(reservationId);  // reservationId를 Long으로 변환
+            Long amountValue = Long.parseLong(amount);  // amount를 Long으로 변환
+            PaymentMethod paymentMethodEnum = PaymentMethod.valueOf(paymentMethod.toUpperCase()); // String을 ENUM으로 변환
             logger.info("결제 성공 - DB에 결제 정보 저장 시작");
-            paymentService.savePaymentInfo(paymentKey, orderId, amountValue);  // orderId를 문자열로 전달
+            paymentService.savePaymentInfo(paymentKey, orderId, amountValue, reservationIdValue, paymentMethodEnum);  // Long 타입의 reservationId와 PaymentMethod 전달
             logger.info("DB에 결제 정보 저장 완료");
         }
 
