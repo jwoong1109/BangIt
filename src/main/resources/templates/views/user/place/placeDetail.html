@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{views/common/layout :: layout(~{::head} ,~{::main} ) }">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/user/place/place.css" >
+    <link rel="stylesheet" href="/css/user/room/room.css" >
+    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e92dcce6a45cf9533fea83124cc52455&libraries=services"></script>
+    <script>
+        // 모달 열기 함수
+        function openModal() {
+            document.getElementById('roomModal').style.display = "block";
+        }
+
+        // 모달 닫기 함수
+        function closeModal() {
+            document.getElementById('roomModal').style.display = "none";
+        }
+
+        // 모달 창 외부 클릭 시 닫기
+        window.onclick = function(event) {
+            var modal = document.getElementById('roomModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+</head>
+<body>
+	<main>
+		<!-- 이미지 갤러리 섹션 -->
+		<section class="image-gallery">
+			<!-- 메인 이미지 -->
+			<div class="main-image" th:if="${place.mainImage != null}">
+				<img th:src="${place.mainImage}" alt="메인 숙소 이미지">
+			</div>
+
+			<!-- 추가 이미지들 -->
+			<div class="additional-images"
+				th:if="${place.additionalImages != null and !place.additionalImages.isEmpty()}">
+				<div th:each="imageUrl : ${place.additionalImages}" th:if="${!#strings.isEmpty(imageUrl)}">
+					<img th:src="${imageUrl}" th:alt="'추가 숙소 이미지'">
+				</div>
+			</div>
+		</section>
+		
+		<!-- 숙소 상세 정보 섹션 -->
+		<section class="details">
+			<span th:text="${place.type.KoName}" style="color: #103333;"></span>
+			<h1 th:text="${place.name}">방잇 숙소</h1>
+			<br />
+			<p>테마<br />
+				<span th:each="theme : ${place.themes}" th:text="${theme.KoName} + ' '"></span>
+			</p>
+		</section>
+		<hr />
+
+		<!-- 날짜 검색 섹션 -->
+		<section class="date-search">
+			<h2>날짜 및 인원수 선택</h2>
+			<form>
+				<div class="form-group">
+					<label for="checkin-date">체크인 / 체크아웃</label> <input type="date"
+						id="checkin-date" name="checkin-date" required> <span>부터</span>
+					<input type="date" id="checkout-date" name="checkout-date" required>
+				</div>
+
+				<div class="form-group">
+					<label for="adults">성인:</label> <select id="adults" name="adults">
+						<option value="1">1명</option>
+						<option value="2">2명</option>
+						<option value="3">3명</option>
+						<option value="4">4명</option>
+					</select>
+				</div>
+			</form>
+		</section>
+		<!-- 방 정보 섹션 -->
+		<section class="rooms"
+			th:if="${rooms != null and not #lists.isEmpty(rooms)}">
+			<div th:each="room : ${rooms}" class="room">
+<<<<<<< HEAD
+				<div class="room-image-container"
+					th:onclick="'openImageGallery(' + ${room.id} + ')'">
+					<img th:if="${room.mainImage != null}" th:src="${room.mainImage}"
+						alt="방 메인 이미지" class="room-main-image"> <img
+						th:unless="${room.mainImage != null}" alt="기본 이미지"
+						class="room-main-image">
+				</div>
+				<div class="room-info">
+					<div class="room-header">
+						<h2 th:text="${room.roomName}">방 이름</h2>
+					</div>
+					<div class="room-time">
+						<p th:text="'입실: ' + ${room.checkInTime} + ' / 퇴실: ' + ${room.checkOutTime}">입실/퇴실 시간</p>
+					</div>
+					
+					<div class="room-description">
+						<p th:text="${room.roomInformation}">방 설명</p>
+					</div>
+				</div>
+				<div class="room-details">
+						<p th:text="'기준 인원: ' + ${room.guests} + '명'">기준 인원</p>
+				</div>
+				<div class="room-price">
+					<h3 th:text="'₩' + ${#numbers.formatDecimal(room.roomPrice, 0, 'COMMA', 0, 'POINT')} + ' / 박'">가격</h3>
+				</div>
+				<div class="room-buttons">
+					<button class="details-btn"
+						th:onclick="'openModal(' + ${room.id} + ')'">상세 정보 보기</button>
+					<button class="reserve-btn">예약하기</button>
+				</div>
+=======
+				<h2 th:text="${room.roomName}">방 이름</h2>
+				<p th:text="${room.roomInformation}">방 설명</p>
+				<h3
+					th:text="'가격: ₩' + ${#numbers.formatDecimal(room.roomPrice, 0, 'COMMA', 0, 'POINT')} + ' / 박'">가격</h3>
+				<p th:text="'최대 인원: ' + ${room.guests} + '명'">최대 인원</p>
+				<p th:text="'체크인 시간: ' + ${room.checkInTime}">체크인 시간</p>
+				<p th:text="'체크아웃 시간: ' + ${room.checkOutTime}">체크아웃 시간</p>
+				<h4>환불 정책</h4>
+				<p th:text="${room.refundPolicy}">환불 정책</p>
+				<button class="details-btn"
+					th:onclick="'openModal(' + ${room.id} + ')'">상세 정보 보기</button>
+				<button class="reserve-btn">예약하기</button>
+>>>>>>> 010b1736d72b3a121bcf11e12eb6dd8aee5dedf1
+			</div>
+		</section>
+		<hr />
+		<!-- 모달 창 구조 -->
+		<div id="roomModal" class="modal">
+			<div class="modal-content">
+				<span class="close" onclick="closeModal()">&times;</span>
+				<div id="modal-body">
+					<h2>방1</h2>
+					<br>
+					<hr />
+					<h2>방 1 상세 정보</h2>
+					<p>이 방은 넓고 밝으며, 더블 침대가 있는 아늑한 공간입니다.</p>
+					<ul>
+						<li>면적: 30m²</li>
+						<li>침대: 퀸 사이즈 1개</li>
+						<li>최대 수용 인원: 2명</li>
+						<li>욕실: 개인 욕실 1개</li>
+					</ul>
+					<br>
+					<hr />
+					<h3>편의 시설</h3>
+					<ul>
+						<li>에어컨</li>
+						<li>무료 Wi-Fi</li>
+						<li>평면 TV</li>
+						<li>미니 냉장고</li>
+					</ul>
+					<!-- 추가 정보 -->
+				</div>
+			</div>
+		</div>
+
+		<!-- 숙소 상세 정보 섹션 -->
+
+		<section class="details">
+			<h2 th:text="${place.name}">방잇 숙소</h2>
+			<p th:text="${place.description}">간단한 편의시설 제공 정보</p>
+			<div id="map" style="width: 100%; height: 400px;"></div>
+			<p>
+				위치: <span th:text="${place.detailedAddress}"></span>
+			</p>
+		</section>
+		<hr />
+
+		<script th:inline="javascript">
+            /*<![CDATA[*/
+            var mapContainer = document.getElementById('map');
+            var mapOption = {
+                center: new kakao.maps.LatLng(37.537187, 127.005476),
+                level: 5
+            };
+
+            var map = new kakao.maps.Map(mapContainer, mapOption);
+            var geocoder = new kakao.maps.services.Geocoder();
+            var marker = new kakao.maps.Marker({
+                map: map
+            });
+
+            var address = /*[[${place.detailedAddress}]]*/ '기본 주소';
+            var lat = /*[[${place.latitude}]]*/ 37.537187;
+            var lng = /*[[${place.longitude}]]*/ 127.005476;
+
+            if (lat && lng) {
+                var coords = new kakao.maps.LatLng(lat, lng);
+                map.setCenter(coords);
+                marker.setPosition(coords);
+            } else {
+                geocoder.addressSearch(address, function(results, status) {
+                    if (status === kakao.maps.services.Status.OK) {
+                        var result = results[0];
+                        var coords = new kakao.maps.LatLng(result.y, result.x);
+                        map.setCenter(coords);
+                        marker.setPosition(coords);
+                    }
+                });
+            }
+            /*]]>*/
+        </script>
+
+		<!-- 숙소 상세 정보 섹션 -->
+		<section class="details">
+			<h2>취소 및 환불규정</h2>
+			<p>객실별 취소 정책이 상이하니 객실 상세정보에서 확인해주세요.</p>
+		</section>
+		<hr />
+
+		<!-- 리뷰 섹션 -->
+		<section class="reviews">
+			<h2>리뷰</h2>
+			<div class="review">
+				<p>
+					<strong>사용자1:</strong> 아주 좋은 숙소였습니다!
+				</p>
+			</div>
+			<div class="review">
+				<p>
+					<strong>사용자2:</strong> 위치도 좋고 깨끗했어요.
+				</p>
+			</div>
+		</section>
+	</main>
+
+</body>
+</html>

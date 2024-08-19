@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{views/common/adminlayout :: layout(~{::head} ,~{::main} ) }">
+
+<head>
+
+    <title>방잇</title>
+    <link rel="stylesheet" href="/css/admin/mail/mail.css">
+    <script src="/js/admin/mail/mail.js" defer></script>
+</head>
+
+<body>
+    <main class="cmindex">
+        <th:block th:replace="~{/views/admin/mail/cmsubnav}" />
+        
+        <div class="mail-wrap">
+        	<section class="mail-nav">
+        		<button class="cmbutton2 write-mail-btn">메일쓰기<i class="fa-regular fa-paper-plane"></i></button>
+        		<button class="cmbutton2">메모쓰기<i class="fa-regular fa-pen-to-square"></i></button>
+        		<div class="dash">
+        			<ul class="mail-folder-list">
+        			<li th:each="mailFolder : ${mailFolder}">
+        				<a th:href="|/admin/mail/${mailFolder.folderId}|">
+        				<span th:text="${mailFolder.folderName}"></span>
+        				<span th:text="${mailFolder.unreadMailCount}"></span></a>
+        			</li>
+        		</ul>
+        		
+        		
+        		</div>
+        	
+        	</section>
+        	
+        	<section class="dash mail-list">
+        		<div class="cmlist">
+        			<ul>
+	        			<li>
+	        				 <span>발신자</span>
+		                     <a><span>제목</span></a>
+		                     <span>날짜</span>
+		                     <span>크기</span>
+		                     <span>파일</span>
+	
+	        			</li>
+	        			<li th:each="mailList : ${mailList}">
+	        				 <span th:text="${mailList.formName}">발신자</span>
+		                     <a href="#" th:data-mail-id="${mailList.mailId}" class="mail-detail-link"><span th:text="${mailList.subject}">제목</span></a>
+		                     <span th:text="${mailList.receivedTime}">날짜</span>
+		                     <span th:text="${mailList.size}">크기</span>
+		                     <span th:text="${mailList.attachCount}">첨부파일</span>
+	        		 
+	        			</li>
+	        		
+        		
+        			</ul>
+
+				
+				</div>
+				
+				<div id="mailDetailModal" class="modal">
+					<div class="modal-content">
+						<span class="close">&times;</span>
+						<div id="mailDetailContent" class="cmlist"></div>
+					</div>
+				</div>
+
+				<div id="mailWritModal" class="WritModal">
+					<div class="WritModal-content">
+						<span class="WritModalclose">&times;</span>
+						<div>
+							<form action="/admin/mail" method="post">
+								<label>받는 사람: <input type="email" name="to" required></label> 
+								<label>보내는 사람 이름: <input type="text" name="userName" required></label> 
+								<label>제목: <input type="text" name="subject" required></label> 
+								<label>내용: <textarea name="body" rows="45" required></textarea></label> 
+								<input type="hidden" name="contentType" value="text">
+								<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+								<button class="cmbutton1" type="submit">보내기</button>
+							</form>
+						</div>
+					</div>
+				</div>
+
+			</section>
+        
+        </div>
+
+
+
+	</main>
+</body>
+</html>

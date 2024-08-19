@@ -1,44 +1,198 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:replace="~{views/common/partnerlayout :: layout(~{::head} ,~{::main} ) }">
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="/css/partner/place/place.css" >
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="/css/partner/place/place.css">
+	<script src="/js/partner/place/address-api.js" defer></script>
+	<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e92dcce6a45cf9533fea83124cc52455&libraries=services"></script>
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script src="/js/partner/place/image-upload.js" defer></script>
+	<script src="/js/partner/place/place.js" defer></script>
 </head>
 <body> 
     <main>
 		<div class="dash">
-			<section class="write-form">
+			<section class="place-save-form">
             <h2>새로운 숙소 등록하기</h2>
-	            <form action="submit_listing.php" method="post" enctype="multipart/form-data">
-	                <!-- 숙소 이름 -->
-	                <div class="form-group">
-	                    <label for="listing-title">숙소 이름:</label>
-	                    <input type="text" id="listing-title" name="listing-title" required>
-	                </div>
-	
-	                <!-- 숙소 설명 -->
-	                <div class="form-group">
-	                    <label for="listing-description">숙소 설명:</label>
-	                    <textarea id="listing-description" name="listing-description" rows="4" required></textarea>
-	                </div>
-	
-	                <!-- 숙소 위치 -->
-	                <div class="form-group">
-	                    <label for="location">숙소 위치:</label>
-	                    <input type="text" id="location" name="location" required>
-	                </div>
-	
-	                <!-- 숙소 이미지 업로드 -->
-	                <div class="form-group">
-	                    <label for="images">숙소 이미지:</label>
-	                    <input type="file" id="images" name="images[]" multiple accept="image/*" required>
-	                </div>
-	
-	
-	                <!-- 등록 버튼 -->
-	                <button type="submit" class="submit-btn">숙소 등록하기</button>
-	            </form>
-        	</section>
+				<form action="/partner/placeSave" method="post" id="placeForm" onsubmit="return validateForm()">
+				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+					<!-- 숙소 이름 -->
+					<div class="form-group">
+						<label for="place-title">숙소 이름:</label> <input type="text" id="place-name" name="name" required>
+					</div>
+
+					<!-- 숙소 설명 -->
+					<div class="form-group">
+						<label for="place-description">숙소 설명:</label>
+						<textarea id="place-description" name="description" rows="4" required></textarea>
+					</div>
+
+					<!-- 숙소 지역 카테고리 -->
+					<div class="form-group">
+						<label>숙소 지역:</label>
+						<div class="radio-group">
+							<div class="radio-item">
+								<input type="radio" id="region-seoul" name="region"
+									value="SEOUL" required> <label for="region-seoul">서울</label>
+							</div>
+							<div class="radio-item">
+								<input type="radio" id="region-gyeonggi" name="region"
+									value="GYEONGGI"> <label for="region-gyeonggi">경기도</label>
+							</div>
+							<div class="radio-item">
+								<input type="radio" id="region-gangwon" name="region"
+									value="GANGWON"> <label for="region-gangwon">강원도</label>
+							</div>
+							<div class="radio-item">
+								<input type="radio" id="region-chungcheong" name="region"
+									value="CHUNGCHEONG"> <label for="region-chungcheong">충청도</label>
+							</div>
+							<div class="radio-item">
+								<input type="radio" id="region-gyeongsang" name="region"
+									value="GYEONGSANG"> <label for="region-gyeongsang">경상도</label>
+							</div>
+							<div class="radio-item">
+								<input type="radio" id="region-jeolla" name="region"
+									value="JEOLLA"> <label for="region-jeolla">전라도</label>
+							</div>
+							<div class="radio-item">
+								<input type="radio" id="region-jeju" name="region" value="JEJU">
+								<label for="region-jeju">제주도</label>
+							</div>
+							<div class="radio-item">
+								<input type="radio" id="region-dokdo" name="region"
+									value="DOKDO"> <label for="region-dokdo">독도</label>
+							</div>
+						</div>
+					</div>
+
+					<!-- 숙소 위치 -->
+					<div class="form-group" id="address-search">
+						<label for="detailed-address">상세 숙소 위치:</label>
+						<!-- 주소 검색 버튼은 JavaScript에서 동적으로 추가됩니다 -->
+						<input type="text" id="detailed-address" name="detailedAddress"
+							placeholder="도로명 주소" readonly required> <input
+							type="button" class="address-search-btn"
+							onclick="address_execDaumPostcode()" value="주소 검색"><br>
+						<input type="hidden" id="latitude" name="latitude"> <input
+							type="hidden" id="longitude" name="longitude">
+					</div>
+					<div id="map"
+						style="width: 400px; height: 300px; margin-top: 10px; display: none"></div>
+					<br />
+					<!-- 숙소 유형 카테고리 -->
+					<div class="form-group">
+						<label>숙소 유형:</label>
+						<div class="radio-group">
+							<div class="radio-item">
+								<input type="radio" id="type-hotel" name="type" value="HOTEL"
+									required> <label for="type-hotel">호텔</label>
+							</div>
+							<div class="radio-item">
+								<input type="radio" id="type-motel" name="type" value="MOTEL">
+								<label for="type-motel">모텔</label>
+							</div>
+							<div class="radio-item">
+								<input type="radio" id="type-pension" name="type"
+									value="PENSION"> <label for="type-pension">펜션</label>
+							</div>
+							<div class="radio-item">
+								<input type="radio" id="type-resort" name="type" value="RESORT">
+								<label for="type-resort">리조트</label>
+							</div>
+							<div class="radio-item">
+								<input type="radio" id="type-camping" name="type"
+									value="CAMPING"> <label for="type-camping">캠핑/글램핑</label>
+							</div>
+							<div class="radio-item">
+								<input type="radio" id="type-guesthouse" name="type"
+									value="GUESTHOUSE"> <label for="type-guesthouse">게스트하우스</label>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label>테마:</label>
+						<div class="checkbox-group">
+							<div class="checkbox-item">
+								<input type="checkbox" id="theme-breakfast" name="themes"
+									value="BREAKFAST"> <label for="theme-breakfast">조식포함</label>
+							</div>
+							<div class="checkbox-item">
+								<input type="checkbox" id="theme-spa" name="themes" value="SPA">
+								<label for="theme-spa">스파</label>
+							</div>
+							<div class="checkbox-item">
+								<input type="checkbox" id="theme-pet" name="themes"
+									value="PET_FRIENDLY"> <label for="theme-pet">반려견동반</label>
+							</div>
+							<div class="checkbox-item">
+								<input type="checkbox" id="theme-smoking" name="themes"
+									value="SMOKING"> <label for="theme-smoking">객실내흡연</label>
+							</div>
+							<div class="checkbox-item">
+								<input type="checkbox" id="theme-cooking" name="themes"
+									value="COOKING"> <label for="theme-cooking">객실내취사</label>
+							</div>
+							<div class="checkbox-item">
+								<input type="checkbox" id="theme-couplepc" name="themes"
+									value="COUPLE_PC"> <label for="theme-couplepc">커플PC</label>
+							</div>
+							<div class="checkbox-item">
+								<input type="checkbox" id="theme-parking" name="themes"
+									value="FREE_PARKING"> <label for="theme-parking">무료주차</label>
+							</div>
+							<div class="checkbox-item">
+								<input type="checkbox" id="theme-pickup" name="themes"
+									value="PICKUP"> <label for="theme-pickup">픽업가능</label>
+							</div>
+						</div>
+					</div>
+
+					<!-- 숙소 메인 이미지 업로드 -->
+					<div class="form-group">
+						<label for="mainImage">숙소 메인 이미지:</label> 
+						<input type="file" id="mainImage" onchange="fileupload(this)">
+						<input type="hidden" name="mainImageBucketKey"> 
+						<input type="hidden" name="mainImageOrgName">
+						<div id="mainImagePreview" class="image-preview-container"></div>
+						<p class="file-guide">
+							<span>메인 이미지 필수입력</span><br> <span>최대 용량 : 2MB</span><br>
+							<span>이미지 확대 기능 : 대표 이미지 기준 1000 X 1000 이상 이미지 등록 시, 확대기능이
+								제공됩니다.</span>
+						</p>
+					</div>
+
+					<!-- 숙소 추가 이미지 업로드 -->
+					<div class="form-group">
+						<p>추가 이미지</p>
+						<div class="image-upload-container">
+							<label class="btn-file"> 
+							<input type="file" onchange="fileupload(this)" style="display: none;"> 
+							<input type="hidden" name="additionalImageBucketKeys">
+							<input type="hidden" name="additionalImageOrgNames">
+							<span class="plus-icon">+</span>
+							<div class="image-preview-container"></div>
+							</label> 
+							<label class="btn-file">
+							<input type="file" onchange="fileupload(this)" style="display: none;">
+							<input type="hidden" name="additionalImageBucketKeys">
+							<input type="hidden" name="additionalImageOrgNames">
+							<span class="plus-icon">+</span>
+							<div class="image-preview-container"></div>
+							</label>
+						</div>
+						<p class="file-guide">
+							<span>권장 크기 : 1000 X 1000(윈도 대상 750 X 1000), 300 X 300 이상</span><br>
+							<span>이미지 확대 기능 : 대표 이미지 기준 1000 X 1000 이상 이미지 등록 시, 확대기능이 제공됩니다.</span><br>
+						</p>
+					</div>
+
+					<!-- 등록 버튼 -->
+					<button type="button" onclick="submitForm()" class="submit-btn">숙소 등록하기</button>
+					
+				</form>
+			</section>
 		</div>    
     </main>
 </body>

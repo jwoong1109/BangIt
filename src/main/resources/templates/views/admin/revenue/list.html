@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{views/common/adminlayout :: layout(~{::head} ,~{::main} ) }">
+
+<head>
+    <title>방잇 - 통합 매출 관리</title>
+    <link rel="stylesheet" href="/css/admin/revenue/revenue.css">
+    <!-- <script src="/js/admin/revenue/revenue.js" defer></script> -->
+</head>
+
+<body>
+    <main class="cmindex">
+        <th:block th:replace="~{/views/admin/revenue/cmsubnav}" />
+        
+        <section class="contents">
+            <div class="dash total-revenue">
+                <h2>통합 매출</h2>
+                <div class="revenue-summary">
+                    <div class="summary-item">
+                        <h3>총 매출</h3>
+                        <p class="amount">￦ 1,234,567,890</p>
+                    </div>
+                    <div class="summary-item">
+                        <h3>총 예약 건수</h3>
+                        <p class="count">5,678</p>
+                    </div>
+                    <div class="summary-item">
+                        <h3>총 수수료</h3>
+                        <p class="amount">￦ 123,456,789</p>
+                    </div>
+                </div>
+            </div>
+            <div class="dash revenue-chart">
+                <h2>매출 top 3</h2>
+                <div class="chart-container">
+                
+                </div>
+            </div>
+            <div class="dash revenue-search">
+                <h2>매출 조회</h2>
+                <form class="search-form">
+                    <div class="date-range">
+                        <input type="date" id="start-date" name="start-date">
+                        <span>~</span>
+                        <input type="date" id="end-date" name="end-date">
+                        <input type="text" id="partner-name" name="partner-name">
+                    </div>
+                    <button type="submit" class="search-button">조회</button>
+                    <button type="button" class="export-button">엑셀 내보내기</button>
+                </form>
+                <div class="search-results">
+                    <ul class="revenue-list">
+                        <li class="revenue-item header">
+                            <span>판매자 ID</span>
+                            <span>총 예약 건수</span>
+                            <span>총 매출 금액</span>
+                            <span>수수료</span>
+                            <span>정산 금액</span>
+                        </li>
+                        <li class="revenue-item">
+                            <span>seller001</span>
+                            <span>150</span>
+                            <span>￦ 15,000,000</span>
+                            <span>￦ 1,500,000</span>
+                            <span>￦ 13,500,000</span>
+                        </li>
+                        <!-- 더 많은 항목 추가 -->
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

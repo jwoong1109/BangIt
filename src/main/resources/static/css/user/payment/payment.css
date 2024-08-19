@@ -1,112 +1,148 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
-    margin: 0;
-    padding-top: 80px; /* 고정된 헤더 아래에 여백 추가 */
+	font-family: Arial, sans-serif;
+	background-color: #f8f9fa;
+	margin: 0;
+	padding-top: 80px; /* 고정된 헤더 아래에 여백 추가 */
 }
 
 .container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
-    position: relative;
+	width: 90%;
+	max-width: 1200px;
+	margin: 0 auto;
+	position: relative;
 }
+
 .main-content {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+	display: flex;
+	justify-content: space-between;
+	margin-top: 20px;
 }
 
 .left-section, .right-section {
-    width: 48%;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	width: 48%;
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .left-section h2, .right-section h2 {
-    font-size: 1.5em;
-    color: var(--font-color);
-    margin-bottom: 15px;
+	font-size: 1.5em;
+	color: var(--font-color);
+	margin-bottom: 15px;
 }
 
 label {
-    display: block;
-    margin-bottom: 5px;
-    color: var(--font-color2);
+	display: block;
+	margin-bottom: 5px;
+	color: var(--font-color2);
 }
 
 input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 15px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
 }
 
 button {
-    padding: 15px 20px;
-    font-size: 16px;
-    background-color:var(--mian-color);
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+	padding: 15px 20px;
+	font-size: 16px;
+	background-color: var(--mian-color);
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
 }
-.methods button:hover{
-	background-color:var(--trans-sub-color);
+
+.methods button:hover {
+	background-color: var(--trans-sub-color);
 }
 
 .payment-methods .methods button {
-    display: inline-block;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
+	display: inline-block;
+	margin-bottom: 10px;
+	border: 1px solid #ddd;
 }
 
 .payment-info {
-    text-align: center;
+	text-align: center;
 }
 
 .payment-info p {
-    margin: 10px 0;
-    font-size: 18px;
+	margin: 10px 0;
+	font-size: 18px;
 }
 
 .payment-info strong {
-    color: #e74c3c;
-    font-size: 24px;
+	color: #e74c3c;
+	font-size: 24px;
 }
 
 .pay-btn {
-    background-color: #e74c3c;
-    padding: 15px;
-    font-size: 18px;
-    width: 100%;
-    border-radius: 8px;
-    cursor: pointer;
-    color: white;
+	background-color: #e74c3c;
+	padding: 15px;
+	font-size: 18px;
+	width: 100%;
+	border-radius: 8px;
+	cursor: pointer;
+	color: white;
 }
 
 .pay-btn:hover {
-    background-color: #c0392b;
+	background-color: #c0392b;
 }
-.hotel-info p strong{
+
+.hotel-info p strong {
 	font-size: 18px;
 }
 
 .hotel-info img {
-    width: 100%;
-    height: auto;
-    margin-bottom: 15px;
-    border-radius: 8px;
+	width: 100%;
+	height: auto;
+	margin-bottom: 15px;
+	border-radius: 8px;
 }
 
+/* 모달 창 스타일 */
+.payment-modal {
+	display: none;
+	position: fixed;
+	z-index: 1000;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0, 0, 0, 0.5);
+}
 
-/* 모달 기본 스타일 */
-/* 모달 기본 스타일 */
+.payment-modal-content {
+	background-color: #fefefe;
+	margin: 10% auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 80%;
+	max-width: 800px;
+}
+
+.close-btn {
+	color: #aaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+.close-btn:hover, .close-btn:focus {
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+/*
 .modal {
-  display: none; /* 기본적으로 숨김 */
+  display: none; 기본적으로 숨김
   position: fixed;
   z-index: 1;
   left: 0;
@@ -114,10 +150,10 @@ button {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4); /* 배경 흐리게 */
+  background-color: rgba(0, 0, 0, 0.4); 배경 흐리게
 }
 
-/* 모달 콘텐츠 스타일 */
+모달 콘텐츠 스타일
 .modal-content {
   background-color: #fff;
   margin: 15% auto;
@@ -129,10 +165,10 @@ button {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   font-family: Arial, sans-serif;
   line-height: 1.5;
-  position: relative; /* 닫기 버튼 위치를 위한 설정 */
+  position: relative; 닫기 버튼 위치를 위한 설정
 }
 
-/* 닫기 버튼 스타일 */
+닫기 버튼 스타일
 .modal-content .close-btn {
   position: absolute;
   top: 10px;
@@ -177,3 +213,4 @@ button {
   background-color: #007bff;
   color: #fff;
 }
+ */

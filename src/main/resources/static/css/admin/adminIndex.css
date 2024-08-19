@@ -1,7 +1,9 @@
 @charset "UTF-8";
 
 .admin-index {
-	display: grid;  grid-template-columns:1fr 0.3fr 1.7fr; grid-template-rows:40% 58%;
+	display: grid;  
+	grid-template-columns:1fr 0.3fr 1.7fr; 
+	grid-template-rows:40% 58%;
 	grid-template-areas: 
 	'a b c' 
 	'd d e';

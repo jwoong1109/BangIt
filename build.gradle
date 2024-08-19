@@ -5,7 +5,16 @@ plugins {
 }
 
 group = 'com.bangIt'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0'
+
+bootJar{
+	archiveFileName= "bangIt-${version}.jar"
+	exclude '**/ssh/*'
+}
+
+jar{
+	enabled = false
+}
 
 java {
 	toolchain {
@@ -21,6 +30,7 @@ configurations {
 
 repositories {
 	mavenCentral()
+	maven { url 'https://jitpack.io' }
 }
 
 
@@ -29,24 +39,44 @@ ext {
 }
 
 dependencies {
+	// OAuth2 클라이언트 및 소셜 로그인 지원
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+
+	// JWT 지원
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5' // or use 'io.jsonwebtoken:jjwt-gson'
+
 	// 웹 프론트엔드 관련 의존성
     implementation 'org.webjars:webjars-locator-core:0.59'  // WebJar 리소스 로케이터
     implementation 'org.webjars:jquery:3.7.1'  // jQuery 라이브러리
     implementation 'org.webjars:sockjs-client:1.5.1'  // WebSocket 클라이언트
     implementation 'org.webjars:stomp-websocket:2.3.4'  // STOMP over WebSocket
-    
+    implementation 'com.github.shin285:KOMORAN:3.3.9'
     implementation 'com.github.mwiede:jsch:0.2.18' 
     
      // 메시징 및 실시간 통신 관련 의존성
     implementation 'org.springframework.boot:spring-boot-starter-amqp'  // AMQP 지원 (RabbitMQ 등)
     implementation 'org.springframework.boot:spring-boot-starter-websocket'  // WebSocket 지원
-
+    
+    //이미지 처리를 위한 s3 추가
+    implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3:3.1.1'
+    
+    //웹크롤링
+    implementation 'org.jsoup:jsoup:1.18.1'
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux' // WebClient 사용 시
+	// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+	implementation 'org.json:json:20210307'
+
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
 	implementation 'org.springframework.cloud:spring-cloud-starter-config'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'

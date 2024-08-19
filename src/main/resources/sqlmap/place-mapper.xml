@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bangIt.blended.domain.mapper.PlaceMapper">
+  <resultMap id="PlaceDTOResultMap" type="com.bangIt.blended.domain.dto.place.PlaceDTO">
+    <id property="id" column="id"/>
+    <result property="name" column="name"/>
+    <result property="description" column="description"/>
+    <result property="detailedAddress" column="detailed_address"/>
+    <result property="latitude" column="latitude"/>
+    <result property="longitude" column="longitude"/>
+    <result property="region" column="region"/>
+    <result property="type" column="type"/>
+    <result property="lowestPrice" column="lowest_price"/>
+    <result property="imageUrl" column="main_image_url"/>
+</resultMap>
+
+<select id="findprocess" parameterType="com.bangIt.blended.domain.dto.placesList.SearchPlaceDTO" resultMap="PlaceDTOResultMap">
+    SELECT DISTINCT p.*, 
+           (SELECT MIN(r.room_price) FROM room r WHERE r.place_id = p.id) as lowest_price,
+           (SELECT pi.image_url 
+            FROM place_images pi 
+            WHERE pi.place_id = p.id AND pi.image_type = 'PLACE_MAIN' 
+            LIMIT 1) as main_image_url
+    FROM place p
+    WHERE p.region = #{region}
+    AND EXISTS (
+        SELECT 1
+        FROM room r
+        LEFT JOIN reservation res ON r.id = res.room_id 
+            AND res.reservation_status = 'CONFIRMED'
+            AND (
+                (res.check_in_date &lt;= #{checkoutDate} AND res.check_out_date &gt;= #{checkinDate})
+                OR
+                (res.check_in_date &gt;= #{checkinDate} AND res.check_in_date &lt; #{checkoutDate})
+            )
+        WHERE r.place_id = p.id
+        AND r.guests >= #{guestCount}
+        AND res.id IS NULL
+    )
+    <if test="accommodationTypes != null and accommodationTypes.size() > 0">
+        AND p.type IN
+        <foreach item="type" collection="accommodationTypes" open="(" separator="," close=")">
+            #{type}
+        </foreach>
+    </if>
+    <if test="themes != null and themes.size() > 0">
+        AND p.id IN (
+            SELECT DISTINCT pt.place_id
+            FROM place_themes pt
+            WHERE pt.theme IN
+            <foreach item="theme" collection="themes" open="(" separator="," close=")">
+                #{theme}
+            </foreach>
+        )
+    </if>
+</select>
+</mapper>

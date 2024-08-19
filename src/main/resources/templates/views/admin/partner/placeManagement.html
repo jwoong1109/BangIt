@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{views/common/adminlayout :: layout(~{::head} ,~{::main} ) }">
+
+<head>
+	<title>판매자 페이지 - 방잇</title>
+	<link rel="stylesheet" href="/css/admin/partner/partnerManagement.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css">
+	<script src="/js/admin/partner/partner.js" defer></script>
+	<script src="/js/admin/partner/placeManagement.js" defer></script>
+</head>
+
+<body>
+	<main class="cmindex">
+		<th:block th:replace="~{/views/admin/partner/partnersubmenu}" />
+
+		<div class="dash management-contents">
+			<div class="management-results">
+				<ul>
+					<li class="management-header">
+						<span>숙소명</span>
+						<span>숙소유형</span>
+						<span>등록일</span>
+						<span>지역</span>
+						<span>상세페이지</span>
+						<span>상태</span>
+					</li>
+					<!-- Place 데이터 반복 -->
+					<li th:each="place : ${places}">
+						<span th:text="${place.name}"></span>
+						<span th:text="${place.type}"></span>
+						<span th:text="${#temporals.format(place.createdAt, 'yyyy.MM.dd')}">등록일</span>
+						<span th:text="${place.region}"></span>
+						<span>
+							<button class="show-popup">상세보기</button>
+						</span>
+						<span></span>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<!-- 상세보기 팝업 -->
+		<div class="slide-container" id="slide-container">
+			<div class="slide-content" id="slide-content">
+				<div class="slide-content-detail">
+					<!-- 여기에 로드된 콘텐츠가 들어갑니다 -->
+				</div>
+			</div>
+		</div>
+	</main>
+</body>
+
+</html>
