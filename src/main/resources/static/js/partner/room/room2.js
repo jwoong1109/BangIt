@@ -43,27 +43,42 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 	
-	function loadRoomList(placeId) { // placeStatus 매개변수를 제거
-	    const placeItem = document.querySelector(`.user-item[data-place-id="${placeId}"]`);
-	    const placeStatus = placeItem.getAttribute('data-place-status'); // 내부 변수로 선언
-
-	    fetch(`/partner/roomListHtml?placeId=${placeId}&placeStatus=${placeStatus}`)
+	function loadRoomList(placeId) {
+	    fetch(`/partner/roomListHtml?placeId=${placeId}`)
 	        .then(response => response.text())
 	        .then(html => {
 	            const roomListContainer = document.getElementById('roomList');
 	            roomListContainer.innerHTML = html;
 
+	            // 항상 reservation-details를 표시
 	            document.querySelector('.reservation-details').style.display = 'block';
-	            document.querySelector('.no-user-selected').style.display = 'none';
 
+	            if (roomListContainer.querySelectorAll('.room-item').length > 0) {
+	                // 방이 있을 경우
+	                document.querySelector('.no-user-selected').style.display = 'none';
+	            } else {
+	                // 방이 없을 경우
+	                document.querySelector('.no-user-selected').style.display = 'block';
+	                document.querySelector('.no-user-selected').innerHTML = 
+	                    '<i class="fa-solid"></i><br>등록된 방이 없습니다.<br>방을 등록해주세요.';
+	            }
+
+	            // 방 등록 버튼이 항상 보이도록 함
 	            const roomSaveButton = document.getElementById('roomSave');
 	            if (roomSaveButton) {
-	                roomSaveButton.style.display = placeStatus === 'APPROVED' ? 'block' : 'none';
+	                roomSaveButton.style.display = 'block';
 	            }
 	        })
 	        .catch(error => {
 	            console.error('방 목록 로드 오류:', error);
 	            document.getElementById('roomList').innerHTML = '<li>방 목록을 로드하는 중 오류가 발생했습니다.</li>';
+	            
+	            // 오류 발생 시에도 reservation-details와 방 등록 버튼을 표시
+	            document.querySelector('.reservation-details').style.display = 'block';
+	            const roomSaveButton = document.getElementById('roomSave');
+	            if (roomSaveButton) {
+	                roomSaveButton.style.display = 'block';
+	            }
 	        });
 	}
 

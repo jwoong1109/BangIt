@@ -3,6 +3,7 @@ package com.bangIt.blended.domain.dto.place;
 import java.util.List;
 import java.util.Set;
 
+import com.bangIt.blended.domain.entity.PlaceEntity;
 import com.bangIt.blended.domain.enums.PlaceTheme;
 import com.bangIt.blended.domain.enums.PlaceType;
 import com.bangIt.blended.domain.enums.Region;
@@ -30,5 +31,18 @@ public class PlaceSaveDTO {
     private String mainImageOrgName;
     private List<String> additionalImageBucketKeys;
     private List<String> additionalImageOrgNames;
+    
+    public PlaceEntity toPlaceEntity() {
+        return PlaceEntity.builder()
+                .name(name)
+                .description(description)
+                .region(region)
+                .detailedAddress(detailedAddress)
+                .type(type)
+                .themes(themes)
+                .latitude(latitude)
+                .longitude(longitude)
+                .build();
+    }
 
 }

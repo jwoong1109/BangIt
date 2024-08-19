@@ -9,7 +9,9 @@ import org.springframework.boot.autoconfigure.info.ProjectInfoProperties.Build;
 
 import com.bangIt.blended.domain.dto.place.HotelListDTO;
 import com.bangIt.blended.domain.dto.place.PlaceDetailDTO;
+import com.bangIt.blended.domain.dto.place.PlaceListDTO;
 import com.bangIt.blended.domain.entity.ImageEntity.ImageType;
+import com.bangIt.blended.domain.enums.PlaceStatus;
 import com.bangIt.blended.domain.enums.PlaceTheme;
 import com.bangIt.blended.domain.enums.PlaceType;
 import com.bangIt.blended.domain.enums.Region;
@@ -39,8 +41,8 @@ import software.amazon.awssdk.services.s3.model.Bucket;
 @DynamicUpdate
 @SequenceGenerator(name = "gen_place", sequenceName = "seq+place", initialValue = 1, allocationSize = 1)
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
 @Table(name = "place")
 @Getter
 @Entity
@@ -79,11 +81,26 @@ public class PlaceEntity extends BaseEntity {
     @Column
     private Double longitude;
     
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private PlaceStatus status;
+    
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ImageEntity> images;
     
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<RoomEntity> rooms;
+    
+    public PlaceListDTO toPlaceListDTO() {
+        return PlaceListDTO.builder()
+            .id(id)
+            .region(region)
+            .name(name)
+            .type(type)
+            .updatedAt(updatedAt)
+            .status(status)
+            .build();
+	}
     
     //숙소 상세 페이지 dto
     public PlaceDetailDTO toPlaceDetailDTO() {

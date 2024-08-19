@@ -10,17 +10,18 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.bangIt.blended.domain.dto.place.PlaceDTO;
+import com.bangIt.blended.domain.dto.placesList.ScrapePlaceDTO;
 import com.bangIt.blended.domain.dto.placesList.SearchPlaceDTO;
 import com.bangIt.blended.domain.mapper.PlaceMapper;
 import com.bangIt.blended.service.user.PlaceListService;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 
 
 @RequiredArgsConstructor
@@ -29,6 +30,8 @@ public class PlaceListServiceProcess implements PlaceListService {
 	
 	private final PlaceMapper placeMapper;
 
+	
+	//일정 검색 서비스 
     @Override
     public void findPlaceProcess(SearchPlaceDTO dto, Model model) {
     	    
@@ -41,7 +44,9 @@ public class PlaceListServiceProcess implements PlaceListService {
     	    model.addAttribute("searchDto", dto);
     	    System.out.println("places: " + places);
     }
-
+    
+    
+    //디테일 페이지에서 카테고리 검색
     @Override
     public void applyFilters(SearchPlaceDTO dto, List<String> accommodationTypes, List<String> themes, Model model) {
         dto.setAccommodationTypes(accommodationTypes);
@@ -51,67 +56,49 @@ public class PlaceListServiceProcess implements PlaceListService {
         model.addAttribute("searchDto", dto);
     }
 
-	@Override
-	public void scrapeProcess(String placeName, Model model) {
-		
-		/*https://velog.io/@minjiki2/%ED%81%AC%EB%A1%A4%EB%A7%81-Java%EB%A1%9C-%EC%9B%B9-%ED%81%AC%EB%A1%A4%EB%A7%81%ED%95%98%EA%B8%B0-Jsoup*/		
-	  
-        try {  
-            Document yeogi = Jsoup.connect("https://www.yeogi.com/domestic-accommodations?searchType=KEYWORD&keyword="+placeName)
+    
+    
+    //크롤링 작업
+    public ScrapePlaceDTO scrapeProcess(String placeName) {
+        try {
+            Document yeogi = Jsoup.connect("https://www.yeogi.com/domestic-accommodations?searchType=KEYWORD&keyword=" + URLEncoder.encode(placeName, StandardCharsets.UTF_8))
                                   .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
                                   .get();
 
-            // JSON 데이터 추출
             Element scriptElement = yeogi.select("script#__NEXT_DATA__").first();
             if (scriptElement != null) {
                 String jsonData = scriptElement.html();
                 JSONObject jsonObject = new JSONObject(jsonData);
-                JSONArray accommodations = jsonObject.getJSONObject("props")
-                                                     .getJSONObject("pageProps")
-                                                     .getJSONArray("accommodationsData");
+                JSONObject pageProps = jsonObject.getJSONObject("props").getJSONObject("pageProps");
+                JSONArray accommodations = pageProps.getJSONArray("accommodationsData");
 
-                JSONArray hotels = new JSONArray();
-                for (int i = 0; i < accommodations.length(); i++) {
-                    JSONObject accommodation = accommodations.getJSONObject(i);
-                    JSONObject hotel = new JSONObject();
-                    
-                    JSONObject meta = accommodation.getJSONObject("meta");
-                    hotel.put("name", meta.getString("name"));
-                    hotel.put("grade", meta.getString("grade"));
-                    hotel.put("imageUrl", meta.getJSONArray("images").getString(0));
-                    
-                    JSONObject address = meta.getJSONObject("address");
-                    hotel.put("location", address.getString("traffic"));
-                    
-                    JSONObject review = meta.getJSONObject("review");
-                    hotel.put("rating", review.getDouble("rate"));
-                    hotel.put("reviewCount", review.getInt("count"));
-                    
-                    JSONObject room = accommodation.getJSONObject("room");
-                    if (room.has("stay")) {
-                        JSONObject stay = room.getJSONObject("stay");
-                        if (stay.has("price")) {
-                            JSONObject price = stay.getJSONObject("price");
-                            hotel.put("price", price.getInt("discountPrice"));
-                        }
-                    }
-                    
-                    hotels.put(hotel);
+                if (accommodations.length() > 0) {
+                    JSONObject firstAccommodation = accommodations.getJSONObject(0);
+                    JSONObject meta = firstAccommodation.getJSONObject("meta");
+                    JSONObject room = firstAccommodation.getJSONObject("room");
+                    JSONObject stay = room.getJSONObject("stay");
+                    JSONObject price = stay.getJSONObject("price");
+
+                    return ScrapePlaceDTO.builder()
+                        .name(meta.optString("name", ""))
+                        .grade(meta.optString("grade", ""))
+                        .imageUrl(meta.getJSONArray("images").optString(0, ""))
+                        .location(meta.getJSONObject("address").optString("traffic", ""))
+                        .price(String.valueOf(price.optInt("discountPrice", 0)))
+                        .url("https://www.yeogi.com/domestic-accommodations/" + meta.optString("id", ""))
+                        .build();
                 }
-                
-                System.out.println("Scraped hotels: " + hotels.toString());
-                model.addAttribute("scrapedHotels", hotels.toString());
-            } else {
-                System.out.println("JSON data not found");
-                model.addAttribute("error", "JSON data not found");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Error message: " + e.getMessage());
-            model.addAttribute("error", "Scraping failed: " + e.getMessage());
+            System.out.println("Error occurred: " + e.getMessage());
         }
-    
-		
-	}
+        return null;
+    }
+
+	
+
+	
+	
 
 }
