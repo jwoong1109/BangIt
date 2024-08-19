@@ -6,13 +6,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bangIt.blended.common.util.FileUploadUtil;
-import com.bangIt.blended.domain.dto.PlaceListDTO;
+import com.bangIt.blended.domain.dto.place.PlaceListDTO;
 import com.bangIt.blended.domain.dto.place.PlaceSaveDTO;
 import com.bangIt.blended.domain.entity.ImageEntity;
 import com.bangIt.blended.domain.entity.PlaceEntity;
@@ -52,8 +53,8 @@ public class PartnerPlaceServiceProcess implements PartnerPlaceService{
         }
 		
 		//Place 엔티티 저장
-        PlaceEntity placeEntity = toPlaceEntity(dto);
-        repository.save(placeEntity);
+        //PlaceEntity placeEntity = toPlaceEntity(dto);
+        PlaceEntity placeEntity=repository.save(dto.toPlaceEntity());
         
         //이미지 정보 저장
         saveImages(placeEntity, dto);
@@ -90,41 +91,20 @@ public class PartnerPlaceServiceProcess implements PartnerPlaceService{
 	public Map<String, String> s3TempUpload(MultipartFile file) throws IOException {
 		return fileUploadUtil.s3TempUpload(file);
 	}
-
-    private PlaceEntity toPlaceEntity(PlaceSaveDTO dto) {
-        return PlaceEntity.builder()
-                .name(dto.getName())
-                .description(dto.getDescription())
-                .region(dto.getRegion())
-                .detailedAddress(dto.getDetailedAddress())
-                .type(dto.getType())
-                .themes(dto.getThemes())
-                .latitude(dto.getLatitude())
-                .longitude(dto.getLongitude())
-                .build();
-    }
+	
+    
 
     //
 	@Override
 	public void listProcess(Model model) {
-        List<PlaceEntity> placeEntities = repository.findAll();
-        List<PlaceListDTO> placeDTOs = placeEntities.stream()
-            .map(this::toPlaceListDTO)
+		List<PlaceListDTO> placeDTOs = repository.findAll().stream()
+            .map(PlaceEntity::toPlaceListDTO)
             .collect(Collectors.toList());
         
         model.addAttribute("places", placeDTOs);
     }
-
-	//숙소 목록 조회
-    private PlaceListDTO toPlaceListDTO(PlaceEntity entity) {
-        return PlaceListDTO.builder()
-            .id(entity.getId())
-            .region(entity.getRegion())
-            .name(entity.getName())
-            .type(entity.getType())
-            .updatedAt(entity.getUpdatedAt())
-            .build();
-	}
+	
+	
 
     // 상세페이지 조회
 	@Override
