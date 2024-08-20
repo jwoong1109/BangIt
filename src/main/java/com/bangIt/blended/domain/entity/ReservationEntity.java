@@ -72,13 +72,4 @@ public class ReservationEntity {
     private SaleEntity sale;
 
     
-    public ReservationDTO toReservationDTO() {
-    	return ReservationDTO.builder()
-    			.reservationDate(reservationDate)
-    			.checkInDate(checkInDate)
-    			.checkOutDate(checkOutDate)
-    			.roomName(room.getRoomName())
-    			.roomPrice(room.getRoomPrice())
-    			.build();
-    }
 }

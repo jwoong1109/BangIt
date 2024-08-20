@@ -19,7 +19,8 @@ import lombok.Getter;
 public class CustomUserDetails extends User implements OAuth2User {
 
     private static final long serialVersionUID = 1L;
-
+    
+    private Long id; 
     private String email; // username과 동일
     private String name;
     private Map<String, Object> attributes;
@@ -30,6 +31,7 @@ public class CustomUserDetails extends User implements OAuth2User {
               .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
               .collect(Collectors.toSet()));
 
+        this.id=entity.getId();
         this.email = entity.getEmail();
         this.name = entity.getUsername();
     }

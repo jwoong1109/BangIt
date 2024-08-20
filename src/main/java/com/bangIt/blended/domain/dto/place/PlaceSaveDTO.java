@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Set;
 
 import com.bangIt.blended.domain.entity.PlaceEntity;
+import com.bangIt.blended.domain.entity.UserEntity;
+import com.bangIt.blended.domain.enums.PlaceStatus;
 import com.bangIt.blended.domain.enums.PlaceTheme;
 import com.bangIt.blended.domain.enums.PlaceType;
 import com.bangIt.blended.domain.enums.Region;
@@ -25,6 +27,7 @@ public class PlaceSaveDTO {
     private List<String> additionalImageUrls;
     private Double latitude;
     private Double longitude;
+    private PlaceStatus status;
     
  // 이미지 관련 필드 추가
     private String mainImageBucketKey;
@@ -32,7 +35,7 @@ public class PlaceSaveDTO {
     private List<String> additionalImageBucketKeys;
     private List<String> additionalImageOrgNames;
     
-    public PlaceEntity toPlaceEntity() {
+    public PlaceEntity toPlaceEntity(UserEntity seller) {
         return PlaceEntity.builder()
                 .name(name)
                 .description(description)
@@ -42,6 +45,8 @@ public class PlaceSaveDTO {
                 .themes(themes)
                 .latitude(latitude)
                 .longitude(longitude)
+                .seller(seller)
+                .status(PlaceStatus.PENDING_APPROVAL)
                 .build();
     }
 

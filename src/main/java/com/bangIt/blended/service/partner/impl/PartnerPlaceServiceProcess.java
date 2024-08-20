@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -17,8 +19,10 @@ import com.bangIt.blended.domain.dto.place.PlaceListDTO;
 import com.bangIt.blended.domain.dto.place.PlaceSaveDTO;
 import com.bangIt.blended.domain.entity.ImageEntity;
 import com.bangIt.blended.domain.entity.PlaceEntity;
+import com.bangIt.blended.domain.entity.UserEntity;
 import com.bangIt.blended.domain.repository.ImageEntityRepository;
 import com.bangIt.blended.domain.repository.PlaceEntityRepository;
+import com.bangIt.blended.domain.repository.UserEntityRepository;
 import com.bangIt.blended.service.partner.PartnerPlaceService;
 
 import lombok.RequiredArgsConstructor;
@@ -31,10 +35,12 @@ public class PartnerPlaceServiceProcess implements PartnerPlaceService{
 	private final PlaceEntityRepository repository;
 	private final ImageEntityRepository imageRepository;
 	private final FileUploadUtil fileUploadUtil;
+	private final UserEntityRepository userRepository;
 	
 	@Override
     @Transactional
-    public void saveProcess(PlaceSaveDTO dto) {
+    public void saveProcess(Long userId, PlaceSaveDTO dto) {
+		UserEntity user = userRepository.findById(userId).orElseThrow();
 		
 		// 메인 이미지 처리
         if (dto.getMainImageBucketKey() != null && !dto.getMainImageBucketKey().isEmpty()) {
@@ -54,7 +60,8 @@ public class PartnerPlaceServiceProcess implements PartnerPlaceService{
 		
 		//Place 엔티티 저장
         //PlaceEntity placeEntity = toPlaceEntity(dto);
-        PlaceEntity placeEntity=repository.save(dto.toPlaceEntity());
+        PlaceEntity placeEntity=repository.save(dto.toPlaceEntity(user));
+        placeEntity = repository.save(placeEntity);  // 저장
         
         //이미지 정보 저장
         saveImages(placeEntity, dto);
@@ -96,8 +103,9 @@ public class PartnerPlaceServiceProcess implements PartnerPlaceService{
 
     //
 	@Override
-	public void listProcess(Model model) {
-		List<PlaceListDTO> placeDTOs = repository.findAll().stream()
+	public void listProcess(Long userId, Model model) {
+        UserEntity user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        List<PlaceListDTO> placeDTOs = repository.findBySeller(user).stream()
             .map(PlaceEntity::toPlaceListDTO)
             .collect(Collectors.toList());
         
@@ -120,4 +128,20 @@ public class PartnerPlaceServiceProcess implements PartnerPlaceService{
 		repository.delete(repository.findById(id).orElseThrow());
 		
 	}
+	
+//	@Override
+//    public void detailProcess(Long userId, Long id, Model model) {
+//        UserEntity user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+//        PlaceEntity place = repository.findByIdAndSeller(id, user)
+//            .orElseThrow(() -> new RuntimeException("Place not found or not owned by the user"));
+//        model.addAttribute("place", place.toPlaceDetailDTO());
+//    }
+//
+//    @Override
+//    public void deleteProcess(Long userId, long id) {
+//        UserEntity user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+//        PlaceEntity place = repository.findByIdAndSeller(id, user)
+//            .orElseThrow(() -> new RuntimeException("Place not found or not owned by the user"));
+//        repository.delete(place);
+//    }
 }

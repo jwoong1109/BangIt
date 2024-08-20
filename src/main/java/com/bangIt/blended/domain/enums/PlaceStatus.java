@@ -13,5 +13,6 @@ public enum PlaceStatus {
 	
 	private final int number;
 	private final String koName;
-
+	
+	
 }

@@ -10,14 +10,18 @@ import com.bangIt.blended.domain.dto.place.PlaceSaveDTO;
 
 public interface PartnerPlaceService {
 
-	void saveProcess(PlaceSaveDTO dto);
+	void saveProcess(Long userId, PlaceSaveDTO dto);
 	
     Map<String, String> s3TempUpload(MultipartFile file) throws IOException;
 
-	void listProcess(Model model);
+    void listProcess(Long userId, Model model);
 
 	void detailProcess(Long id, Model model);
 
 	void deleteProcess(long id);
+
+//    void listProcess(Long userId, Model model);
+//    void detailProcess(Long userId, Long id, Model model);
+//    void deleteProcess(Long userId, long id);
 
 }
