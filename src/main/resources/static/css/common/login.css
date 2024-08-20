@@ -8,6 +8,11 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
 }
+
+a {
+    text-decoration: none; /* 모든 a 태그의 밑줄 제거 */
+    color: inherit; /* a 태그의 색상을 상속되게 설정 */
+}
 .login-container {
     text-align: center;
     background-color: #ffffff;
