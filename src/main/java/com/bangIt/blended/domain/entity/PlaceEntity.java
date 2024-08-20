@@ -162,13 +162,44 @@ public class PlaceEntity extends BaseEntity {
 
 
         return HotelListDTO.builder()
+        		.id(id)
                 .name(name)
                 .imageUrl(mainImage)
                 .description(description)
-                .distance(distance) // 거리 정보 포함
+                .distance(distance)
                 .build();
     }
 
+    
+    //최근 등록 숙소 불러오기
+    public HotelListDTO toLatestHotelListDTO() {
+    	String baseUrl = "https://s3.ap-northeast-2.amazonaws.com/nowon.images.host0521/";
+        String mainImage = null;
+
+        // 이미지 리스트에서 메인 이미지 찾기
+        for (ImageEntity image : images) {
+            if (image.getImageUrl() == null || image.getImageUrl().isEmpty()) continue;
+
+            String imageUrl = image.getImageUrl();
+            String fullUrl = baseUrl + imageUrl;
+
+            if (image.getImageType() == ImageEntity.ImageType.PLACE_MAIN) {
+                mainImage = fullUrl;
+                break;
+            }
+        }
+        return HotelListDTO.builder()
+        		.id(id)
+        		.name(name)
+        		.description(description)
+        		.createdAt(createdAt)
+        		.description(description)
+        		.imageUrl(mainImage)
+        		.build();
+    }
+    
+    
+    
     // 거리 정보를 포함하지 않은 HotelListDTO 생성 메서드
     public HotelListDTO toHotelListDTOWithoutDistance() {
         String baseUrl = "https://s3.ap-northeast-2.amazonaws.com/nowon.images.host0521/";
@@ -194,6 +225,7 @@ public class PlaceEntity extends BaseEntity {
                 .orElseThrow(() -> new IllegalArgumentException("No valid room price found."));
 
         return HotelListDTO.builder()
+        		.id(id)
                 .name(name)
                 .imageUrl(mainImage)
                 .description(description)

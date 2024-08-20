@@ -468,6 +468,7 @@ nav a:hover::after {
     flex: 1 1 calc(20% - 20px); /* 한 줄에 5개의 카드를 배치하도록 설정 */
     box-sizing: border-box;
     max-width: calc(20% - 20px); /* 부모의 25%에서 간격을 뺀 값을 최대 너비로 설정 */
+	cursor: pointer; /* 클릭 가능한 영역이라는 힌트를 주기 위해 추가 */
 }
 
 .profile-card img {
@@ -495,6 +496,7 @@ nav a:hover::after {
     border-radius: 10px;
     padding: 20px;
     box-sizing: border-box;
+    pointer-events: none; /* 오버레이가 클릭 이벤트를 방해하지 않도록 설정 */
 }
 
 .profile-card:hover img {
@@ -540,6 +542,7 @@ nav a:hover::after {
     justify-content: center;
     gap: 20px;
     flex-wrap: wrap;
+    
 }
 
 .pick-card {
@@ -549,6 +552,7 @@ nav a:hover::after {
     box-sizing: border-box;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer; /* 클릭 가능한 영역이라는 힌트를 주기 위해 추가 */
 }
 
 .pick-card img {
@@ -572,6 +576,13 @@ nav a:hover::after {
     height: 100%;
     box-sizing: border-box; /* 패딩이 포함된 전체 너비 계산 */
     word-wrap: break-word; /* 긴 단어를 강제로 줄바꿈 */
+    pointer-events: none; /* 오버레이가 클릭 이벤트를 방해하지 않도록 설정 */
+}
+
+
+.pick-card a {
+    display: block;
+    position: relative;
 }
 
 .pick-card h3 {
