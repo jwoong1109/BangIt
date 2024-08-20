@@ -4,7 +4,7 @@
 <head>
     <title>방잇 - 통합 매출 관리</title>
     <link rel="stylesheet" href="/css/admin/revenue/revenue.css">
-    <!-- <script src="/js/admin/revenue/revenue.js" defer></script> -->
+    <script src="/js/admin/revenue/revenue.js" defer></script>
 </head>
 
 <body>
@@ -17,32 +17,37 @@
                 <div class="revenue-summary">
                     <div class="summary-item">
                         <h3>총 매출</h3>
-                        <p class="amount">￦ 1,234,567,890</p>
+                        <p class="amount"  th:text="${totalRevenue.totalRevenue != null ? '￦ ' + #numbers.formatInteger(totalRevenue.totalRevenue, 3, 'COMMA') : '조회 전'}">￦ 1,234,567,890</p>
                     </div>
                     <div class="summary-item">
                         <h3>총 예약 건수</h3>
-                        <p class="count">5,678</p>
+                        <p class="count" th:text="${totalRevenue.totalReservations != null ? totalRevenue.totalReservations : '조회 전'}">5,678</p>
                     </div>
                     <div class="summary-item">
                         <h3>총 수수료</h3>
-                        <p class="amount">￦ 123,456,789</p>
+                        <p class="amount" th:text="${totalRevenue.totalCommission != null ? '￦ ' + #numbers.formatInteger(totalRevenue.totalCommission, 3, 'COMMA') : '조회 전'}">￦ 123,456,789</p>
                     </div>
-                </div>
+          	     </div> 
             </div>
+            
+            
             <div class="dash revenue-chart">
                 <h2>매출 top 3</h2>
                 <div class="chart-container">
                 
                 </div>
             </div>
+            
+            
+            
             <div class="dash revenue-search">
                 <h2>매출 조회</h2>
-                <form class="search-form">
+                <form class="search-form" action="/admin/revenue" method="get">
                     <div class="date-range">
-                        <input type="date" id="start-date" name="start-date">
+                        <input type="date" id="start-date" name="startDate" th:value="${searchDto.startDate}">
                         <span>~</span>
-                        <input type="date" id="end-date" name="end-date">
-                        <input type="text" id="partner-name" name="partner-name">
+                        <input type="date" id="end-date" name="endDate" th:value="${searchDto.endDate}">
+                        <input type="text" id="partner-email" name="userEmail" th:value="${searchDto.userEmail}">
                     </div>
                     <button type="submit" class="search-button">조회</button>
                     <button type="button" class="export-button">엑셀 내보내기</button>
@@ -56,12 +61,15 @@
                             <span>수수료</span>
                             <span>정산 금액</span>
                         </li>
-                        <li class="revenue-item">
-                            <span>seller001</span>
-                            <span>150</span>
-                            <span>￦ 15,000,000</span>
-                            <span>￦ 1,500,000</span>
-                            <span>￦ 13,500,000</span>
+                       <li th:if="${partnerRevenues == null or partnerRevenues.isEmpty()}">
+                            <span colspan="5">검색 결과가 없습니다.</span>
+                       </li>
+				        <li class="revenue-item" th:each="revenue : ${partnerRevenues}">
+				            <span th:text="${revenue.userEmail}">seller001</span>
+				            <span th:text="${revenue.totalReservations}">150</span>
+				            <span th:text="${revenue.totalRevenue != null ? '￦ ' + #numbers.formatInteger(revenue.totalRevenue, 3, 'COMMA') : '￦ 0'}">￦ 15,000,000</span>
+				            <span th:text="${revenue.commission != null ? '￦ ' + #numbers.formatInteger(revenue.commission, 3, 'COMMA') : '￦ 0'}">￦ 1,500,000</span>
+				            <span th:text="${revenue.settlementAmount != null ? '￦ ' + #numbers.formatInteger(revenue.settlementAmount, 3, 'COMMA') : '￦ 0'}">￦ 13,500,000</span>
                         </li>
                         <!-- 더 많은 항목 추가 -->
                     </ul>

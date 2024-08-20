@@ -31,20 +31,7 @@
                             <span>쁘띠가보네타</span>
                             <span>력셔리룸</span>
                         </li>
-                              <li class="user-item">
-                            <span>2024-08-11</span>
-                            <span>2024-08-12</span>
-                            <span>2024-08-13</span>
-                            <span>쁘띠가보네타</span>
-                            <span>력셔리룸</span>
-                        </li>
-                              <li class="user-item">
-                            <span>2024-08-11</span>
-                            <span>2024-08-12</span>
-                            <span>2024-08-13</span>
-                            <span>쁘띠가보네타</span>
-                            <span>력셔리룸</span>
-                        </li>
+            
                       </ul>
                       
                 	
@@ -58,35 +45,21 @@
                 	<ul>
                         <li class="header">
                             <span>일자</span>
-                            <span>시간</span>
                             <span>활동종류</span>
-                            <span>세부사항</span>
+                            <span>세부사항</span>             
                         </li>
                         <li class="user-item">
                             <span>2024-08-11</span>
                             <span>16:02:33</span>
-                            <span>숙박검색</span>
-                            <span>재미니모텔</span>
-                        </li>
-                        <li class="user-item">
-              				<span>2024-08-11</span>
-                            <span>17:02:33</span>
-                            <span>카테고리 클릭</span>
-                            <span>반려견</span>
-                        </li>
+                            <span>숙박검색</span> 
                       </ul>
                     
                 </div>
             </div>
             <div class="dash user-search">
                 <h2>사용자 검색</h2>
-                <form class="search-form">
-                    <input type="text" placeholder="사용자 이름 또는 이메일 검색" class="search-input">
-                    <select class="filter-select">
-                        <option value="">모든 사용자</option>
-                        <option value="active">활성 사용자</option>
-                        <option value="inactive">비활성 사용자</option>
-                    </select>
+                <form class="search-form" th:action="@{/admin/user}" method="get">
+                    <input type="text" name="username" th:value="${keyword}" placeholder="사용자 이름 검색" class="search-input">
                     <button type="submit" class="search-button">검색</button>
                 </form>
                 <div class="search-results">
@@ -94,34 +67,16 @@
                         <li class="header">
                             <span>성명</span>
                             <span>이메일</span>
-                            <span>가입일</span>
+                            <span>소셜</span>
                             <span>상태</span>
                         </li>
-                        <li class="user-item">
-                            <span>김뚜띠</span>
-                            <span>thdgml42@gmail.com</span>
-                            <span>2024-08-11</span>
-                            <span>활성</span>
+                        <li  th:each="user : ${user}" class="user-item" th:data-user-id="${user.id}">
+                            <span th:text="${user.username}"></span>
+                            <span th:text="${user.email}"></span>
+                            <span th:text="${user.provider}"></span>
+                            <span th:text="${user.isActive ? '비활성' : '활성'}"></span>
                         </li>
-                          <li class="user-item">
-                            <span>김뚜띠</span>
-                            <span>thdgml42@gmail.com</span>
-                            <span>2024-08-11</span>
-                            <span>활성</span>
-                        </li>
-                          <li class="user-item">
-                            <span>김뚜띠</span>
-                            <span>thdgml42@gmail.com</span>
-                            <span>2024-08-11</span>
-                            <span>활성</span>
-                        </li>
-                          <li class="user-item">
-                            <span>김뚜띠</span>
-                            <span>thdgml42@gmail.com</span>
-                            <span>2024-08-11</span>
-                            <span>활성</span>
-                        </li>
-                      
+                        
                     </ul>
                 </div>
             </div>
