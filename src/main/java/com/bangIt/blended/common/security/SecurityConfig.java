@@ -29,7 +29,7 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/css/**", "/js/**", "/images/**", "/error").permitAll()
-                .requestMatchers("/", "/login","/logout","/partner-login","/business-registration","/bangItBot/**","/success/**", "/fail/**","/confirm/**","/generate-order-id").permitAll()
+                .requestMatchers("/", "/login","/logout","/partner-login","/business-registration","/bangItBot/**","/success/**", "/fail/**","/confirm/**","/generate-order-id","/get-nearby-hotels").permitAll()
 						/*
 						 * .requestMatchers("/**").hasRole("PARTNER")
 						 */
