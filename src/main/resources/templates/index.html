@@ -2,6 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org" th:replace="~{views/common/layout :: layout(~{::head} ,~{::main} ) }">
 
 <head>
+	<meta name="_csrf" th:content="${_csrf.token}">
+	<meta name="_csrf_header" th:content="${_csrf.headerName}">
 	<link rel="stylesheet" href="/css/index.css">
 	<script src="/js/index.js"></script>
 </head>
@@ -113,18 +115,19 @@
 		<section class="hotels">
 			<div class="container">
 				<div class="container-text">
-					<h2>럭셔리를 좋아하는 당신을 위한 최고의 선택</h2>
-					<p>회원님의 검색결과를 토대로 숙소를 추천해드립니다</p>
+					<h2>내 주변 인기 숙소</h2>
+					<p>가까운 거리의 편안한 숙소를 만나보세요</p>
 				</div>
 				<div class="hotel-cards">
 					<div th:each="hotel : ${nearbyHotels}" class="hotel-card">
-						<a th:href="@{'/hotel/detail/' + ${hotel.id}}">
+						<a th:href="@{'/place/detail/'+${hotel.id}}">
 							<!-- 호텔의 메인 이미지 URL을 사용하여 이미지를 표시 -->
 							<img th:src="${hotel.imageUrl}" alt="Hotel">
 						</a>
 						<!-- 호텔 이름을 표시 -->
 						<div class="hotel-name">
 							<h3 th:text="${hotel.name}">Hotel Name</h3>
+							<p th:text="'거리: ' + ${hotel.distance} + ' km'"></p>
 						</div>
 					</div>
 				</div>
@@ -134,28 +137,18 @@
 		<section class="profiles">
 			<div class="profiles-container">
 				<div class="container-text">
-					<h2>이번달 인기 숙소 탑5</h2>
-					<p>최고로 엄선한 숙소 pick</p>
+					<h2>따끈따끈한 신상 숙소</h2>
+					<p>가장 최근에 등록된 숙소들을 확인하세요</p>
 				</div>
 				<div class="profile-cards">
-					<div class="profile-card">
-						<a href="hotel-details/5"><img src="/images/hotel.png" alt="Profile 1"></a>
+					<div th:each="hotel : ${latestHotels}" class="profile-card">
+						<a th:href="@{'/place/detail/' + ${hotel.id}}">
+							<img th:src="${hotel.imageUrl}" alt="Hotel">
+						</a>
 						<div class="overlay">
-							<h3>숙소 이름</h3>
-							<p>숙소 설명, 가격</p>
+							<h3 th:text="${hotel.name}"></h3>
+							<p th:text="${hotel.description}"></p>
 						</div>
-					</div>
-					<div class="profile-card">
-						<a href="#"><img src="/images/hotel.png" alt="Profile 2"></a>
-					</div>
-					<div class="profile-card">
-						<a href="#"><img src="/images/hotel.png" alt="Profile 3"></a>
-					</div>
-					<div class="profile-card">
-						<a href="#"><img src="/images/hotel.png" alt="Profile 4"></a>
-					</div>
-					<div class="profile-card">
-						<a href="#"><img src="/images/hotel.png" alt="Profile 5"></a>
 					</div>
 				</div>
 			</div>
@@ -170,7 +163,7 @@
 				</div>
 				<div class="pick-cards">
 					<div th:each="hotel : ${HotelList}" class="pick-card">
-						<a th:href="@{'/hotel/' + ${hotel.id}}"><img th:src="${hotel.imageUrl}" alt="Pick"></a>
+						<a th:href="@{'/place/detail/'+${hotel.id}}"><img th:src="${hotel.imageUrl}" alt="Pick"></a>
 						<div class="pick-overlay">
 							<h3 th:text="${hotel.name}">호텔 이름</h3>
 							<p th:text="${hotel.description}">호텔 설명</p>
