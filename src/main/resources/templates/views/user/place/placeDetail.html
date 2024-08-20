@@ -5,25 +5,8 @@
     <link rel="stylesheet" href="/css/user/place/place.css" >
     <link rel="stylesheet" href="/css/user/room/room.css" >
     <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e92dcce6a45cf9533fea83124cc52455&libraries=services"></script>
-    <script>
-        // 모달 열기 함수
-        function openModal() {
-            document.getElementById('roomModal').style.display = "block";
-        }
-
-        // 모달 닫기 함수
-        function closeModal() {
-            document.getElementById('roomModal').style.display = "none";
-        }
-
-        // 모달 창 외부 클릭 시 닫기
-        window.onclick = function(event) {
-            var modal = document.getElementById('roomModal');
-            if (event.target == modal) {
-                closeModal();
-            }
-        }
-    </script>
+    <script src="/js/user/place/place.js" defer></script>
+    
 </head>
 <body>
 	<main>
@@ -37,19 +20,21 @@
 			<!-- 추가 이미지들 -->
 			<div class="additional-images"
 				th:if="${place.additionalImages != null and !place.additionalImages.isEmpty()}">
-				<div th:each="imageUrl : ${place.additionalImages}" th:if="${!#strings.isEmpty(imageUrl)}">
+				<div th:each="imageUrl : ${place.additionalImages}"
+					th:if="${!#strings.isEmpty(imageUrl)}">
 					<img th:src="${imageUrl}" th:alt="'추가 숙소 이미지'">
 				</div>
 			</div>
 		</section>
-		
+
 		<!-- 숙소 상세 정보 섹션 -->
 		<section class="details">
 			<span th:text="${place.type.KoName}" style="color: #103333;"></span>
 			<h1 th:text="${place.name}">방잇 숙소</h1>
 			<br />
-			<p>테마<br />
-				<span th:each="theme : ${place.themes}" th:text="${theme.KoName} + ' '"></span>
+			<p>
+				테마<br /> <span th:each="theme : ${place.themes}"
+					th:text="${theme.KoName} + ' '"></span>
 			</p>
 		</section>
 		<hr />
@@ -75,7 +60,8 @@
 			</form>
 		</section>
 		<!-- 방 정보 섹션 -->
-		<section class="rooms" th:if="${rooms != null and not #lists.isEmpty(rooms)}">
+		<section class="rooms"
+			th:if="${rooms != null and not #lists.isEmpty(rooms)}">
 			<div th:each="room : ${rooms}" class="room">
 				<div class="room-image-container"
 					th:onclick="'openImageGallery(' + ${room.id} + ')'">
@@ -94,23 +80,29 @@
 						<p th:text="'기준 인원: ' + ${room.guests} + '명'">기준 인원</p>
 					</div>
 					<div class="room-time">
-						<p th:text="'입실: ' + ${room.checkInTime} + ' / 퇴실: ' + ${room.checkOutTime}">입실/퇴실 시간</p>
+						<p
+							th:text="'입실: ' + ${room.checkInTime} + ' / 퇴실: ' + ${room.checkOutTime}">입실/퇴실
+							시간</p>
 					</div>
 					<div class="room-description">
 						<p th:text="${room.roomInformation}">방 설명</p>
 					</div>
 					<div class="room-price">
-						<h3 th:text="'₩' + ${#numbers.formatDecimal(room.roomPrice, 0, 'COMMA', 0, 'POINT')} + ' / 박'">가격</h3>
+						<h3
+							th:text="'₩' + ${#numbers.formatDecimal(room.roomPrice, 0, 'COMMA', 0, 'POINT')} + ' / 박'">가격</h3>
 					</div>
 				</div>
+				<!-- 방 정보 섹션 내 예약 버튼 -->
 				<div class="room-buttons">
 					<button class="details-btn"
 						th:onclick="'openModal(' + ${room.id} + ')'">상세 정보 보기</button>
-					<button class="reserve-btn">예약하기</button>
+					<button class="reserve-btn"
+						th:onclick="'prepareReservation(' + ${room.id} + ')'">예약하기</button>
 				</div>
 			</div>
 		</section>
 		<hr />
+
 		<!-- 모달 창 구조 -->
 		<div id="roomModal" class="modal">
 			<div class="modal-content">
@@ -153,41 +145,6 @@
 		</section>
 		<hr />
 
-		<script th:inline="javascript">
-            /*<![CDATA[*/
-            var mapContainer = document.getElementById('map');
-            var mapOption = {
-                center: new kakao.maps.LatLng(37.537187, 127.005476),
-                level: 5
-            };
-
-            var map = new kakao.maps.Map(mapContainer, mapOption);
-            var geocoder = new kakao.maps.services.Geocoder();
-            var marker = new kakao.maps.Marker({
-                map: map
-            });
-
-            var address = /*[[${place.detailedAddress}]]*/ '기본 주소';
-            var lat = /*[[${place.latitude}]]*/ 37.537187;
-            var lng = /*[[${place.longitude}]]*/ 127.005476;
-
-            if (lat && lng) {
-                var coords = new kakao.maps.LatLng(lat, lng);
-                map.setCenter(coords);
-                marker.setPosition(coords);
-            } else {
-                geocoder.addressSearch(address, function(results, status) {
-                    if (status === kakao.maps.services.Status.OK) {
-                        var result = results[0];
-                        var coords = new kakao.maps.LatLng(result.y, result.x);
-                        map.setCenter(coords);
-                        marker.setPosition(coords);
-                    }
-                });
-            }
-            /*]]>*/
-        </script>
-
 		<!-- 숙소 상세 정보 섹션 -->
 		<section class="details">
 			<h2>취소 및 환불규정</h2>
@@ -209,6 +166,15 @@
 				</p>
 			</div>
 		</section>
+		<!-- 페이지 하단에 예약 넘기기 폼 -->
+		<form id="reservationForm" action="/reservationSave" method="post" style="display: none;">
+			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /> 
+			<input type="hidden" name="roomId" id="roomId"> 
+			<input type="hidden" name="checkInDate" id="formCheckInDate"> 
+			<input type="hidden" name="checkOutDate" id="formCheckOutDate"> 
+			<input type="hidden" name="reservationPeople" id="formReservationPeople">
+			<input type="hidden" name="reservationStatus" value="PENDING">
+		</form>
 	</main>
 
 </body>
