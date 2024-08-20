@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.bangIt.blended.domain.entity.PlaceEntity;
+import com.bangIt.blended.domain.enums.PlaceStatus;
 
 public interface PlaceEntityRepository extends JpaRepository<PlaceEntity, Long>{
 
@@ -24,4 +25,7 @@ public interface PlaceEntityRepository extends JpaRepository<PlaceEntity, Long>{
 	                                       @Param("longitude") double longitude,
 	                                       @Param("distance") double distance);
 
+	// PENDING_APPROVAL 상태의 Place를 조회하는 메서드 추가
+    List<PlaceEntity> findByStatus(PlaceStatus status);
+	
 }

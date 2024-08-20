@@ -5,7 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.bangIt.blended.domain.entity.PlaceEntity;
-import com.bangIt.blended.domain.repository.PlaceEntityRepository;
+import com.bangIt.blended.service.admin.impl.AdminPartnerServiceProcess;
+
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -16,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class AdminPartnerController {
 
     // PlaceEntity 데이터를 관리하기 위한 리포지토리 객체
-    private final PlaceEntityRepository placeEntityRepository;
+    private final AdminPartnerServiceProcess adminPartnerServiceProcess;
     
     /**
      * 관리자 기본 파트너 페이지를 렌더링합니다.
@@ -35,13 +36,12 @@ public class AdminPartnerController {
      */
     @GetMapping("/admin/partner/placeManagement")
     public String placeManagement(Model model) {
-        // 데이터베이스에서 모든 PlaceEntity를 조회
-        List<PlaceEntity> places = placeEntityRepository.findAll();
+        // PENDING_APPROVAL 상태의 PlaceEntity만 조회합니다.
+        List<PlaceEntity> pendingPlaces = adminPartnerServiceProcess.retrievePendingApprovalPlaces();
         
-        // 조회한 PlaceEntity 리스트를 모델에 추가하여 Thymeleaf 템플릿에 전달
-        model.addAttribute("places", places);
+        // 조회한 PlaceEntity 리스트를 모델에 추가하여 Thymeleaf 템플릿에 전달합니다.
+        model.addAttribute("places", pendingPlaces);
         
-        // "views/admin/partner/placeManagement" 템플릿을 반환하여 숙소 관리 페이지를 렌더링
         return "views/admin/partner/placeManagement";
     }
 }
