@@ -15,14 +15,19 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class PlaceListDTO {
+public class PlaceDetailDTO2 {
 		
 		private long id;
 		private Region region;
 		private String name;
+		private String description;
+		private String detailedAddress;
 		private PlaceType type;
 		private LocalDateTime updatedAt;
 		private PlaceStatus status;
 		
+		private Set<PlaceTheme> themes;
+		
+		private List<ImageListDTO> images;
 
 }

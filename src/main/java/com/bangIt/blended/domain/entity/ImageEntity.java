@@ -1,5 +1,8 @@
 package com.bangIt.blended.domain.entity;
 
+import com.bangIt.blended.domain.dto.ImageListDTO;
+import com.bangIt.blended.domain.dto.place.PlaceListDTO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -49,5 +52,12 @@ public class ImageEntity {
         PLACE_ADDITIONAL,
         ROOM_MAIN,
         ROOM_ADDITIONAL
+    }
+    
+    public ImageListDTO toImageListDTO() {
+    	return ImageListDTO.builder()
+    			.id(id).imageUrl(imageUrl)
+    			.imageType(imageType)
+    			.build();
     }
 }

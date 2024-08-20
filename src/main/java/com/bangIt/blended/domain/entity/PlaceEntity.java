@@ -3,12 +3,14 @@ package com.bangIt.blended.domain.entity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.boot.autoconfigure.info.ProjectInfoProperties.Build;
 
 import com.bangIt.blended.domain.dto.place.HotelListDTO;
 import com.bangIt.blended.domain.dto.place.PlaceDetailDTO;
+import com.bangIt.blended.domain.dto.place.PlaceDetailDTO2;
 import com.bangIt.blended.domain.dto.place.PlaceListDTO;
 import com.bangIt.blended.domain.entity.ImageEntity.ImageType;
 import com.bangIt.blended.domain.enums.PlaceStatus;
@@ -36,6 +38,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import software.amazon.awssdk.services.s3.model.Bucket;
 
 @DynamicUpdate
@@ -45,6 +48,7 @@ import software.amazon.awssdk.services.s3.model.Bucket;
 @NoArgsConstructor
 @Table(name = "place")
 @Getter
+@Setter
 @Entity
 public class PlaceEntity extends BaseEntity {
 	
@@ -85,6 +89,11 @@ public class PlaceEntity extends BaseEntity {
     @Column(nullable = false)
     private PlaceStatus status;
     
+    public PlaceEntity status(PlaceStatus status) {
+    	this.status=status;
+    	return this;
+    }
+    
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ImageEntity> images;
     
@@ -99,6 +108,20 @@ public class PlaceEntity extends BaseEntity {
             .type(type)
             .updatedAt(updatedAt)
             .status(status)
+            .build();
+	}
+    
+    public PlaceDetailDTO2 toPlaceDetailDTO2() {
+        return PlaceDetailDTO2.builder()
+            .id(id)
+            .region(region)
+            .name(name)
+            .type(type)
+            .updatedAt(updatedAt)
+            .status(status)
+            .description(description)
+            .themes(themes)
+            .images(images.stream().map(ImageEntity::toImageListDTO).collect(Collectors.toList()))
             .build();
 	}
     
@@ -195,4 +218,5 @@ public class PlaceEntity extends BaseEntity {
                 .price(minPrice)
                 .build();
     }
+
 }
