@@ -71,5 +71,8 @@ public class ReservationEntity {
     @OneToOne(mappedBy = "reservation")
     private SaleEntity sale;
 
-    
+ // 상태를 변경하는 메서드
+    public void updateStatus(ReservationStatus newStatus) {
+        this.reservationStatus = newStatus;
+    }
 }

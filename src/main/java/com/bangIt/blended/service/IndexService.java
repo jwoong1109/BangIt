@@ -6,8 +6,6 @@ import org.springframework.ui.Model;
 
 import com.bangIt.blended.domain.dto.place.HotelListDTO;
 
-import jakarta.servlet.http.HttpServletRequest;
-
 
 
 public interface IndexService {

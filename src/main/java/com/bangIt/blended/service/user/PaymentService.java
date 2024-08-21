@@ -2,7 +2,6 @@ package com.bangIt.blended.service.user;
 
 import com.bangIt.blended.domain.dto.room.ReservationDTO;
 import com.bangIt.blended.domain.dto.user.payment.PaymentRequestDTO;
-import com.bangIt.blended.domain.entity.ReservationEntity;
 import com.bangIt.blended.domain.enums.PaymentMethod;
 
 public interface PaymentService {
