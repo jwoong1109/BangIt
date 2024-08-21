@@ -3,28 +3,77 @@
 
 <head>
     <title>방잇</title>
-    <link rel="stylesheet" href="/css/admin/mail/mail.css">
- <!--    <script src="/js/admin/user/user.js" defer></script> -->
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+	<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <link rel="stylesheet" href="/css/admin/drive/drive.css">
+    <script src="/js/admin/drive/drive.js" defer></script>
 </head>
 
 <body>
     <main class="cmindex">
         <th:block th:replace="~{/views/admin/drive/cmsubnav}" />
         
-        <div class="dash">
-        	<section>
-        	
-        	</section>
-        	
-        	<section>
-        	
-        	</section>
-        	
-        	<section>
-        	
-        	</section>
-        
-        </div>
+        <div>
+			<section class="dash info">
+
+				<ul class="drive-info">
+					<li><span>총 용량: </span><span th:text="${#numbers.formatDecimal(myDrive.total / 1024, 1, 2) + ' KB'}"></span></li>
+					<li><span>사용 용량: </span><span th:text="${#numbers.formatDecimal(myDrive.used / 1024, 1, 2) + ' KB'}"></span></li>
+					<li><span>휴재통 용량: </span><span th:text="${#numbers.formatDecimal(myDrive.trash / 1024, 1, 2) + ' KB'}"></span></li>
+				</ul>
+				
+				<button class="cmbutton1 uploadBtn">파일 업로드</button>
+				
+				
+
+
+			</section>
+
+			<section class="dash contents">
+				<div class="cmlist">
+					<ul>
+						<li>
+							<span>이름</span> 
+							<span>유형</span> 
+							<span>날짜</span> 
+							<span>크기</span>
+							<span>경로</span>
+							<span></span>
+						</li>
+	
+						<li class="File" th:each="myDriveFiles : ${myDriveFiles}">
+							<span th:text="${myDriveFiles.fileName}">이름</span> 
+							<span th:text="${myDriveFiles.fileType}">유형</span> 
+							<span th:text="${myDriveFiles.createdTime}">날짜</span> 
+							<span th:text="${#numbers.formatDecimal(myDriveFiles.fileSize / 1024, 1, 2) + ' KB'}">크기</span>
+							<span th:text="${myDriveFiles.filePath}">경로</span>
+							<span>
+								 <button class="cmbutton1 downloadBtn" th:data-file-id="${myDriveFiles.fileId}" th:data-file-name="${myDriveFiles.fileName}">다운로드</button>
+         						 <button class="cmbutton2 deleteBtn" th:data-file-id="${myDriveFiles.fileId}">삭제</button>
+							</span>
+						
+						</li>
+	
+					</ul>
+				</div>
+
+			</section>
+			
+			<div class="file-uplod-Wrap dash">
+				<form action="/admin/drive" method="post" enctype="multipart/form-data" >
+				
+				    <input type="file" name="file" placeholder="파일을 선택해주세요" required>
+					<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+					<button type="submit" class="cmbutton1">제출하기</button>
+					<button type="button" class="cmbutton2 upload-cancle-btn">업로드취소</button>
+				
+				</form>
+			
+			
+			</div>
+
+
+		</div>
 
 	</main>
 </body>
