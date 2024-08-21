@@ -1,7 +1,6 @@
 package com.bangIt.blended.service.admin.impl;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -13,14 +12,14 @@ import com.bangIt.blended.domain.entity.PlaceEntity;
 import com.bangIt.blended.domain.enums.PlaceStatus;
 import com.bangIt.blended.domain.repository.PlaceEntityRepository;
 import com.bangIt.blended.service.admin.AdminPartnerService;
+
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * AdminPartnerServiceProcess는 AdminPartnerService 인터페이스를 구현하며, 숙소 데이터와 관련된 비즈니스
  * 로직을 처리하는 서비스 클래스입니다.
  */
-@Slf4j
+
 @Service
 @RequiredArgsConstructor
 public class AdminPartnerServiceProcess implements AdminPartnerService {

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	th:replace="~{views/common/layout :: layout(~{::head} ,~{::main} ) }">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="_csrf" content="${_csrf.token}">
+	<meta name="_csrf_header" content="${_csrf.headerName}">
+
+	<title>결제 페이지</title>
+	<link rel="stylesheet" href="/css/user/payment/payment.css">
+	<!-- SDK 추가 -->
+</head>
+
+<body>
+	<main>
+		<!-- Hidden input field for reservationId -->
+
+		<div class="container">
+			<h1>예약 확인 및 취소</h1>
+			<div class="main-content">
+				<!-- 왼쪽 섹션 -->
+				<div class="left-section">
+					<div class="reservation-info">
+						<h2>예약 목록</h2>
+						<label for="name">예약 정보:</label>
+					</div>
+				</div>
+				<!-- 오른쪽 섹션 -->
+				<div class="right-section">
+					<div class="hotel-info">
+						<h2>호텔 이름</h2>
+						<img alt="호텔 이미지">
+						<p>
+							<strong>객실:</strong> <span>객실 이름</span>
+						</p>
+						<p>
+							<strong>일정:</strong>
+							<span>체크인</span> ~
+							<span>체크아웃</span>
+							(<span></span>박)
+						</p>
+					</div>
+
+					<div class="payment-info">
+						<h2>결제 정보</h2>
+						<p>객실 가격<strong></strong>원</p>
+						<p>
+							총 결제 금액:<strong></strong>원
+						</p>
+						<button class="pay-btn" id="open-modal-btn">결제하기</button>
+						<!-- 모달을 여는 버튼 -->
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 예약 내역 확인 모달 -->
+		<div id="reservation-modal" class="payment-modal">
+			<div class="payment-modal-content">
+				<span class="close-btn" id="close-modal-btn">&times;</span>
+				<h2>결제 내역 확인</h2>
+				<!-- 추가된 부분들 -->
+				<div id="payment-method"></div>
+				<!-- 결제 수단 UI가 렌더링될 요소 -->
+				<div id="agreement"></div>
+				<!-- 이용약관 UI가 렌더링될 요소 -->
+				<button class="button" id="modal-payment-button" style="margin-top: 30px">결제하기</button>
+				<!-- 모달 내부 결제 버튼 -->
+			</div>
+		</div>
+
+	</main>
+</body>
+
+
+</html>

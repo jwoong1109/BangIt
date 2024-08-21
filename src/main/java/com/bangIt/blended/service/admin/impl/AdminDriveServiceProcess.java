@@ -15,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bangIt.blended.common.util.NaverWorksUtil;
-import com.bangIt.blended.domain.dto.naverWorks.GetMailFolderDTO;
 import com.bangIt.blended.domain.dto.naverWorks.GetMyDriveDTO;
 import com.bangIt.blended.domain.dto.naverWorks.GetMyDriveFilesDTO;
 import com.bangIt.blended.service.admin.AdminDriveService;

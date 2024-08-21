@@ -74,40 +74,45 @@
 		</section>
 		<!-- Category Section -->
 		<section class="category">
-			<div class="category-container">
+			<form action="/search/places" method="get" class="category-container">
+				 <input type="hidden" name="checkinDate" th:value="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}">
+       			 <input type="hidden" name="checkoutDate" th:value="${#temporals.format(#temporals.createNow().plusDays(1), 'yyyy-MM-dd')}">
+       			 <input type="hidden" name="region"  value="SEOUL">
+        		 <input type="hidden" name="guestCount" value="2">
+			
 				<div class="category-item">
-					<a href="#">
+					<button type="submit" name="accommodationTypes" value="HOTEL" class="category-item">
 						<img src="/images/hotel-icon.png" alt="호텔/리조트">
-					</a>
+					</button>
 					<p>호텔/리조트</p>
 				</div>
 
 				<div class="category-item">
-					<a href="#">
+					<button type="submit" name="accommodationTypes" value="MOTEL" class="category-item">
 						<img src="/images/motel-icon.png" alt="펜션/풀빌라">
-					</a>
+					</button>
 					<p>모텔</p>
 				</div>
 				<div class="category-item">
-					<a href="#">
+					<button type="submit" name="accommodationTypes" value="PENSION" class="category-item">
 						<img src="/images/vacation-icon.png" alt="펜션/풀빌라">
-					</a>
+					</button>
 					<p>펜션/풀빌라</p>
 				</div>
 				<div class="category-item">
-					<a href="#">
-						<img src="/images/family-icon.png" alt="펜션/풀빌라">
-					</a>
-					<p>가족형 숙소</p>
+					<button type="submit" name="accommodationTypes" value="CAMPING" class="category-item">
+						<img src="/images/family-icon.png" alt="캠핑">
+					</button>
+					<p>캠핑/글램핑</p>
 				</div>
 				<div class="category-item">
-					<a href="#">
-						<img src="/images/animal-icon.png" alt="펜션/풀빌라">
-					</a>
+					<button type="submit" name="themes" value="PET_FRIENDLY" class="category-item">
+						<img src="/images/animal-icon.png" alt="애견동반">
+					</button>
 					<p>애견동반</p>
 				</div>
 				<!-- 추가 카테고리 아이템들 -->
-			</div>
+			</form>
 		</section>
 
 		<!-- Hotel Section -->

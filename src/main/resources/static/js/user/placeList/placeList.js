@@ -4,8 +4,8 @@ document.addEventListener("DOMContentLoaded", function() {
     let yeogiEottae = document.querySelector('#yeogi-eottae');
     let priceComparison = document.querySelector('.price-comparison');
 
-    // 검색 폼 요소
-    const searchForm = document.getElementById('searchForm');
+
+   
 
     // 각 숙소를 호버했을 때 크롤링 요청 보내기
     places.forEach(function(place) {
@@ -58,55 +58,9 @@ document.addEventListener("DOMContentLoaded", function() {
         yeogiEottae.querySelector('a').href = data.url;
     }
 
-    // 폼 제출 시 검색 조건 저장
-    searchForm.addEventListener('submit', function(e) {
-        const formData = new FormData(this);
-        const searchParams = {};
-        for (let [key, value] of formData.entries()) {
-            searchParams[key] = value;
-        }
-        sessionStorage.setItem('lastSearchParams', JSON.stringify(searchParams));
-    });
+   
 
-    // 이전 검색 조건 복원 함수
-    function restoreSearchParams() {
-        const lastSearchParams = sessionStorage.getItem('lastSearchParams');
-        if (lastSearchParams) {
-            const searchParams = JSON.parse(lastSearchParams);
-            for (let key in searchParams) {
-                const element = document.querySelector(`[name="${key}"]`);
-                if (element) {
-                    if (element.type === 'checkbox') {
-                        element.checked = searchParams[key] === 'on';
-                    } else {
-                        element.value = searchParams[key];
-                    }
-                }
-            }
-        }
-    }
-
-    // 페이지 로드 시 검색 조건 복원
-    restoreSearchParams();
-
-    // 뒤로 가기 이벤트 감지 및 페이지 새로고침
-    window.addEventListener('popstate', function(event) {
-        location.reload(); // 페이지 새로고침
-    });
-
-    // 페이지 show 이벤트 (앞으로 가기/뒤로 가기 포함) 시 처리
-    window.addEventListener('pageshow', function(event) {
-        if (event.persisted) {
-            // bfcache에서 복원된 경우 페이지 새로고침
-            location.reload();
-        }
-    });
-
-    // 페이지 언로드 직전 상태 저장
-    window.addEventListener('beforeunload', function() {
-        history.replaceState({needsReload: true}, '');
-    });
-
+    
     // 인원 수 조정 버튼 기능
     const guestMinus = document.getElementById('guest-minus');
     const guestPlus = document.getElementById('guest-plus');

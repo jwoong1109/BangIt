@@ -1,15 +1,10 @@
 package com.bangIt.blended.domain.entity;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import org.hibernate.annotations.DynamicUpdate;
 
 import com.bangIt.blended.domain.enums.ActivityType;
-import com.bangIt.blended.domain.enums.AuthProvider;
-import com.bangIt.blended.domain.enums.Role;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,7 +1,6 @@
 package com.bangIt.blended.domain.dto.revenue;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import lombok.Getter;
