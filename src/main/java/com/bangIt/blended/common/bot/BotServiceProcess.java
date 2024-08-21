@@ -3,6 +3,7 @@ package com.bangIt.blended.common.bot;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -11,9 +12,6 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 
-/**
- * BotService 인터페이스의 구현 클래스입니다. 챗봇의 주요 처리 로직을 담당합니다.
- */
 @Service
 @RequiredArgsConstructor
 public class BotServiceProcess implements BotService {
@@ -27,7 +25,7 @@ public class BotServiceProcess implements BotService {
     public String processInput(String input) {
         logger.info("Processing input: {}", input);
 
-        List<String> keywords = extractKeywords(input);
+        Set<String> keywords = extractKeywords(input);
         logger.info("Extracted keywords: {}", keywords);
 
         if (keywords.isEmpty()) {
@@ -53,9 +51,10 @@ public class BotServiceProcess implements BotService {
         return selectedAnswer.getContent();
     }
 
-    public List<String> extractKeywords(String input) {
+    @Override
+    public Set<String> extractKeywords(String input) {
         logger.info("Extracting keywords from input: {}", input);
-        List<String> keywords = komoranService.extractNouns(input);
+        Set<String> keywords = komoranService.extractNouns(input);
         logger.info("Extracted keywords: {}", keywords);
         return keywords;
     }
