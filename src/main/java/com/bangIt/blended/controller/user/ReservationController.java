@@ -9,6 +9,9 @@ import com.bangIt.blended.domain.dto.reservation.ReservationSaveDTO;
 import com.bangIt.blended.service.user.ReservationService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RequiredArgsConstructor
 @Controller
@@ -22,4 +25,11 @@ public class ReservationController {
         Long reservationId = service.saveProcess(userDetails.getId(), dto);
         return "redirect:/payment?reservationId=" + reservationId;
     }
+	
+	//예약 조회
+	@GetMapping("/reservation")
+	public String getMethodName() {
+		return "views/user/reservation/reservationList";
+	}
+	
 }
