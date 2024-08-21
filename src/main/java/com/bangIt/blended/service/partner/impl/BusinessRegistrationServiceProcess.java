@@ -1,10 +1,7 @@
 package com.bangIt.blended.service.partner.impl;
 
 import java.util.Optional;
-
 import org.springframework.stereotype.Service;
-
-import com.bangIt.blended.domain.dto.partner.PartnerSaveDTO;
 import com.bangIt.blended.domain.entity.PartnerEntity;
 import com.bangIt.blended.domain.entity.UserEntity;
 import com.bangIt.blended.domain.enums.AuthProvider;
@@ -15,7 +12,6 @@ import com.bangIt.blended.service.partner.BusinessRegistrationService;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 
 @Service

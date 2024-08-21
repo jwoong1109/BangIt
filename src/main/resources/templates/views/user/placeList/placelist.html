@@ -8,7 +8,7 @@
 <body>
     <main class="place-list">
         <div class="contents-wrap">
-        <form id="searchForm" action="/search/places" method="post">
+        <form id="searchForm" action="/search/places" method="get">
             <section class="search-options-wrap">
             	<div class="search-options">
 				
@@ -54,7 +54,6 @@
 							</div>
 						</div>
 						<div class="search-button">
-							<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 							<button type="submit">예약하기</button>
 						</div>
 						
@@ -122,7 +121,7 @@
 	    		</div>
 	    		<ul class="price-comparison ">		
 	    		
-	    				
+	    				<p>어기어때 가격비교(클릭시 넘어갑니다)</p><br/>
 	    				<li class="dash" id="yeogi-eottae"><a>
 	    					<div>
 	    						<img alt="" src="https://pix10.agoda.net/hotelImages/14652635/-1/a7855cc933c1bfa1bf9a6b28526e267b.jpg?ce=0&s=414x232&ar=16x9">

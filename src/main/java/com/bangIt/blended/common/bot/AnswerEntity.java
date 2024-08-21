@@ -1,4 +1,4 @@
-package com.bangIt.blended.common.bot.entity;
+package com.bangIt.blended.common.bot;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,6 +10,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * 챗봇 응답을 나타내는 엔티티 클래스
+ */
 @Getter
 @Builder
 @AllArgsConstructor
@@ -17,12 +20,11 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "answer")
 public class AnswerEntity {
-
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY) // 기본 키 값을 자동으로 생성
-	private long no; // @Id 어노테이션-고유 식별자(기본 키)
-	private String intent; // 질문 의도
-	private String content; // 답변 내용
-	//private Service service;
-	
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long no;
+
+	private String intent; // 이 필드는 이전의 'keyword' 역할을 합니다
+	private String content;
+
 }

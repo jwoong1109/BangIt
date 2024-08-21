@@ -1,0 +1,16 @@
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+.button-container button,
+.button-container form {
+  margin: 0;
+}
+
+
+.room-btn:hover {
+  opacity: 0.8;
+}

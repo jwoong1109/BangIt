@@ -66,9 +66,7 @@
 .search-results li.header,.reservation-details ul li.header,.activity-details ul li.header {
     font-weight: bold;
     background-color: #f5f5f5;
-    position: sticky;
-    top: 0;
-    z-index: 1;
+
 }
 
 .search-results li:not(.header):hover,.reservation-details ul li:not(.header):hover {

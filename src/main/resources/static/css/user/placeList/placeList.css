@@ -28,10 +28,10 @@
 
 /*숙소 리스트*/
 
-.place-list-contents{width: 50%; max-width: 600px; padding-top: 44px;}
+.place-list-contents{width: 50%; max-width: 600px; padding-top: 44px; max-height: 800px; overflow-y:auto; }
 
 
-.accommodation>li,.price-comparison>li{margin-bottom: 15px;display: flex; justify-content: space-between; width: 100% ; height: 250px}
+.accommodation>li,.price-comparison>li{margin-bottom: 15px;display: flex; justify-content: space-between; width: 100% ; height: 260px}
 .accommodation>li>a,.price-comparison>li>a{display: flex; justify-content: space-between; width: 100%}
 
 .accommodation>li>a>div:nth-child(1),.price-comparison>li>a>div:nth-child(1){width: 58%;}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta th:if="${_csrf}" name="csrf-token" th:content="${_csrf.token}">
+    <link rel="stylesheet" href="/css/admin/partner/placeManagementDetails.css">
+    <script src="/js/admin/partner/placeManagementDetails.js"></script>
+</head>
+
+<body>
+    <div class="dash place-details-popup">
+        <button id="closePopup">X</button>
+        <h2>숙소 상세 정보</h2>
+        <div class="place-info">
+            <p><strong>숙소 이름:</strong> <span th:text="${place.name}"></span></p>
+            <p><strong>숙소 설명:</strong> <span th:text="${place.description}"></span></p>
+            <p><strong>지역:</strong> <span th:text="${place.region.KoName}"></span></p>
+            <p><strong>주소:</strong> <span th:text="${place.detailedAddress}"></span></p>
+            <p><strong>숙소 유형:</strong> <span th:text="${place.type.KoName}"></span></p>
+            <p><strong>테마:</strong>
+                <span th:each="theme, iterStat : ${place.themes}">
+                    <span th:text="${theme.KoName}"></span>
+                    <span th:if="${!iterStat.last}">, </span>
+                </span>
+            </p>
+        </div>
+        <div class="place-images">
+            <div class="main-image">
+                <h3>메인 이미지</h3>
+                <th:block th:each="image : ${place.images}">
+                    <img th:if="${image.imageType.name eq 'PLACE_MAIN'}" th:src="${image.baseUrl+image.imageUrl}" alt="메인 이미지">
+                </th:block>
+            </div>
+            <div class="additional-images">
+                <h3>추가 이미지</h3>
+                <div th:each="image : ${place.images}" th:if="${image.imageType.name eq 'PLACE_ADDITIONAL'}">
+                    <img th:src="${image.baseUrl+image.imageUrl}" alt="추가 이미지">
+                </div>
+            </div>
+        </div>
+        <div class="approval-section">
+            <button id="approveButton" th:data-place-id="${place.id}">승인</button>
+            <button id="rejectButton" th:data-place-id="${place.id}">거절</button>
+        </div>
+    </div>
+</body>
+
+</html>

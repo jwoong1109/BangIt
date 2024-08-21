@@ -1,16 +1,16 @@
 package com.bangIt.blended.domain.enums;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@Getter
 @RequiredArgsConstructor
 public enum ReservationStatus {
-	PENDING("대기중"), // 대기 중
-	CONFIRMED("예약확정"), // 확정됨
-	CANCELLED("예약취소"); // 취소됨
+	PENDING(1, "대기중"), // 대기 중
+	CONFIRMED(2, "예약확정"), // 확정됨
+	CANCELLED(3, "예약취소"); // 취소됨
 
-	private final String ReservationStatusName;
-
-	public final String ReservationStatusName() {
-		return ReservationStatusName;
-	}
+	private final int number;
+	private final String koName;
+	
 }

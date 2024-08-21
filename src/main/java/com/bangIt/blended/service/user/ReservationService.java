@@ -1,15 +1,12 @@
 package com.bangIt.blended.service.user;
 
-import org.springframework.ui.Model;
-
-import com.bangIt.blended.domain.dto.room.ReservationDTO;
+import com.bangIt.blended.domain.dto.reservation.ReservationSaveDTO;
 
 public interface ReservationService {
 
-	void getReservationInfo(Long reservationId, Long roomId , Model model);
+	Long saveProcess(Long id, ReservationSaveDTO dto);
 
-	ReservationDTO getReservationById(Long id);
+	void updateReservationStatusToCompleted(Long reservationId);
 
-	Long getLatestReservationId();
 
 }
