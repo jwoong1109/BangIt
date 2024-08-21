@@ -6,4 +6,7 @@ public interface ReservationService {
 
 	Long saveProcess(Long id, ReservationSaveDTO dto);
 
+	void updateReservationStatusToCompleted(Long reservationId);
+
+
 }
