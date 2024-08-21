@@ -1,12 +1,15 @@
 package com.bangIt.blended.service.user.impl;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
+import com.bangIt.blended.domain.dto.reservation.ReservationListDTO;
 import com.bangIt.blended.domain.dto.reservation.ReservationSaveDTO;
-import com.bangIt.blended.domain.dto.user.ReservationUpdateDTO;
 import com.bangIt.blended.domain.entity.ReservationEntity;
 import com.bangIt.blended.domain.entity.RoomEntity;
 import com.bangIt.blended.domain.entity.UserEntity;
@@ -45,8 +48,6 @@ public class ReservationServiceProcess implements ReservationService {
 
 		return reservation.getId(); // 저장된 예약의 ID를 반환
 
-		// 여기에 추가적인 로직을 구현할 수 있습니다.
-		// 예: 방 가용성 업데이트, 알림 전송 등
 	}
 
 
@@ -66,6 +67,25 @@ public class ReservationServiceProcess implements ReservationService {
 	        throw new IllegalStateException("Reservation cannot be updated to COMPLETED from status: " + reservation.getReservationStatus());
 	    }
 	}
+	
+	@Override
+	public void listProcess(Long userId, Model model) {
+	    UserEntity user = userRepository.findById(userId)
+	        .orElseThrow(() -> new RuntimeException("User not found"));
+	    
+	    List<ReservationListDTO> reservationDTOs = reservationRepository.findByUser(user).stream()
+	    	.map(ReservationEntity::toReservationListDTO)
+	        .collect(Collectors.toList());
 
+	    model.addAttribute("reservations", reservationDTOs);
+	}
+
+	@Override
+    public void detailProcess(Long id, Model model) {
+        ReservationEntity reservation = reservationRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Reservation not found with id: " + id));
+        
+        model.addAttribute("reservation", reservation.toReservationDetailDTO());
+    }
 
 }
