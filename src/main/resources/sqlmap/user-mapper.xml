@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bangIt.blended.domain.mapper.UserMapper">
+     
+     
+    <!-- 모든 유저 조회 -->
+    <select id="getAllUsers" resultType="com.bangIt.blended.domain.dto.user.admin.getUserDTO">
+        SELECT id, email, username, is_active, provider
+        FROM user
+        ORDER BY id DESC
+    </select>
+
+    <!-- 특정 유저 조회 -->
+	<select id="searchUsers" resultType="com.bangIt.blended.domain.dto.user.admin.getUserDTO">
+		SELECT id, email, username, is_active, provider, created_at
+		FROM user
+		WHERE email LIKE CONCAT('%', #{username}, '%')
+		OR username LIKE CONCAT('%', #{username}, '%')
+		ORDER BY id DESC
+	</select>
+	  
+	  
+	<!-- 특정 유저 예약 조회   -->
+	<select id="getUserReservations" resultType="com.bangIt.blended.domain.dto.user.admin.GetReservationDTO">
+	    SELECT r.id, 
+	           r.check_in_date AS checkInDate, 
+	           r.check_out_date AS checkOutDate,
+	           r.reservation_date AS reservationDate, 
+	           r.reservation_people AS reservationPeople,
+	           r.reservation_status AS reservationStatus, 
+	           rm.room_name AS roomName,
+	           p.name AS placeName,
+	           rm.check_in_time AS checkInTime,
+	           rm.check_out_time AS checkOutTime,
+	           py.payment_date AS paymentDate,
+	           py.payment_method AS paymentMethod
+	    FROM reservation r
+	    JOIN room rm ON r.room_id = rm.id
+	    JOIN place p ON rm.place_id = p.id
+	    LEFT JOIN payment py ON r.id = py.reservation_id
+	    WHERE r.user_id = #{userId}
+	    ORDER BY r.reservation_date DESC
+    </select>
+     
+     
+    <!--특정 유저 활동로그 조회 -->
+    <select id="getUserActivityLogs" resultType="com.bangIt.blended.domain.dto.user.admin.GetActivityLogDTO">
+        SELECT id, activity_type AS activityType, description, timestamp , detail_record AS detailRecord
+        FROM activity_log
+        WHERE user_id = #{userId}
+        ORDER BY timestamp DESC
+    </select>
+ 
+</mapper>

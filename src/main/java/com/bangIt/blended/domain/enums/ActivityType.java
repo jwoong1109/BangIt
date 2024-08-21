@@ -21,5 +21,9 @@ public enum ActivityType {
 	
 	private final int number;
 	private final String KoName;
+	
+	public String getDescription() {
+	    return this.KoName;
+	}
 
 }
