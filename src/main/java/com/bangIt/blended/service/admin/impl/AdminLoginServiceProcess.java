@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import com.bangIt.blended.common.util.NaverWorksUtil;
 import com.bangIt.blended.service.admin.AdminLoginService;
-import com.nimbusds.oauth2.sdk.TokenResponse;
 
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;

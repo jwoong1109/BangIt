@@ -14,7 +14,6 @@ import com.bangIt.blended.domain.dto.naverWorks.GetMailDetailDTO;
 import com.bangIt.blended.domain.dto.naverWorks.GetMailFolderDTO;
 import com.bangIt.blended.domain.dto.naverWorks.GetMailListDTO;
 import com.bangIt.blended.domain.dto.naverWorks.WritMailDTO;
-import com.bangIt.blended.service.admin.AdminEmployeeService;
 import com.bangIt.blended.service.admin.AdminMailService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

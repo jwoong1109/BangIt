@@ -1,16 +1,9 @@
 package com.bangIt.blended.domain.entity;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.hibernate.annotations.DynamicUpdate;
-
-import com.bangIt.blended.domain.enums.AuthProvider;
 import com.bangIt.blended.domain.enums.PaymentMethod;
 import com.bangIt.blended.domain.enums.PaymentStatus;
-import com.bangIt.blended.domain.enums.Role;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

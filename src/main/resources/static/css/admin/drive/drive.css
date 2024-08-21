@@ -1,0 +1,9 @@
+@charset "UTF-8";
+
+
+.info{margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center;}
+.drive-info{display: flex; justify-content: space-between; width: 40%}
+
+.file-uplod-Wrap{ position: absolute; top: 160px; right: 28px; width: 450px; height: 100px; display: none;}
+
+.contents{height: 90.5%; overflow-y:auto; }

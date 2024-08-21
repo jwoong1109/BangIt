@@ -27,7 +27,6 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @DynamicUpdate
-@SequenceGenerator(name = "gen_room", sequenceName = "seq_room", initialValue = 1, allocationSize = 1)
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
@@ -37,7 +36,7 @@ import lombok.RequiredArgsConstructor;
 public class RoomEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen_room")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
 	@ManyToOne

@@ -11,6 +11,7 @@
 .management-results {
 	flex-grow: 1;
 	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 .management-results ul {
@@ -25,10 +26,20 @@
 	border-bottom: 1px solid #eee;
 	text-align: center;
 }
+.management-results>ul>li>span{
+	flex: 1;
+	min-width: 125px;
+}
 
 .management-results>ul>li>span:nth-child(1) {
-	width: 20%
+	flex: 1.5;
+	min-width: 180px;
 }
+.management-results>ul>li>span:nth-child(4) {
+	flex: 0.5;
+	min-width: 80px;
+}
+/*
 
 .management-results>ul>li>span:nth-child(2) {
 	width: 20%
@@ -38,9 +49,7 @@
 	width: 20%
 }
 
-.management-results>ul>li>span:nth-child(4) {
-	width: 20%
-}
+
 
 .management-results>ul>li>span:nth-child(5) {
 	width: 10%
@@ -49,7 +58,7 @@
 .management-results>ul>li>span:nth-child(6) {
 	width: 10%
 }
-
+*/
 .management-results span {
 	padding: 0 10px;
 	white-space: nowrap;
@@ -96,4 +105,5 @@
 
 .popup-content {
 	padding: 20px;
+	padding-top: 0;
 }

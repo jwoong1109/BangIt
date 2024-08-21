@@ -3,12 +3,13 @@ package com.bangIt.blended.domain.entity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.boot.autoconfigure.info.ProjectInfoProperties.Build;
 
 import com.bangIt.blended.domain.dto.place.HotelListDTO;
 import com.bangIt.blended.domain.dto.place.PlaceDetailDTO;
+import com.bangIt.blended.domain.dto.place.PlaceDetailDTO2;
 import com.bangIt.blended.domain.dto.place.PlaceListDTO;
 import com.bangIt.blended.domain.entity.ImageEntity.ImageType;
 import com.bangIt.blended.domain.enums.PlaceStatus;
@@ -27,29 +28,30 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import software.amazon.awssdk.services.s3.model.Bucket;
+import lombok.Setter;
 
 @DynamicUpdate
-@SequenceGenerator(name = "gen_place", sequenceName = "seq+place", initialValue = 1, allocationSize = 1)
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @Table(name = "place")
 @Getter
+@Setter
 @Entity
 public class PlaceEntity extends BaseEntity {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen_place")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
 	@Column(nullable = false)
@@ -85,11 +87,20 @@ public class PlaceEntity extends BaseEntity {
     @Column(nullable = false)
     private PlaceStatus status;
     
+    public PlaceEntity status(PlaceStatus status) {
+    	this.status=status;
+    	return this;
+    }
+    
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ImageEntity> images;
     
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<RoomEntity> rooms;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seller_id")
+    private UserEntity seller;
     
     public PlaceListDTO toPlaceListDTO() {
         return PlaceListDTO.builder()
@@ -99,6 +110,20 @@ public class PlaceEntity extends BaseEntity {
             .type(type)
             .updatedAt(updatedAt)
             .status(status)
+            .build();
+	}
+    
+    public PlaceDetailDTO2 toPlaceDetailDTO2() {
+        return PlaceDetailDTO2.builder()
+            .id(id)
+            .region(region)
+            .name(name)
+            .type(type)
+            .updatedAt(updatedAt)
+            .status(status)
+            .description(description)
+            .themes(themes)
+            .images(images.stream().map(ImageEntity::toImageListDTO).collect(Collectors.toList()))
             .build();
 	}
     
@@ -157,13 +182,44 @@ public class PlaceEntity extends BaseEntity {
 
 
         return HotelListDTO.builder()
+        		.id(id)
                 .name(name)
                 .imageUrl(mainImage)
                 .description(description)
-                .distance(distance) // 거리 정보 포함
+                .distance(distance)
                 .build();
     }
 
+    
+    //최근 등록 숙소 불러오기
+    public HotelListDTO toLatestHotelListDTO() {
+    	String baseUrl = "https://s3.ap-northeast-2.amazonaws.com/nowon.images.host0521/";
+        String mainImage = null;
+
+        // 이미지 리스트에서 메인 이미지 찾기
+        for (ImageEntity image : images) {
+            if (image.getImageUrl() == null || image.getImageUrl().isEmpty()) continue;
+
+            String imageUrl = image.getImageUrl();
+            String fullUrl = baseUrl + imageUrl;
+
+            if (image.getImageType() == ImageEntity.ImageType.PLACE_MAIN) {
+                mainImage = fullUrl;
+                break;
+            }
+        }
+        return HotelListDTO.builder()
+        		.id(id)
+        		.name(name)
+        		.description(description)
+        		.createdAt(createdAt)
+        		.description(description)
+        		.imageUrl(mainImage)
+        		.build();
+    }
+    
+    
+    
     // 거리 정보를 포함하지 않은 HotelListDTO 생성 메서드
     public HotelListDTO toHotelListDTOWithoutDistance() {
         String baseUrl = "https://s3.ap-northeast-2.amazonaws.com/nowon.images.host0521/";
@@ -189,10 +245,12 @@ public class PlaceEntity extends BaseEntity {
                 .orElseThrow(() -> new IllegalArgumentException("No valid room price found."));
 
         return HotelListDTO.builder()
+        		.id(id)
                 .name(name)
                 .imageUrl(mainImage)
                 .description(description)
                 .price(minPrice)
                 .build();
     }
+
 }

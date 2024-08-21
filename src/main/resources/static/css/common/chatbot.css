@@ -2,36 +2,38 @@
 
 /* 챗봇 버튼 */
 #chatbot-toggle {
-	position: fixed; /* 버튼을 화면에 고정시킵니다 */
-	width: 40px; /* 버튼의 너비 */
-	height: 40px; /* 버튼의 높이 */
-	background-size: cover; /* 이미지 크기 조절 */
-	background-color: rgba(0, 0, 0, 0); /* 배경 색깔 투명하게 설정 */
-	border: none; /* 기본 테두리 제거 */
-	cursor: pointer; /* 커서 모양을 포인터로 변경 */
-	bottom: 50px; /* 화면 하단에서의 거리 */
-	right: 50px; /* 화면 우측에서의 거리 */
-	transition: background-image 0.3s ease; /* 이미지 변경 시 부드러운 전환 효과 */
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    background-size: cover;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    bottom: 50px;
+    right: 50px;
+    transition: transform 0.3s ease;
+    z-index: 10000;
 }
 
 /* 챗봇 아이콘 */
 .chatbot-toggle i {
-    font-size: 30px; /* 아이콘 크기 조정 */
-    color: white; /* 아이콘 색상 */
+    font-size: 30px;
+    color: white;
 }
 
 /* 챗봇 버튼 뒷배경 */
 .chatbot-btn-background {
-	position: fixed; /* 버튼 뒷배경을 화면에 고정시킵니다 */
-	bottom: 45px; /* 챗봇 버튼과의 거리 */
-	right: 45px; /* 챗봇 버튼과의 거리 */
-	background-color: var(--mian-color); /* 배경 색상 */
-	display: flex; /* flexbox를 사용하여 중앙 정렬 */
-	justify-content: center; /* 중앙 정렬 */
-	align-items: center; /* 중앙 정렬 */
-	width: 50px; /* 배경의 너비 */
-	height: 50px; /* 배경의 높이 */
-	border-radius: 50%; /* 원형으로 설정 */
+    position: fixed;
+    bottom: 45px;
+    right: 45px;
+    background-color: var(--mian-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    z-index: 9999;
 }
 
 /* 챗봇 영역 */
@@ -44,56 +46,41 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     overflow: hidden;
-    display: none; /* 기본적으로 숨김 상태 */
+    display: none;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 /* 챗봇 표시 상태 */
 #chatbot-container.visible {
     display: block;
-}
-
-/* 물방울 애니메이션 효과 */
-@keyframes bubble-in {
-    from { opacity: 0; transform: scale(0.5); }
-    to { opacity: 1; transform: scale(1); }
-}
-
-@keyframes bubble-out {
-    from { opacity: 1; transform: scale(1); }
-    to { opacity: 0; transform: scale(0.5); }
-}
-
-/* 애니메이션을 적용할 때 사용할 클래스 */
-#chatbot-container.bubble-in {
-    animation: bubble-in 0.3s forwards;
-}
-
-#chatbot-container.bubble-out {
-    animation: bubble-out 0.3s forwards;
+    opacity: 1;
+    transform: scale(1);
 }
 
 /* 챗봇 헤더 */
 #chatbot-header {
-	background-color: var(--mian-color); /* 헤더 배경 색상 */
-	color: var(--admin-body-color); /* 헤더 텍스트 색상 */
-	padding: 10px; /* 패딩 추가 */
-	text-align: center; /* 텍스트 가운데 정렬 */
-	font-weight: bold; /* 글자 굵게 설정 */
+    background-color: var(--mian-color);
+    color: var(--admin-body-color);
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
 }
 
 /* 챗봇 본문 영역 */
 #chatbot-body {
-	background-color: white; /* 배경 색상 */
-	flex-direction: column; /* 자식 요소들이 수직으로 배치되도록 설정 */
-	height: 400px; /* 본문 영역의 높이 */
-	display: flex; /* flexbox 사용 */
+    background-color: white;
+    flex-direction: column;
+    height: 400px;
+    display: flex;
 }
 
 /* 챗봇 메시지 영역 수정 */
 #chatbot-messages {
     padding: 15px;
     overflow-y: auto;
-    height: calc(100% - 60px); /* 헤더와 입력 영역을 제외한 높이 */
+    height: calc(100% - 60px);
     display: flex;
     flex-direction: column;
 }
@@ -104,7 +91,13 @@
     display: flex;
     align-items: flex-start;
     position: relative;
-    max-width: 80%; /* 최대 너비 설정 */
+    max-width: 80%;
+    animation: message-appear 0.3s ease-out;
+}
+
+@keyframes message-appear {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* 사용자 메시지 정렬 */
@@ -145,111 +138,66 @@
 /* 챗봇이 입력한 내용 말풍선 수정 */
 .message.bot .bubble {
     background-color: var(--trans-sub-color);
-    color: #333333; /* 글자 색상을 검정에 가깝게 변경 */
+    color: #333333;
     border-radius: 0 18px 18px 18px;
     padding: 10px 15px;
     max-width: 100%;
     word-wrap: break-word;
-    text-align: left; /* 왼쪽 정렬 */
+    text-align: left;
+    font-size: 14px;
 }
 
 /* 사용자가 입력한 내용 말풍선 수정 */
 .message.user .bubble {
     background-color: var(--mian-color);
-    color: white; /* 글자 색상을 흰색으로 유지 */
+    color: white;
     border-radius: 18px 18px 0 18px;
     padding: 10px 15px;
     max-width: 100%;
     word-wrap: break-word;
-    text-align: left; /* 왼쪽 정렬 */
-}
-
-/* 사용자 메시지 정렬 */
-.message.user {
-    justify-content: flex-end;
-}
-
-
-/* 카테고리 출력 영역 */
-#chatbot-categories, #chatbot-subcategories {
-	margin-left: 10px;
-}
-
-/* 카테고리 및 서브카테고리 영역 */
-#chatbot-categories, #chatbot-subcategories {
-	margin-bottom: 10px; /* 아래쪽 여백 추가 */
-	display: none; /* 기본적으로 숨김 상태 */
-}
-
-/* 카테고리 및 서브카테고리 영역이 보이는 상태 */
-#chatbot-categories.visible, #chatbot-subcategories.visible {
-	display: block; /* 필요 시 표시 */
-}
-
-/* 카테고리 및 서브카테고리 버튼 스타일링 */
-#chatbot-categories button, #chatbot-subcategories button {
-	background-color: var(--mian-color); /* 버튼 배경 색상 */
-	color: white; /* 버튼 텍스트 색상 */
-	border: none; /* 기본 테두리 제거 */
-	padding: 10px; /* 패딩 추가 */
-	border-radius: 5px; /* 버튼 모서리 둥글게 */
-	cursor: pointer; /* 커서 모양을 포인터로 변경 */
-	display: block; /* 블록 요소로 설정 */
-	margin-bottom: 5px; /* 아래쪽 여백 추가 */
-	transition: transform 0.1s ease, background-color 0.15s ease; /* 애니메이션 효과 */
-}
-
-/* 버튼 클릭 시 애니메이션 효과 */
-#chatbot-categories button:active, #chatbot-subcategories button:active {
-	transform: scale(0.95); /* 클릭 시 버튼을 약간 축소 */
-	background-color: #004494; /* 클릭 시 배경색 변경 */
-}
-
-/* 버튼에 마우스 오버 시 색상 변경 */
-#chatbot-categories button:hover, #chatbot-subcategories button:hover {
-	background-color: #0056b3; /* 마우스 오버 시 배경 색상 */
+    text-align: left;
+    font-size: 14px;
 }
 
 /* 챗봇 입력 영역 */
 #chatbot-footer {
-	padding: 10px; /* 패딩 추가 */
-	background-color: #f8f9fa; /* 배경 색상 */
-	border-top: 1px solid var(--admin-body-color); /* 상단 테두리 */
-	display: flex; /* flexbox 사용 */
-	align-items: center; /* 아이템들을 가운데 정렬 */
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-top: 1px solid var(--admin-body-color);
+    display: flex;
+    align-items: center;
 }
 
 /* 챗봇 입력 필드 스타일링 */
 #chatbot-input {
-	flex: 1; /* 입력 필드가 가능한 공간을 모두 차지하도록 설정 */
-	border: 1px solid var(--background-color); /* 테두리 색상 */
-	border-radius: 4px; /* 모서리 둥글게 */
-	padding: 8px 12px; /* 패딩 추가 */
-	font-size: 14px; /* 폰트 크기 */
-	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; /* 포커스 시 부드러운 전환 효과 */
+    flex: 1;
+    border: 1px solid var(--background-color);
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 14px;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 /* 챗봇 입력 필드 포커스 시 스타일링 */
 #chatbot-input:focus {
-	border-color: var(--trans-sub-color); /* 포커스 시 테두리 색상 */
-	outline: 0; /* 기본 아웃라인 제거 */
-	box-shadow: 0 0 0 0.2rem var(--trans-sub-color); /* 포커스 시 그림자 효과 */
+    border-color: var(--trans-sub-color);
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem var(--trans-sub-color);
 }
 
 /* 챗봇 전송 버튼 스타일링 */
 #chatbot-send {
-	background-color: var(--mian-color); /* 버튼 배경 색상 */
-	color: #fff; /* 버튼 텍스트 색상 */
-	border: none; /* 기본 테두리 제거 */
-	border-radius: 4px; /* 모서리 둥글게 */
-	padding: 8px 16px; /* 패딩 추가 */
-	margin-left: 8px; /* 왼쪽 여백 추가 */
-	cursor: pointer; /* 커서 모양을 포인터로 변경 */
-	transition: background-color 0.15s ease-in-out; /* 배경 색상 변경 시 부드러운 전환 효과 */
+    background-color: var(--mian-color);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    margin-left: 8px;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
 }
 
 /* 전송 버튼에 마우스 오버 시 색상 변경 */
 #chatbot-send:hover {
-	background-color: var(--trans-sub-color); /* 마우스 오버 시 배경 색상 */
+    background-color: var(--trans-sub-color);
 }
-

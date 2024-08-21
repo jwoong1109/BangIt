@@ -1,0 +1,10 @@
+
+.room-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    width:400px;
+}
+#room-status, #check-in-time, #check-out-time, #guests {
+	width:200px;
+}

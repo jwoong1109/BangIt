@@ -60,6 +60,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-amqp'  // AMQP 지원 (RabbitMQ 등)
     implementation 'org.springframework.boot:spring-boot-starter-websocket'  // WebSocket 지원
     
+    //엑셀 기능 이용을 위한 의존성
+    implementation 'org.apache.poi:poi:5.2.3' 
+    implementation 'org.apache.poi:poi-ooxml:5.2.3'  
+    
+    
     //이미지 처리를 위한 s3 추가
     implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3:3.1.1'
     

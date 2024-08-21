@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.DynamicUpdate;
 
-import com.bangIt.blended.domain.dto.room.ReservationDTO;
-import com.bangIt.blended.domain.dto.room.RoomDTO;
 import com.bangIt.blended.domain.enums.ReservationStatus;
 
 import jakarta.persistence.CascadeType;
@@ -27,12 +25,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "reservation")
 @DynamicUpdate
 @Getter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
+@Table(name = "reservation")
 public class ReservationEntity {
 
     @Id 
@@ -71,14 +69,8 @@ public class ReservationEntity {
     @OneToOne(mappedBy = "reservation")
     private SaleEntity sale;
 
-    
-    public ReservationDTO toReservationDTO() {
-    	return ReservationDTO.builder()
-    			.reservationDate(reservationDate)
-    			.checkInDate(checkInDate)
-    			.checkOutDate(checkOutDate)
-    			.roomName(room.getRoomName())
-    			.roomPrice(room.getRoomPrice())
-    			.build();
+ // 상태를 변경하는 메서드
+    public void updateStatus(ReservationStatus newStatus) {
+        this.reservationStatus = newStatus;
     }
 }

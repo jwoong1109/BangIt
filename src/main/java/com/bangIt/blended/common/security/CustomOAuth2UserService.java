@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
+    // 의존성 주입: 사용자 정보와 관련된 레포지토리 및 기타 서비스
     private final UserEntityRepository repository;
     private final PartnerEntityRepository partnerRepository;
     private final PasswordEncoder pw;
@@ -33,16 +34,20 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        // 기본 OAuth2 사용자 정보를 로드
         OAuth2User oAuth2User = super.loadUser(userRequest);
+        // 클라이언트 등록 ID (Google, Naver, Kakao 등)
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
 
-        // attributes를 수정 가능한 맵으로 복사합니다.
+        // 사용자 속성(attributes)을 수정 가능한 맵으로 복사
         Map<String, Object> attributes = new HashMap<>(oAuth2User.getAttributes());
         attributes.put("registrationId", registrationId);
 
+        // 디버깅용 로그 출력
         System.out.println("registrationID: " + registrationId);
         attributes.forEach((key, value) -> System.out.println(key + ": " + value));
 
+        // 사용자 정보를 처리하여 UserDetails를 반환
         return socialUser(oAuth2User, registrationId, attributes);
     }
 
@@ -52,6 +57,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String socialId = null;
         AuthProvider provider = null;
 
+        // 제공자별로 사용자 정보를 추출하여 소셜 ID, 이메일, 사용자명, 제공자 정보를 설정
         if (registrationId.equals("google")) {
             email = (String) attributes.getOrDefault("email", null);
             username = (String) attributes.getOrDefault("name", null);
@@ -74,30 +80,36 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             provider = AuthProvider.KAKAO;
         }
 
+        // 소셜 ID 및 제공자 정보를 로그로 출력
         System.out.println("Initial Social ID: " + socialId);
         System.out.println("Provider: " + provider);
 
-        // socialId가 null인 경우 예외 발생
+        // 소셜 ID가 없으면 예외 발생
         if (socialId == null || socialId.isEmpty()) {
             throw new IllegalArgumentException("Failed to retrieve social ID from " + provider + ". Social ID is null or empty.");
         }
 
+        // 데이터베이스에서 소셜 ID와 제공자 정보로 사용자를 조회
         Optional<UserEntity> existingUserOptional = repository.findBySocialIdAndProvider(socialId, provider);
 
         if (existingUserOptional.isEmpty()) {
+            // 사용자가 존재하지 않으면 새 사용자 생성
             UserEntity newUser = UserEntity.builder()
                 .email(email)
                 .username(username)
-                .password(pw.encode(String.valueOf(System.currentTimeMillis())))
+                .password(pw.encode(String.valueOf(System.currentTimeMillis()))) // 임시 비밀번호 설정
                 .socialId(socialId)
                 .provider(provider)
                 .build()
-                .addRole(Role.USER);
+                .addRole(Role.USER); // 기본 역할(USER) 부여
 
+            // 새 사용자를 저장하고 CustomUserDetails로 반환
             return new CustomUserDetails(repository.save(newUser), attributes);
         } else {
+            // 사용자가 존재하는 경우
             UserEntity existingUser = existingUserOptional.get();
 
+            // 기존 사용자의 소셜 ID를 로그로 출력
             System.out.println("Existing User Social ID: " + existingUser.getSocialId());
 
             // 현재 요청 URI가 /partner-login인지 확인하고, ROLE_PARTNER 추가 여부 판단
@@ -112,6 +124,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 session.setAttribute("redirectToBusinessRegistration", true);
             }
 
+            // 기존 사용자를 CustomUserDetails로 반환
             return new CustomUserDetails(existingUser, attributes);
         }
     }
