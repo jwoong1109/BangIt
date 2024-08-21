@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
-	<link rel="stylesheet" href="/css/partner/place/place.css">
 	<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e92dcce6a45cf9533fea83124cc52455&libraries=services"></script>
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script src="/js/partner/place/address-api.js" defer></script>
@@ -38,74 +37,71 @@
 </head>
 <body>
     <div th:fragment="placeDetailsFragment">
-          <section class="place-save-form">
-                  <div class="form-group">
-                      <b>숙소 이름 : </b>
-                      <span th:text="${place.name}">숙소 이름</span>
-                  </div>
+		<section class="place-save-form">
+			<div class="form-group">
+				<b>숙소 이름 : </b> <span th:text="${place.name}">숙소 이름</span>
+			</div>
 
-                  <div class="form-group">
-                      <b>숙소 설명 : </b>
-                      <span th:text="${place.description}">숙소 설명</span>
-                  </div>
+			<div class="form-group">
+				<b>숙소 설명 : </b> <span th:text="${place.description}">숙소 설명</span>
+			</div>
 
-                  <!-- 숙소 지역 카테고리 -->
-                  <div class="form-group">
-                      <b>지역 : </b>
-                      <span th:text="${place.region.KoName}">지역</span>
-                  </div>
+			<!-- 숙소 지역 카테고리 -->
+			<div class="form-group">
+				<b>지역 : </b> <span th:text="${place.region.KoName}">지역</span>
+			</div>
 
-                  <!-- 숙소 위치 -->
-                  <div class="form-group">
-                      <b>주소 : </b>
-                      <span th:text="${place.detailedAddress}">주소</span>
-                  </div>
+			<!-- 숙소 위치 -->
+			<div class="form-group">
+				<b>주소 : </b> <span th:text="${place.detailedAddress}">주소</span>
+			</div>
 
-                  <!-- 숙소 유형 카테고리 -->
-                  <div class="form-group">
-                      <b>숙소 유형 : </b>
-                      <span th:text="${place.type.KoName}">숙소 유형</span>
-                  </div>
-                  <div class="form-group">
-                      <b>테마 : </b>
-                      <span th:each="theme : ${place.themes}" th:text="${theme.KoName} + ' '">테마</span>
-                  </div>
+			<!-- 숙소 유형 카테고리 -->
+			<div class="form-group">
+				<b>숙소 유형 : </b> <span th:text="${place.type.KoName}">숙소 유형</span>
+			</div>
+			<div class="form-group">
+				<b>테마 : </b> <span th:each="theme : ${place.themes}"
+					th:text="${theme.KoName} + ' '">테마</span>
+			</div>
 
-                  <!-- 숙소 메인 이미지 업로드 -->
-                  <div class="form-group">
-                      <label for="mainImage">숙소 메인 이미지:</label>
-                      <div id="mainImagePreview" class="image-preview-container">
-                          <img th:if="${place.mainImage}" th:src="${place.mainImage}" alt="메인 이미지 미리보기">
-                      </div>
-                  </div>
-                <!-- 숙소 추가 이미지 업로드 -->
-                  <div class="form-group">
-                      <p>추가 이미지</p>
-                      <div class="image-upload-container">
-                          <th:block th:each="additionalImage, iterStat : ${place.additionalImages}">
-                              <label class="btn-file">
-                                  <div class="image-preview-container">
-                                      <img th:src="${additionalImage}" alt="추가 이미지 미리보기">
-                                  </div>
-                              </label>
-                          </th:block>
-                          <label class="btn-file" th:if="${place.additionalImages.size() < 2}">
-                              <div class="image-preview-container"></div>
-                          </label>
-                      </div>
-                  </div>
-                <br>
+			<!-- 숙소 메인 이미지 업로드 -->
+			<div class="form-group">
+				<label for="mainImage">숙소 메인 이미지:</label>
+				<div id="mainImagePreview" class="image-preview-container">
+					<img th:if="${place.mainImage}" th:src="${place.mainImage}"
+						alt="메인 이미지 미리보기">
+				</div>
+			</div>
+			<!-- 숙소 추가 이미지 업로드 -->
+			<div class="form-group">
+				<p>추가 이미지</p>
+				<div class="image-upload-container">
+					<th:block
+						th:each="additionalImage, iterStat : ${place.additionalImages}">
+						<label class="btn-file">
+							<div class="image-preview-container">
+								<img th:src="${additionalImage}" alt="추가 이미지 미리보기">
+							</div>
+						</label>
+					</th:block>
+					<label class="btn-file"
+						th:if="${place.additionalImages.size() < 2}">
+						<div class="image-preview-container"></div>
+					</label>
+				</div>
+			</div>
+			<br>
 
 			<div class="button-container">
-				<button type="button" id="updateButton" class="submit-btn">수정</button>
-				<form id="deleteForm"
-					th:action="@{/partner/places/{id}(id=${place.id})}" method="post">
+				<button type="button" id="updateButton" class="room-btn">수정</button>
+				<form id="deleteForm" th:action="@{/partner/places/{id}(id=${place.id})}" method="post">
 					<input type="hidden" name="_method" value="delete">
-					<button type="submit" id="deleteButton" class="submit-btn">삭제</button>
+					<button type="submit" id="deleteButton" class="room-btn">삭제</button>
 				</form>
 			</div>
 
 		</section>
-    </div>
+	</div>
 </body>
 </html>

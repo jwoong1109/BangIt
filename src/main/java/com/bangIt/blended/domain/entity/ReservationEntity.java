@@ -27,12 +27,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "reservation")
 @DynamicUpdate
 @Getter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
+@Table(name = "reservation")
 public class ReservationEntity {
 
     @Id 

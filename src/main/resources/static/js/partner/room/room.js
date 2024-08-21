@@ -4,10 +4,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const noUserSelectedReservation = reservationInfo.querySelector('.no-user-selected');
     const reservationDetails = reservationInfo.querySelector('.reservation-details');
     const placeItems = document.querySelectorAll('.user-item');
-    const roomSaveBtn = document.getElementById('roomSave');
     const placeDetails = document.querySelector('.place-details');
     const roomDetails = document.querySelector('.room-details');
-	const roomList = document.getElementById('roomList');
+    const roomList = document.getElementById('roomList');
     let selectedPlaceId = null;
 
     placeItems.forEach(item => {
@@ -17,63 +16,61 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    if (roomSaveBtn) {
-        roomSaveBtn.addEventListener('click', function() {
+    // 이벤트 위임을 사용하여 동적으로 생성된 요소에 대한 이벤트 처리
+    document.addEventListener('click', function(event) {
+        if (event.target && event.target.id === 'roomSave') {
             if (selectedPlaceId) {
                 loadRoomRegisterForm(selectedPlaceId);
             } else {
                 alert('숙소를 먼저 선택해주세요.');
             }
-        });
-    } else {
-        console.error('방 저장 버튼을 찾을 수 없습니다');
-    }
+        }
+    });
 
     function loadPlaceDetails(placeId) {
         fetch(`/partner/placeDetails/${placeId}`)
             .then(response => response.text())
             .then(html => {
                 placeDetails.innerHTML = html;
-				showPlaceDetails(); // 숙소 정보를 클릭할 때 호출
-				loadRoomList(placeId); // 방 목록도 함께 로드
+                showPlaceDetails();
+                loadRoomList(placeId);
             })
             .catch(error => {
                 console.error('숙소 상세 정보 로드 오류:', error);
                 placeDetails.innerHTML = '<p>숙소 상세 정보를 로드하는 중 오류가 발생했습니다. 다시 시도해주세요.</p>';
             });
     }
-	
-	function loadRoomList(placeId) { // placeStatus 매개변수를 제거
-	    const placeItem = document.querySelector(`.user-item[data-place-id="${placeId}"]`);
-	    const placeStatus = placeItem.getAttribute('data-place-status'); // 내부 변수로 선언
+    
+    function loadRoomList(placeId) {
+        const placeItem = document.querySelector(`.user-item[data-place-id="${placeId}"]`);
+        const placeStatus = placeItem.getAttribute('data-place-status');
 
-	    fetch(`/partner/roomListHtml?placeId=${placeId}&placeStatus=${placeStatus}`)
-	        .then(response => response.text())
-	        .then(html => {
-	            const roomListContainer = document.getElementById('roomList');
-	            roomListContainer.innerHTML = html;
+        fetch(`/partner/roomListHtml?placeId=${placeId}&placeStatus=${placeStatus}`)
+            .then(response => response.text())
+            .then(html => {
+                const roomListContainer = document.getElementById('roomList');
+                roomListContainer.innerHTML = html;
 
-	            document.querySelector('.reservation-details').style.display = 'block';
-	            document.querySelector('.no-user-selected').style.display = 'none';
+                document.querySelector('.reservation-details').style.display = 'block';
+                document.querySelector('.no-user-selected').style.display = 'none';
 
-	            const roomSaveButton = document.getElementById('roomSave');
-	            if (roomSaveButton) {
-	                roomSaveButton.style.display = placeStatus === 'APPROVED' ? 'block' : 'none';
-	            }
-	        })
-	        .catch(error => {
-	            console.error('방 목록 로드 오류:', error);
-	            document.getElementById('roomList').innerHTML = '<li>방 목록을 로드하는 중 오류가 발생했습니다.</li>';
-	        });
-	}
+                const roomSaveButton = document.getElementById('roomSave');
+                if (roomSaveButton) {
+                    roomSaveButton.style.display = placeStatus === 'APPROVED' ? 'block' : 'none';
+                }
+            })
+            .catch(error => {
+                console.error('방 목록 로드 오류:', error);
+                document.getElementById('roomList').innerHTML = '<li>방 목록을 로드하는 중 오류가 발생했습니다.</li>';
+            });
+    }
 
     function loadRoomRegisterForm(placeId) {
         fetch(`/partner/roomRegisterForm?placeId=${placeId}`)
             .then(response => response.text())
             .then(html => {
                 roomDetails.innerHTML = html;
-                setupRoomRegisterForm();
-                showRoomDetails(); // 방 등록 폼을 보여줄 때 호출
+                showRoomDetails();
             })
             .catch(error => {
                 console.error('방 등록 폼 로드 오류:', error);
@@ -81,31 +78,29 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
-    function setupRoomRegisterForm() {
-        const form = document.querySelector('form[action="/partner/roomSave"]');
-        if (form) {
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const formData = new FormData(this);
-                fetch('/partner/roomSave', {
-                    method: 'POST',
-                    body: formData,
-                })
-                .then(response => {
-                    if (response.ok) {
-                        alert('방이 성공적으로 등록되었습니다.');
-                        window.location.reload();
-                    } else {
-                        alert('방 저장에 실패했습니다.');
-                    }
-                })
-                .catch(error => {
-                    console.error('방 저장 오류:', error);
-                    alert('방 저장 중 오류가 발생했습니다.');
-                });
+    // 폼 제출 이벤트를 이벤트 위임으로 처리
+    document.addEventListener('submit', function(event) {
+        if (event.target && event.target.matches('form[action="/partner/roomSave"]')) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            fetch('/partner/roomSave', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('방이 성공적으로 등록되었습니다.');
+                    window.location.reload();
+                } else {
+                    alert('방 저장에 실패했습니다.');
+                }
+            })
+            .catch(error => {
+                console.error('방 저장 오류:', error);
+                alert('방 저장 중 오류가 발생했습니다.');
             });
         }
-    }
+    });
 
     searchResults.addEventListener('click', function(e) {
         const userItem = e.target.closest('.user-item');

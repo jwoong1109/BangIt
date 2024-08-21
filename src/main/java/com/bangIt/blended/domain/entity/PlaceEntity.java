@@ -43,7 +43,6 @@ import lombok.Setter;
 import software.amazon.awssdk.services.s3.model.Bucket;
 
 @DynamicUpdate
-@SequenceGenerator(name = "gen_place", sequenceName = "seq+place", initialValue = 1, allocationSize = 1)
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
@@ -54,7 +53,7 @@ import software.amazon.awssdk.services.s3.model.Bucket;
 public class PlaceEntity extends BaseEntity {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen_place")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
 	@Column(nullable = false)
