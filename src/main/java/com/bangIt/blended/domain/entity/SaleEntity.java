@@ -1,9 +1,6 @@
 package com.bangIt.blended.domain.entity;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import org.hibernate.annotations.DynamicUpdate;
 

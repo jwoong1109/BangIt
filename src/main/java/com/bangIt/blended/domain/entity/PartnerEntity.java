@@ -2,7 +2,6 @@ package com.bangIt.blended.domain.entity;
 
 import org.hibernate.annotations.DynamicUpdate;
 
-import jakarta.annotation.Generated;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

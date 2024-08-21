@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.DynamicUpdate;
 
-import com.bangIt.blended.domain.dto.room.ReservationDTO;
-import com.bangIt.blended.domain.dto.room.RoomDTO;
 import com.bangIt.blended.domain.enums.ReservationStatus;
 
 import jakarta.persistence.CascadeType;

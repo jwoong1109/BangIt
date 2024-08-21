@@ -6,7 +6,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.boot.autoconfigure.info.ProjectInfoProperties.Build;
 
 import com.bangIt.blended.domain.dto.place.HotelListDTO;
 import com.bangIt.blended.domain.dto.place.PlaceDetailDTO;
@@ -29,18 +28,17 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import software.amazon.awssdk.services.s3.model.Bucket;
 
 @DynamicUpdate
 @SequenceGenerator(name = "gen_place", sequenceName = "seq+place", initialValue = 1, allocationSize = 1)

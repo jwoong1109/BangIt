@@ -1,6 +1,5 @@
 package com.bangIt.blended.domain.mapper;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
