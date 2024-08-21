@@ -159,4 +159,13 @@
 
 .admin-index > section:nth-child(5) {
 	grid-area: e;
+	background-image: url("https://pentacle-web.s3.ap-northeast-2.amazonaws.com/1_240129_01_13aed3c2ef.jpg");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	
+	
+	
 }
+
+.admin-index > section:nth-child(5)>div> p{color: #fff;}

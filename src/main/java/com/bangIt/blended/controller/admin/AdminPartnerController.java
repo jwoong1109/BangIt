@@ -7,12 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bangIt.blended.domain.dto.place.ApprovOrRejectDTO;
-import com.bangIt.blended.domain.entity.PlaceEntity;
-import com.bangIt.blended.domain.enums.PlaceStatus;
 import com.bangIt.blended.service.admin.AdminPartnerService;
 
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,5 @@
 package com.bangIt.blended.service.user.impl;
 
-import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -10,7 +9,6 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 

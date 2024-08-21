@@ -4,17 +4,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.bangIt.blended.domain.dto.naverWorks.WritMailDTO;
-import com.bangIt.blended.service.admin.AdminEmployeeService;
 import com.bangIt.blended.service.admin.AdminMailService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RequiredArgsConstructor

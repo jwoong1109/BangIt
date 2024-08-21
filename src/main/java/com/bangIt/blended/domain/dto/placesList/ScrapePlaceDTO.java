@@ -3,7 +3,6 @@ package com.bangIt.blended.domain.dto.placesList;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Builder
 @Setter
