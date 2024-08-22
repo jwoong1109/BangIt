@@ -44,20 +44,19 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	function onMessageReceived(payload) {
-		console.log('Raw message received:', payload);
-		try {
-			const message = JSON.parse(payload.body);
-			console.log('Parsed message:', message);
-			if (message.content) {
-				console.log('Displaying message:', message.content);
-				displayMessage({ sender: 'bot', content: message.content });
-			} else {
-				console.error('Invalid message format:', message);
-			}
-		} catch (error) {
-			console.error('Error parsing message:', error);
-		}
-	}
+    console.log('Raw message received:', payload);
+    try {
+        const message = JSON.parse(payload.body);
+        console.log('Parsed message:', message);
+        if (message.content) {
+            displayMessage({ sender: 'bot', content: message.content });
+        } else {
+            console.error('Invalid message format:', message);
+        }
+    } catch (error) {
+        console.error('Error parsing message:', error);
+    }
+}
 
 	function displayMessage(message) {
 		const messagesContainer = document.getElementById('chatbot-messages');
