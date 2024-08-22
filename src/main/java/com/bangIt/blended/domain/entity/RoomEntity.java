@@ -82,6 +82,11 @@ public class RoomEntity {
 		private final int number;
 		private final String KoName;
 	}
+
+	public Object toRoomDetailDTO() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 
 }

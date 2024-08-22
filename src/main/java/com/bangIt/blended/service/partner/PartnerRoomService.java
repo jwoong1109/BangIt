@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bangIt.blended.domain.dto.room.RoomListDTO;
@@ -18,5 +19,7 @@ public interface PartnerRoomService {
 
 
 	Map<String, String> uploadImage(MultipartFile file) throws IOException;
+
+	void detailProcess(Long id, Model model);
 
 }
