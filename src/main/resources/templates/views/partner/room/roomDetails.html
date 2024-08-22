@@ -1,0 +1,20 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="roomDetailsFragment">
+    <h2 th:text="${room.roomName}">방 이름</h2>
+    <p>가격: <span th:text="${room.roomPrice}">가격</span></p>
+    <p>상태: <span th:text="${room.roomStatus.koName}">상태</span></p>
+    <p>최대 인원: <span th:text="${room.guests}">인원</span></p>
+    <p>정보: <span th:text="${room.roomInformation}">정보</span></p>
+    <p>체크인 시간: <span th:text="${room.checkInTime}">체크인</span></p>
+    <p>체크아웃 시간: <span th:text="${room.checkOutTime}">체크아웃</span></p>
+    <p>환불 정책: <span th:text="${room.refundPolicy}">환불 정책</span></p>
+    
+    <h3>이미지</h3>
+    <img th:if="${room.mainImageUrl}" th:src="${room.mainImageUrl}" alt="Main Image"/>
+    <div th:if="${room.additionalImageUrls}">
+        <img th:each="img : ${room.additionalImageUrls}" th:src="${img}" alt="Additional Image"/>
+    </div>
+</div>
+</body>
+</html>

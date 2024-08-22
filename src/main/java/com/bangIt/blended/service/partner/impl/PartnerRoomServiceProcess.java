@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bangIt.blended.common.util.FileUploadUtil;
@@ -136,4 +137,11 @@ public class PartnerRoomServiceProcess implements PartnerRoomService{
 	    return fileUploadUtil.s3TempUpload(file);
 	}
 
+	//상세페이지 조회
+	@Override
+	public void detailProcess(Long id, Model model) {
+		RoomEntity room = roomRepository.findById(id).orElseThrow(() -> new RuntimeException("Notice not found with id: " + id));            
+		model.addAttribute("room", room.toRoomDetailDTO());
+	}
+	
 }
