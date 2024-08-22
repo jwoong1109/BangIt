@@ -13,3 +13,13 @@ permissions:
     pattern: "**"
     owner: ec2-user
     group: ec2-user
+    
+#새로운 애플리케이션 버전이 설치된 후에 실행되는 스크립트
+AfterInstall:
+  - location: scripts/stop.sh
+    timeout: 60
+
+#새로운 애플리케이션 버전이 설치된 후
+ApplicationStart:
+  - location: scripts/start.sh
+    timeout: 60    
