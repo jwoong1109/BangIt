@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -52,6 +53,7 @@ public class PartnerRoomController {
 	    }
 	    
 
+	    //방 목록 조회
 	    @GetMapping("/partner/roomListHtml")
 	    public String roomListHtml(@RequestParam("placeId") Long placeId, Model model) {
 	        // 인스턴스를 사용하여 findById 메서드를 호출합니다.
@@ -65,4 +67,11 @@ public class PartnerRoomController {
 
 	        return "views/partner/room/roomList :: roomListContent";
 	    }
+	    
+	    //방 상세정보 조회
+		@GetMapping("/roomDetails/{id}")
+		public String PlaceDetails(@PathVariable("id") Long id, Model model) {
+			roomService.detailProcess(id, model);
+			return "views/partner/room/roomDetails :: roomDetailsFragment";
+		}
 }
