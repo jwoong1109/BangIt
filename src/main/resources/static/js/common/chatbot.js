@@ -1,11 +1,19 @@
 // chatbot.js
 document.addEventListener('DOMContentLoaded', function() {
+	// 전역 변수 선언
 	let stompClient = null;
+	let subscription = null;
 	const userId = 'User' + Math.floor(Math.random() * 1000);
 	let isChatbotVisible = false; // 챗봇 가시성 상태를 추적하는 변수
+	let lastMessageContent = null; // 마지막으로 받은 메시지 내용을 저장하는 변수
+	let lastMessageId = null; // 마지막으로 받은 메시지 ID를 저장하는 변수
 
 	// WebSocket 연결 함수
 	function connectWebSocket() {
+		// 기존 연결이 있다면 먼저 연결 해제
+		if (stompClient !== null) {
+			stompClient.disconnect();
+		}
 		const socket = new SockJS('/bangItBot');
 		stompClient = Stomp.over(socket);
 
@@ -17,16 +25,24 @@ document.addEventListener('DOMContentLoaded', function() {
 		stompClient.connect(headers, onConnected, onError);
 	}
 
+	// WebSocket 연결 성공 시 호출되는 함수
 	function onConnected() {
 		console.log('WebSocket 연결 성공');
-		stompClient.subscribe('/topic/responses', onMessageReceived);
+		// 기존 구독이 있다면 해제
+		if (subscription) {
+			subscription.unsubscribe();
+		}
+		// 새로운 구독 설정
+		subscription = stompClient.subscribe('/topic/responses', onMessageReceived);
 	}
 
+	// WebSocket 연결 오류 시 호출되는 함수
 	function onError(error) {
 		console.error('WebSocket 연결 오류:', error);
 		displayMessage({ sender: 'bot', content: '죄송합니다. 서버와의 연결에 문제가 있습니다. 잠시 후 다시 시도해 주세요.' });
 	}
 
+	// 메시지 전송 함수
 	function sendMessage(message) {
 		if (stompClient && stompClient.connected) {
 			const chatMessage = {
@@ -43,26 +59,40 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	}
 
+	// 메시지 수신 처리 함수
 	function onMessageReceived(payload) {
-    console.log('Raw message received:', payload);
-    try {
-        const message = JSON.parse(payload.body);
-        console.log('Parsed message:', message);
-        if (message.content) {
-            displayMessage({ sender: 'bot', content: message.content });
-        } else {
-            console.error('Invalid message format:', message);
-        }
-    } catch (error) {
-        console.error('Error parsing message:', error);
-    }
-}
+		console.log('Raw message received:', payload);
+		try {
+			const message = JSON.parse(payload.body);
+			console.log('Parsed message:', message);
+			// 서버에서 id를 보내지 않는 경우를 대비해 조건문 수정
+			if (message.content) {
+				if (message.id && message.id !== lastMessageId) {
+					lastMessageId = message.id;
+					console.log('Displaying message:', message.content);
+					displayMessage({ sender: 'bot', content: message.content });
+				} else if (!message.id && message.content !== lastMessageContent) {
+					// id가 없는 경우 content로 중복 체크
+					lastMessageContent = message.content;
+					console.log('Displaying message:', message.content);
+					displayMessage({ sender: 'bot', content: message.content });
+				} else {
+					console.log('Duplicate or invalid message, ignoring');
+				}
+			} else {
+				console.error('Invalid message format:', message);
+			}
+		} catch (error) {
+			console.error('Error parsing message:', error);
+		}
+	}
 
+	// 메시지 화면 표시 함수
 	function displayMessage(message) {
 		const messagesContainer = document.getElementById('chatbot-messages');
 		const messageClass = message.sender === 'bot' ? 'bot' : 'user';
 
-		console.log('Displaying message:', message); // 표시할 메시지를 로깅
+		// XSS 방지를 위한 이스케이프 처리 및 링크 변환
 		let content = message.content.replace(/\n/g, '<br>').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 		content = content.replace(/(https?:\/\/[^\s]+|\/\w+\/[\w-]+)/g, '<a href="$1" target="_blank">$1</a>');
 
@@ -92,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		messagesContainer.scrollTop = messagesContainer.scrollHeight;
 	}
 
-	// 챗봇 토글 함수
+	// 챗봇 UI 토글 함수
 	function toggleChatbot() {
 		const chatbotContainer = document.getElementById('chatbot-container');
 		const chatbotIcon = document.querySelector('#chatbot-toggle i');
