@@ -192,7 +192,7 @@ button {
 .reservation-info span:nth-child(2) { width: 20%; } /* 객실명 */
 .reservation-info span:nth-child(3) { width: 25%; } /* 예약일 */
 .reservation-info span:nth-child(4) { width: 20%; } /* 예약금액 */
-.reservation-info span:nth-child(5) { width: 15%; } /* 예약상태 */
+.reservation-info span:nth-child(5) { width: 20%; } /* 예약상태 */
 
 /*이미지 크기*/
 .resized-image {
