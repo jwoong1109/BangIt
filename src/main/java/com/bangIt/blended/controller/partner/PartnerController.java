@@ -77,18 +77,6 @@ public class PartnerController {
 //		//placeService.updateProcess(id, dto);
 //		return "views/partner/place/placeList";
 //	}
-	
-//	@GetMapping("/placeDetails/{id}")
-//    public String placeDetails(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable("id") Long id, Model model) {
-//        placeService.detailProcess(userDetails.getId(), id, model);
-//        return "views/partner/place/placeDetails :: placeDetailsFragment";
-//    }
-//
-//    @DeleteMapping("/places/{id}")
-//    public String delete(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable("id") long id) {
-//        placeService.deleteProcess(userDetails.getId(), id);
-//        return "redirect:/partner/placeList";
-//    }
 
 	//숙소 삭제
 	@DeleteMapping("/places/{id}")
@@ -101,7 +89,6 @@ public class PartnerController {
     public String roomSave() {
 		 return "views/partner/room/roomSave";
     }
-	
 	
 	//예약목록
 	@GetMapping("/reservation")

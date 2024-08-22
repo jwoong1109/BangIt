@@ -15,49 +15,65 @@ import com.bangIt.blended.service.IndexService;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor  // final 필드에 대해 생성자를 자동으로 생성해 주입하는 Lombok 애너테이션
 public class IndexServiceProcess implements IndexService {
 
-	private final PlaceEntityRepository placeRepository;
+	private final PlaceEntityRepository placeRepository;  // PlaceEntityRepository 주입
 
 	@Override
 	public List<HotelListDTO> getLatestHotels() {
+		// 최신 호텔 5곳을 생성 날짜 순서로 가져옵니다.
 		List<PlaceEntity> latestPlaces = placeRepository.findTop5ByOrderByCreatedAtDesc();
 
-		return latestPlaces.stream().map(PlaceEntity::toLatestHotelListDTO).collect(Collectors.toList());
+		// PlaceEntity를 HotelListDTO로 변환하여 리스트로 반환합니다.
+		return latestPlaces.stream()
+			.map(PlaceEntity::toLatestHotelListDTO) // 최신 호텔 리스트 DTO로 변환
+			.collect(Collectors.toList());
 	}
 
 	@Override
 	public List<HotelListDTO> TopPriceHotelList(Model model) {
+		// 가장 높은 가격의 호텔들을 가져옵니다.
 		List<PlaceEntity> topPriceHotels = placeRepository.findTopByOrderByRoomPriceDesc();
 
-		return topPriceHotels.stream().map(PlaceEntity::toHotelListDTOWithoutDistance) // 거리 정보 포함하지 않은 DTO 변환
-				.collect(Collectors.toList());
+		// PlaceEntity를 거리 정보 없이 HotelListDTO로 변환하여 리스트로 반환합니다.
+		return topPriceHotels.stream()
+			.map(PlaceEntity::toHotelListDTOWithoutDistance) // 거리 정보 없이 DTO로 변환
+			.collect(Collectors.toList());
 	}
 
-	// 거리 계산 메서드
+	// 두 좌표 간의 거리를 계산하는 메서드 (Haversine 공식 사용)
 	private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
-		final int R = 6371; // 지구 반지름 (킬로미터)
+		final int R = 6371; // 지구 반지름 (킬로미터 단위)
 		double latDistance = Math.toRadians(lat2 - lat1);
 		double lonDistance = Math.toRadians(lon2 - lon1);
-		double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2) + Math.cos(Math.toRadians(lat1))
-				* Math.cos(Math.toRadians(lat2)) * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+		double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2) 
+			+ Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) 
+			* Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
 		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-		return R * c; // 거리 (킬로미터)
+		return R * c; // 계산된 거리 (킬로미터 단위)
 	}
 
 	@Override
 	public List<HotelListDTO> getNearByHotels(double latitude, double longitude) {
-		List<PlaceEntity> places = placeRepository.findAll(); // 모든 장소를 가져옴
+		// 모든 장소를 가져옵니다.
+		List<PlaceEntity> places = placeRepository.findAll();
 
-		return places.stream().map(place -> {
-			double placeLat = place.getLatitude();
-			double placeLon = place.getLongitude();
-			double distance = calculateDistance(latitude, longitude, placeLat, placeLon);
+		// 각 장소와 현재 위치 간의 거리를 계산하고, DTO로 변환하여 리스트로 반환합니다.
+		return places.stream()
+			.map(place -> {
+				// 각 장소의 위도와 경도를 가져와서 거리 계산
+				double placeLat = place.getLatitude();
+				double placeLon = place.getLongitude();
+				double distance = calculateDistance(latitude, longitude, placeLat, placeLon);
 
-			return place.toHotelListDTOWithDistance(distance); // 거리 정보 포함하여 DTO 변환
-		}).sorted(Comparator.comparingDouble(HotelListDTO::getDistance)) // 거리순으로 정렬
-				.limit(4)
-				.collect(Collectors.toList());
+				// 거리 정보를 포함한 DTO로 변환
+				return place.toHotelListDTOWithDistance(distance);
+			})
+			// 거리 순으로 정렬
+			.sorted(Comparator.comparingDouble(HotelListDTO::getDistance))
+			// 가까운 4개의 장소만 반환
+			.limit(4)
+			.collect(Collectors.toList());
 	}
 }

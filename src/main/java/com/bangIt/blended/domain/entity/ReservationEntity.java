@@ -1,9 +1,12 @@
 package com.bangIt.blended.domain.entity;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.DynamicUpdate;
 
+import com.bangIt.blended.domain.dto.reservation.ReservationDetailDTO;
+import com.bangIt.blended.domain.dto.reservation.ReservationListDTO;
 import com.bangIt.blended.domain.enums.ReservationStatus;
 
 import jakarta.persistence.CascadeType;
@@ -72,5 +75,52 @@ public class ReservationEntity {
  // 상태를 변경하는 메서드
     public void updateStatus(ReservationStatus newStatus) {
         this.reservationStatus = newStatus;
+    }
+    
+    public ReservationListDTO toReservationListDTO() {
+    	 Duration duration = Duration.between(checkInDate, checkOutDate);
+         
+         // Duration의 초를 일수로 변환
+         long nights = duration.toDays();  // 소수점 이하 버림
+    	
+        return ReservationListDTO.builder()
+            .id(id)
+            .placeName(room.getPlace().getName())
+            .roomName(room.getRoomName())
+            .checkInDate(checkInDate)
+            .checkOutDate(checkOutDate)
+            .reservationPeople(reservationPeople)
+            .totalPrice(room.getRoomPrice()*nights)
+            .status(reservationStatus)
+            .build();
+    }
+
+    private static final String BASE_URL = "https://s3.ap-northeast-2.amazonaws.com/nowon.images.host0521/";
+
+    public ReservationDetailDTO toReservationDetailDTO() {
+    	Duration duration = Duration.between(checkInDate, checkOutDate);
+    	
+    	String placeMainImageUrl = this.room.getPlace().getImages().stream()
+                .filter(image -> image.getImageType() == ImageEntity.ImageType.PLACE_MAIN)
+                .findFirst()
+                .map(image -> BASE_URL + image.getImageUrl())
+                .orElse(null);
+        
+        // Duration의 초를 일수로 변환
+        long nights = duration.toDays();  // 소수점 이하 버림
+        return ReservationDetailDTO.builder()
+            .id(this.id)
+            .placeName(this.room.getPlace().getName())
+            .roomName(this.room.getRoomName())
+            .checkInDate(this.checkInDate)
+            .checkOutDate(this.checkOutDate)
+            .reservationPeople(this.reservationPeople)
+            .roomPrice(room.getRoomPrice())
+            .totalPrice(room.getRoomPrice()*nights)
+            .reservationStatus(this.reservationStatus)
+            .nights(nights)
+            .placeMainImageUrl(placeMainImageUrl)  
+            // 필요한 다른 정보들 추가
+            .build();
     }
 }
