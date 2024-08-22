@@ -13,7 +13,7 @@
 	    </ul>
     <div th:if="${placeStatus == T(com.bangIt.blended.domain.enums.PlaceStatus).APPROVED}">
         <ul>
-            <li th:each="room : ${rooms}" class="room-item">
+            <li th:each="room : ${rooms}" class="room-item" th:data-room-id="${room.id}">
                 <span th:text="${room.placeName}">숙소명</span>
                 <span th:text="${room.roomName}">방이름</span>
                 <span th:text="${room.roomStatus.koName}">방상태</span>

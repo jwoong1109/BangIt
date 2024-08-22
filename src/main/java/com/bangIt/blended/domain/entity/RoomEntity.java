@@ -2,8 +2,11 @@ package com.bangIt.blended.domain.entity;
 
 import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.hibernate.annotations.DynamicUpdate;
+
+import com.bangIt.blended.domain.dto.room.RoomDetailDTO;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -83,10 +86,23 @@ public class RoomEntity {
 		private final String KoName;
 	}
 
-	public Object toRoomDetailDTO() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
+	public RoomDetailDTO toRoomDetailDTO() {
+		String mainImage = null;
+		List<String> additionalImages = null;
 
+		if (images != null && !images.isEmpty()) {
+			mainImage = images.stream().filter(img -> img.getImageType() == ImageEntity.ImageType.ROOM_MAIN).findFirst()
+					.map(ImageEntity::getImageUrl).orElse(null);
+
+			additionalImages = images.stream()
+					.filter(img -> img.getImageType() == ImageEntity.ImageType.ROOM_ADDITIONAL)
+					.map(ImageEntity::getImageUrl).collect(Collectors.toList());
+		}
+
+		return RoomDetailDTO.builder().placeId(this.place != null ? this.place.getId() : null).id(this.id)
+				.roomName(this.roomName).roomInformation(this.roomInformation).roomPrice(this.roomPrice)
+				.roomStatus(this.roomStatus != null ? this.roomStatus.getKoName() : null)
+				.refundPolicy(this.refundPolicy).checkInTime(this.checkInTime).checkOutTime(this.checkOutTime)
+				.guests(this.guests).mainImage(mainImage).additionalImages(additionalImages).build();
+	}
 }

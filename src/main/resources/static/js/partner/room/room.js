@@ -58,10 +58,36 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (roomSaveButton) {
                     roomSaveButton.style.display = placeStatus === 'APPROVED' ? 'block' : 'none';
                 }
+
+                // 방 목록의 각 항목에 클릭 이벤트 리스너 추가
+                addRoomItemClickListeners();
             })
             .catch(error => {
                 console.error('방 목록 로드 오류:', error);
                 document.getElementById('roomList').innerHTML = '<li>방 목록을 로드하는 중 오류가 발생했습니다.</li>';
+            });
+    }
+
+    function addRoomItemClickListeners() {
+        const roomItems = document.querySelectorAll('.room-item');
+        roomItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const roomId = this.getAttribute('data-room-id');
+                loadRoomDetails(roomId);
+            });
+        });
+    }
+
+    function loadRoomDetails(roomId) {
+        fetch(`/roomDetails/${roomId}`)
+            .then(response => response.text())
+            .then(html => {
+                roomDetails.innerHTML = html;
+                showRoomDetails();
+            })
+            .catch(error => {
+                console.error('방 상세 정보 로드 오류:', error);
+                roomDetails.innerHTML = '<p>방 상세 정보를 로드하는 중 오류가 발생했습니다.</p>';
             });
     }
 
