@@ -1,5 +1,6 @@
 package com.bangIt.blended.service.Impl;
 
+import java.text.DecimalFormat;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,7 +52,11 @@ public class IndexServiceProcess implements IndexService {
 			+ Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) 
 			* Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
 		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-		return R * c; // 계산된 거리 (킬로미터 단위)
+		double distance = R * c; // 계산된 거리 (킬로미터 단위)
+		
+		// 소숫점 두 자리까지 포맷팅
+		DecimalFormat df = new DecimalFormat("#.00");
+		return Double.parseDouble(df.format(distance));
 	}
 
 	@Override
