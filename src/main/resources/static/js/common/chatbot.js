@@ -1,39 +1,39 @@
-// chatbot.js
 document.addEventListener('DOMContentLoaded', function() {
 	// 전역 변수 선언
-	let stompClient = null;
-	let subscription = null;
-	const userId = 'User' + Math.floor(Math.random() * 1000);
-	let isChatbotVisible = false; // 챗봇 가시성 상태를 추적하는 변수
+	let stompClient = null; // STOMP 클라이언트 인스턴스
+	let subscription = null; // WebSocket 구독 인스턴스
+	const userId = 'User' + Math.floor(Math.random() * 1000); // 랜덤 유저 ID 생성
+	let isChatbotVisible = false; // 챗봇 UI 가시성 상태를 추적하는 변수
 	let lastMessageContent = null; // 마지막으로 받은 메시지 내용을 저장하는 변수
 	let lastMessageId = null; // 마지막으로 받은 메시지 ID를 저장하는 변수
 
 	// WebSocket 연결 함수
 	function connectWebSocket() {
-		// 기존 연결이 있다면 먼저 연결 해제
+		// 기존 WebSocket 연결이 있다면 먼저 해제
 		if (stompClient !== null) {
 			stompClient.disconnect();
 		}
+		// SockJS와 STOMP 클라이언트를 사용하여 WebSocket 연결 생성
 		const socket = new SockJS('/bangItBot');
 		stompClient = Stomp.over(socket);
 
+		// CSRF 토큰을 헤더에 추가
 		const headers = {};
 		const token = document.querySelector("meta[name='_csrf']").getAttribute("content");
 		const header = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
 		headers[header] = token;
 
+		// WebSocket 연결 시도
 		stompClient.connect(headers, onConnected, onError);
 	}
 
 	// WebSocket 연결 성공 시 호출되는 함수
 	function onConnected() {
 		console.log('WebSocket 연결 성공');
-		// 기존 구독이 있다면 해제
-		if (subscription) {
-			subscription.unsubscribe();
+		// 기존 구독이 없다면 구독을 설정
+		if (!subscription) {
+			subscription = stompClient.subscribe('/topic/responses', onMessageReceived);
 		}
-		// 새로운 구독 설정
-		subscription = stompClient.subscribe('/topic/responses', onMessageReceived);
 	}
 
 	// WebSocket 연결 오류 시 호출되는 함수
@@ -50,37 +50,28 @@ document.addEventListener('DOMContentLoaded', function() {
 				key: userId,
 				userId: userId
 			};
-			console.log('Sending message:', chatMessage); // 보내는 메시지를 로깅
 			stompClient.send("/app/query", {}, JSON.stringify(chatMessage));
 			displayMessage({ sender: 'user', content: message });
 		} else {
 			console.error('WebSocket is not connected');
-			displayMessage({ sender: 'bot', content: '서버와의 연결이 끊어졌습니다. 페이지를 새로고침 해주세요.' });
+			//displayMessage({ sender: 'bot', content: '서버와의 연결이 끊어졌습니다. 페이지를 새로고침 해주세요.' });
 		}
 	}
 
 	// 메시지 수신 처리 함수
 	function onMessageReceived(payload) {
-		console.log('Raw message received:', payload);
 		try {
 			const message = JSON.parse(payload.body);
-			console.log('Parsed message:', message);
-			// 서버에서 id를 보내지 않는 경우를 대비해 조건문 수정
 			if (message.content) {
 				if (message.id && message.id !== lastMessageId) {
 					lastMessageId = message.id;
-					console.log('Displaying message:', message.content);
 					displayMessage({ sender: 'bot', content: message.content });
 				} else if (!message.id && message.content !== lastMessageContent) {
-					// id가 없는 경우 content로 중복 체크
 					lastMessageContent = message.content;
-					console.log('Displaying message:', message.content);
 					displayMessage({ sender: 'bot', content: message.content });
 				} else {
-					console.log('Duplicate or invalid message, ignoring');
+					console.log('Duplicate or invalid message, ignoring. ID:', message.id);
 				}
-			} else {
-				console.error('Invalid message format:', message);
 			}
 		} catch (error) {
 			console.error('Error parsing message:', error);
@@ -118,6 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
 		}
 
+		// 메시지를 화면에 추가하고 스크롤을 최신 메시지로 이동
 		messagesContainer.insertAdjacentHTML('beforeend', messageHTML);
 		messagesContainer.scrollTop = messagesContainer.scrollHeight;
 	}
