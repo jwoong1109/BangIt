@@ -108,27 +108,21 @@
 			<div class="modal-content">
 				<span class="close" onclick="closeModal()">&times;</span>
 				<div id="modal-body">
-					<h2>방1</h2>
+					<h2 id="modalRoomName">방 이름</h2>
 					<br>
 					<hr />
-					<h2>방 1 상세 정보</h2>
-					<p>이 방은 넓고 밝으며, 더블 침대가 있는 아늑한 공간입니다.</p>
+					<h2>방 정보</h2>
+					<p id="modalRoomInfo">실제 방 정보</p>
 					<ul>
-						<li>면적: 30m²</li>
-						<li>침대: 퀸 사이즈 1개</li>
-						<li>최대 수용 인원: 2명</li>
-						<li>욕실: 개인 욕실 1개</li>
+						<li>체크인: <span id="modalCheckIn"></span></li>
+						<li>체크아웃: <span id="modalCheckOut"></span></li>
+						<li>기준인원: <span id="modalGuests"></span></li>
+						<li>가격: <span id="modalPrice"></span></li>
 					</ul>
 					<br>
 					<hr />
-					<h3>편의 시설</h3>
-					<ul>
-						<li>에어컨</li>
-						<li>무료 Wi-Fi</li>
-						<li>평면 TV</li>
-						<li>미니 냉장고</li>
-					</ul>
-					<!-- 추가 정보 -->
+					<h3>취소 및 환불규정</h3>
+					<p id="modalRefundPolicy"></p>
 				</div>
 			</div>
 		</div>

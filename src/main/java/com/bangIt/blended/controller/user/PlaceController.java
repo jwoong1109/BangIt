@@ -1,10 +1,13 @@
 package com.bangIt.blended.controller.user;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bangIt.blended.domain.dto.room.RoomDetailDTO;
 import com.bangIt.blended.service.user.RoomService;
 import com.bangIt.blended.service.user.UserPlaceService;
 
@@ -29,15 +32,12 @@ public class PlaceController {
         roomService.listRoomsPlace(placeId, model);
         return "views/user/place/placeDetail";
     }
-	
-	// 개별 방 상세정보 조회 (필요한 경우)
-    @GetMapping("/place/{placeId}/room/{roomId}")
-    public String roomDetail(@PathVariable("placeId") long placeId, 
-                             @PathVariable("roomId") long roomId, 
-                             Model model) {
-        service.detailProcess(placeId, model);
-        roomService.roomDetailProcess(roomId, model);
-        return "views/user/place/placeDetail";
+    
+    // 방 상세정보 조회 (AJAX 요청 처리)
+    @GetMapping("/rooms/{roomId}")
+    public ResponseEntity<RoomDetailDTO> getRoomDetails(@PathVariable long roomId) {
+        return ResponseEntity.ok(roomService.getRoomDetailById(roomId));
     }
+	
 
 }
