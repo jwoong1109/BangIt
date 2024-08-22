@@ -68,35 +68,3 @@ function submitForm() {
         }
     }
 }
-
-function openModal(roomId) {
-    fetch(`/api/rooms/${roomId}`)
-        .then(response => response.json())
-        .then(room => {
-            document.getElementById('modalRoomName').textContent = room.roomName;
-            document.getElementById('modalRoomInfo').textContent = room.roomInformation;
-            document.getElementById('modalCheckIn').textContent = room.checkInTime;
-            document.getElementById('modalCheckOut').textContent = room.checkOutTime;
-            document.getElementById('modalGuests').textContent = room.guests + '명';
-            document.getElementById('modalPrice').textContent = '₩' + room.roomPrice.toLocaleString() + ' / 박';
-            document.getElementById('modalRefundPolicy').textContent = room.refundPolicy;
-
-            document.getElementById('roomModal').style.display = 'block';
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('방 정보를 불러오는 데 실패했습니다.');
-        });
-}
-
-function closeModal() {
-    document.getElementById('roomModal').style.display = 'none';
-}
-
-// 창 바깥을 클릭하면 모달이 닫히도록 설정
-window.onclick = function(event) {
-    const modal = document.getElementById('roomModal');
-    if (event.target == modal) {
-        closeModal();
-    }
-}

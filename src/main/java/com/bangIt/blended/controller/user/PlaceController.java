@@ -35,7 +35,7 @@ public class PlaceController {
     
     // 방 상세정보 조회 (AJAX 요청 처리)
     @GetMapping("/rooms/{roomId}")
-    public ResponseEntity<RoomDetailDTO> getRoomDetails(@PathVariable long roomId) {
+    public ResponseEntity<RoomDetailDTO> RoomDetails(@PathVariable("roomId") long roomId) {
         return ResponseEntity.ok(roomService.getRoomDetailById(roomId));
     }
 	
