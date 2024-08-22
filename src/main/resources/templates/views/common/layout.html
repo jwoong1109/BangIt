@@ -4,6 +4,9 @@
 
 <head>
 	<meta charset="UTF-8">
+	<!-- CSRF 보호를 위한 메타 태그 추가 -->
+	<meta name="_csrf" th:content="${_csrf.token}" />
+	<meta name="_csrf_header" th:content="${_csrf.headerName}" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<!-- 공통적용 -->
@@ -13,7 +16,11 @@
 	<link rel="stylesheet" href="/css/common/chatbot.css">
 	<link rel="stylesheet" href="/css/common/footer.css">
 	<link rel="stylesheet" href="/css/common/error-model.css">
-
+	<!---------------------------챗봇---------------------------------------->
+	<link rel="stylesheet" href="/css/common/chatbot.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 	<!-- Tosspayments 스크립트 추가 -->
 	<script src="https://js.tosspayments.com/v2/standard"></script>
 
@@ -39,9 +46,7 @@
 	<script src="/js/common/chatbot.js" defer></script>
 	<script src="/js/common/error-model.js"></script>
 
-	<!-- CSRF 보호를 위한 메타 태그 추가 -->
-	<meta name="_csrf" th:content="${_csrf.token}" />
-	<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+
 
 	<!-- 페이지 별로 다를 수 있는 헤드 요소 삽입 -->
 	<th:block th:replace="${pHead}" />
@@ -54,19 +59,19 @@
 	<div id="layoutWrap">
 
 		<!-- 헤더 -->
-		<th:block th:replace="~{::/views/common/header}" />
+		<th:block th:replace="~{views/common/header :: top}" />
 
 		<!-- 메인 콘텐츠 -->
 		<th:block th:replace="${pMain}" />
 
 		<!-- 푸터 -->
-		<th:block th:replace="~{::/views/common/footer}" />
+		<th:block th:replace="~{views/common/footer :: bottom}" />
 
 		<!-- Chatbot 삽입 -->
-		<th:block th:replace="~{::/views/chatbot/chatbot}" />
+		<th:block th:replace="~{views/chatbot/chatbot :: chatbot}" />
 
-		<!-- 공통 에러 팝업 -->
-		<th:block th:replace="~{::/views/common/error-modal}" />
+		<!--공통 에러 팝업-->
+		<th:block th:replace="~{views/common/error-modal :: errorModal}" />
 
 	</div>
 
