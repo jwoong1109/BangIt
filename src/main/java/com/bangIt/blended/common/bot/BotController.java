@@ -32,6 +32,7 @@ public class BotController {
 
 		// JSON 형식으로 응답 메시지 전송
 		String jsonResponse = String.format("{\"content\": \"%s\"}", response);
+		System.out.println("Sending response: " + jsonResponse); // 추가된 로그
 		messagingTemplate.convertAndSend("/topic/responses", jsonResponse);
 	}
 
