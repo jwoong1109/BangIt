@@ -21,5 +21,8 @@ public interface BotService {
      * @return 추출된 키워드 리스트
      */
     Set<String> extractKeywords(String input);
+
+
+	void handleUserQuery(Question dto);
     
 }

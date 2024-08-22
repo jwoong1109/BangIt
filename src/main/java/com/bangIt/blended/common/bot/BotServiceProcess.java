@@ -1,21 +1,17 @@
 package com.bangIt.blended.common.bot;
 
+import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-
-import lombok.RequiredArgsConstructor;
-
 @Service
 @RequiredArgsConstructor
 public class BotServiceProcess implements BotService {
-    private static final Logger logger = LoggerFactory.getLogger(BotServiceProcess.class);
 
     private final KomoranService komoranService;
     private final AnswerRepository answerRepository;
@@ -23,52 +19,49 @@ public class BotServiceProcess implements BotService {
 
     @Override
     public String processInput(String input) {
-        logger.info("Processing input: {}", input);
-
+        // 사용자 입력에서 키워드를 추출합니다.
         Set<String> keywords = extractKeywords(input);
-        logger.info("Extracted keywords: {}", keywords);
+        System.out.println("Extracted keywords: " + keywords); // 디버깅: 추출된 키워드 출력
 
+        // 키워드가 비어있는 경우 처리
         if (keywords.isEmpty()) {
-            logger.warn("No keywords extracted from input: {}", input);
             return "죄송합니다. 입력을 이해하지 못했습니다. 다른 방식으로 질문해 주시겠어요?";
         }
 
+        // 키워드에 맞는 답변을 찾습니다.
         List<AnswerEntityDTO> possibleAnswers = new ArrayList<>();
         for (String keyword : keywords) {
             List<AnswerEntityDTO> answers = findAnswersByKeyword(keyword);
-            logger.info("Found {} answers for keyword '{}': {}", answers.size(), keyword, answers);
+            System.out.println("Found answers for keyword '" + keyword + "': " + answers); // 디버깅: 찾은 답변 출력
             possibleAnswers.addAll(answers);
         }
 
+        // 답변을 찾지 못한 경우 처리
         if (possibleAnswers.isEmpty()) {
-            logger.warn("No answers found for keywords: {}", keywords);
             return "죄송합니다. 관련된 답변을 찾지 못했습니다. 다른 질문을 해주시겠어요?";
         }
 
+        // 답변을 랜덤으로 선택합니다.
         AnswerEntityDTO selectedAnswer = selectRandomAnswer(possibleAnswers);
-        logger.info("Selected answer: {}", selectedAnswer);
-
         return selectedAnswer.getContent();
     }
 
     @Override
     public Set<String> extractKeywords(String input) {
-        logger.info("Extracting keywords from input: {}", input);
-        Set<String> keywords = komoranService.extractNouns(input);
-        logger.info("Extracted keywords: {}", keywords);
-        return keywords;
+        return komoranService.extractNouns(input);
     }
 
     private List<AnswerEntityDTO> findAnswersByKeyword(String keyword) {
-        logger.info("Finding answers for keyword: {}", keyword);
         List<AnswerEntity> answers = answerRepository.findByIntent(keyword);
-        logger.info("Found {} answers in database", answers.size());
         return answers.stream().map(AnswerEntityDTO::fromEntity).collect(Collectors.toList());
     }
 
     private AnswerEntityDTO selectRandomAnswer(List<AnswerEntityDTO> answers) {
-        AnswerEntityDTO selected = answers.get(random.nextInt(answers.size()));
-        logger.info("Randomly selected answer: {}", selected);
-        return selected;
+        return answers.get(random.nextInt(answers.size()));
     }
+
+	@Override
+	public void handleUserQuery(Question dto) {
+		
+	}
 }
