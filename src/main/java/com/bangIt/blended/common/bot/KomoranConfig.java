@@ -21,7 +21,7 @@ public class KomoranConfig {
      * @return Komoran 형태소 분석기 객체
      */
     @Bean
-    public Komoran komoran() {
+    Komoran komoran() {
         // Komoran 객체를 FULL 모델로 초기화합니다.
         Komoran komoran = new Komoran(DEFAULT_MODEL.FULL);
 
