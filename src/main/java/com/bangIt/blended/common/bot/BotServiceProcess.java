@@ -2,7 +2,6 @@ package com.bangIt.blended.common.bot;
 
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -12,7 +11,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class BotServiceProcess implements BotService {
-
     private final KomoranService komoranService;
     private final AnswerRepository answerRepository;
     private final Random random = new Random();
@@ -43,25 +41,35 @@ public class BotServiceProcess implements BotService {
 
         // 답변을 랜덤으로 선택합니다.
         AnswerEntityDTO selectedAnswer = selectRandomAnswer(possibleAnswers);
-        return selectedAnswer.getContent();
+        String finalAnswer = selectedAnswer.getContent();
+        System.out.println("Final answer to be returned: " + finalAnswer); // 디버깅: 최종 선택된 답변 출력
+        return finalAnswer;
     }
 
     @Override
     public Set<String> extractKeywords(String input) {
+        // 입력된 문자열에서 명사를 추출하여 키워드 집합을 반환합니다.
         return komoranService.extractNouns(input);
     }
 
     private List<AnswerEntityDTO> findAnswersByKeyword(String keyword) {
+        System.out.println("Searching for keyword: '" + keyword + "'");
+        // 데이터베이스에서 주어진 키워드(intent)에 해당하는 답변들을 찾습니다.
         List<AnswerEntity> answers = answerRepository.findByIntent(keyword);
+        System.out.println("Found " + answers.size() + " answers in the database");
+        // 찾은 AnswerEntity들을 AnswerEntityDTO로 변환하여 반환합니다.
         return answers.stream().map(AnswerEntityDTO::fromEntity).collect(Collectors.toList());
     }
 
     private AnswerEntityDTO selectRandomAnswer(List<AnswerEntityDTO> answers) {
-        return answers.get(random.nextInt(answers.size()));
+        // 주어진 답변 리스트에서 랜덤으로 하나의 답변을 선택합니다.
+        AnswerEntityDTO selected = answers.get(random.nextInt(answers.size()));
+        System.out.println("Randomly selected answer: " + selected.getContent()); // 디버깅: 랜덤 선택된 답변 출력
+        return selected;
     }
 
-	@Override
-	public void handleUserQuery(Question dto) {
-		
-	}
+    @Override
+    public void handleUserQuery(Question dto) {
+        // 사용자 쿼리를 처리하는 메서드입니다. 현재는 구현되지 않았습니다.
+    }
 }
