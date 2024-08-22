@@ -7,7 +7,7 @@ body {
 
 .reservation-container {
 width: 90%;
-max-width: 1200px;
+max-width: 1300px;
 margin: 0 auto;
 position: relative;
 }
@@ -19,8 +19,16 @@ position: relative;
 	min-height: 650px;
 }
 
-.left-section, .right-section {
-	width: 48%;
+.left-section {
+	width: 50%;
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.right-section {
+	width: 45%;
 	background-color: #fff;
 	padding: 20px;
 	border-radius: 8px;
@@ -181,8 +189,8 @@ button {
 
 /* 항목별 넓이 비율 조절 */
 .reservation-info span:nth-child(1) { width: 20%; } /* 숙소명 */
-.reservation-info span:nth-child(2) { width: 17%; } /* 객실명 */
-.reservation-info span:nth-child(3) { width: 30%; } /* 예약일 */
+.reservation-info span:nth-child(2) { width: 20%; } /* 객실명 */
+.reservation-info span:nth-child(3) { width: 25%; } /* 예약일 */
 .reservation-info span:nth-child(4) { width: 20%; } /* 예약금액 */
 .reservation-info span:nth-child(5) { width: 15%; } /* 예약상태 */
 
