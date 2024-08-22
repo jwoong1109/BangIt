@@ -32,18 +32,14 @@ public class BotController {
 	@MessageMapping("/query")
 
 	public void handleQuery(Question dto) {
+	    System.out.println(">>> 사용자 질문: " + dto);
+	    String response = botService.processInput(dto.getContent());
 
-		System.out.println(">>> 사용자 질문: " + dto);
-
-		String response = botService.processInput(dto.getContent());
-
-		// JSON 형식으로 메시지 전송
-
-		String jsonResponse = String.format("{\"content\": \"%s\"}", response);
-
-		messagingTemplate.convertAndSend("/topic/responses", jsonResponse);
-
+	    // JSON 형식으로 메시지 전송
+	    String jsonResponse = String.format("{\"content\": \"%s\"}", response);
+	    messagingTemplate.convertAndSend("/topic/responses", jsonResponse);
 	}
+
 
 	/**
 	 * HTTP POST 요청을 통해 들어오는 챗봇 대화를 처리합니다. 이 메소드는 인증된 사용자만 접근할 수 있습니다.
