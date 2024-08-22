@@ -24,7 +24,7 @@ public class AnswerEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long no;
 
-	private String intent; // 이 필드는 이전의 'keyword' 역할을 합니다
+	private String intent; // 'keyword' 역할
 	private String content;
 
 }

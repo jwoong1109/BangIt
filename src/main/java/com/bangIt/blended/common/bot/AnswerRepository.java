@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface AnswerRepository extends JpaRepository<AnswerEntity, Long> {
 	/**
 	 * 주어진 intent에 해당하는 응답들을 검색합니다.
-	 * 
 	 * @param intent 검색할 intent
 	 * @return intent에 해당하는 응답 리스트
 	 */
