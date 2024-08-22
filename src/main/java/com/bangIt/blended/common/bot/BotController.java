@@ -21,12 +21,14 @@ public class BotController {
 
 	@MessageMapping("/query")
 	public void handleQuery(Question dto) {
-		System.out.println(">>> 사용자 질문: " + dto);
-		// 사용자 질문을 처리
-		String response = botService.processInput(dto.getContent());
-		// 응답을 WebSocket을 통해 클라이언트에 전송
-		messagingTemplate.convertAndSend("/topic/responses", response);
+	    System.out.println(">>> 사용자 질문: " + dto);
+	    String response = botService.processInput(dto.getContent());
+
+	    // JSON 형식으로 메시지 전송
+	    String jsonResponse = String.format("{\"content\": \"%s\"}", response);
+	    messagingTemplate.convertAndSend("/topic/responses", jsonResponse);
 	}
+
 
 	/**
 	 * 챗봇과의 대화를 처리하는 엔드포인트 인증된 사용자만 접근 가능합니다.

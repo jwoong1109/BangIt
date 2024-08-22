@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	function onConnected() {
 		console.log('WebSocket 연결 성공');
-		stompClient.subscribe('/topic/bot/' + userId, onMessageReceived);
+		stompClient.subscribe('/topic/responses', onMessageReceived);
 	}
 
 	function onError(error) {
