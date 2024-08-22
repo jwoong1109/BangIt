@@ -8,7 +8,7 @@
 <meta name="_csrf" content="${_csrf.token}">
 <meta name="_csrf_header" content="${_csrf.headerName}">
 
-<title>결제 페이지</title>
+<title>예약 관리</title>
 	<link rel="stylesheet" href="/css/user/reservation/reservation.css">
 	<script src="/js/user/reservation/reservation.js" defer></script>
 </head>
@@ -22,17 +22,20 @@
 				<div class="left-section">
 					<div class="reservation-info">
 						<ul>
-							<li class="header"><span>숙소명</span> <span>객실명</span> <span>예약일</span>
-								<span>예약금액</span> <span>예약상태</span></li>
+							<li class="header">
+							<span>숙소명</span> 
+							<span>객실명</span> 
+							<span>예약일</span>
+							<span>예약금액</span> 
+							<span>예약상태</span>
+							</li>
 							<!-- Thymeleaf를 사용하여 예약 목록 반복 -->
-							<li th:each="reservation : ${reservations}" class="reservation-item" th:data-reservation-id="${reservation.id}"><span
-								th:text="${reservation.placeName}">숙소명</span> <span
-								th:text="${reservation.roomName}">객실명</span> <span
-								th:text="${#temporals.format(reservation.checkInDate, 'yyyy-MM-dd')} + ' ~ ' + ${#temporals.format(reservation.checkOutDate, 'yyyy-MM-dd')}">예약일</span>
-								<span
-								th:text="${#numbers.formatDecimal(reservation.totalPrice, 0, 'COMMA', 0, 'POINT')} + '원'">예약금액</span>
-								<span th:text="${reservation.status.koName}"
-								th:class="${'status-' + reservation.status.name().toLowerCase()}">예약상태</span>
+							<li th:each="reservation : ${reservations}" class="reservation-item" th:data-reservation-id="${reservation.id}">
+							<span th:text="${reservation.placeName}">숙소명</span> 
+							<span th:text="${reservation.roomName}">객실명</span> 
+							<span th:text="${#temporals.format(reservation.checkInDate, 'yyyy-MM-dd')} + ' ~ ' + ${#temporals.format(reservation.checkOutDate, 'yyyy-MM-dd')}">예약일</span>
+							<span th:text="${#numbers.formatDecimal(reservation.totalPrice, 0, 'COMMA', 0, 'POINT')} + '원'">예약금액</span>
+							<span th:text="${reservation.status.koName}" th:class="${'status-' + reservation.status.name().toLowerCase()}">예약상태</span>
 							</li>
 						</ul>
 					</div>
