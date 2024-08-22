@@ -87,22 +87,36 @@ public class RoomEntity {
 	}
 
 	public RoomDetailDTO toRoomDetailDTO() {
-		String mainImage = null;
-		List<String> additionalImages = null;
+	    String baseUrl = "https://s3.ap-northeast-2.amazonaws.com/nowon.images.host0521/";
+	    String mainImage = null;
+	    List<String> additionalImages = null;
 
-		if (images != null && !images.isEmpty()) {
-			mainImage = images.stream().filter(img -> img.getImageType() == ImageEntity.ImageType.ROOM_MAIN).findFirst()
-					.map(ImageEntity::getImageUrl).orElse(null);
+	    if (images != null && !images.isEmpty()) {
+	        mainImage = images.stream()
+	            .filter(img -> img.getImageType() == ImageEntity.ImageType.ROOM_MAIN)
+	            .findFirst()
+	            .map(img -> baseUrl + img.getImageUrl())
+	            .orElse(null);
 
-			additionalImages = images.stream()
-					.filter(img -> img.getImageType() == ImageEntity.ImageType.ROOM_ADDITIONAL)
-					.map(ImageEntity::getImageUrl).collect(Collectors.toList());
-		}
+	        additionalImages = images.stream()
+	            .filter(img -> img.getImageType() == ImageEntity.ImageType.ROOM_ADDITIONAL)
+	            .map(img -> baseUrl + img.getImageUrl())
+	            .collect(Collectors.toList());
+	    }
 
-		return RoomDetailDTO.builder().placeId(this.place != null ? this.place.getId() : null).id(this.id)
-				.roomName(this.roomName).roomInformation(this.roomInformation).roomPrice(this.roomPrice)
-				.roomStatus(this.roomStatus != null ? this.roomStatus.getKoName() : null)
-				.refundPolicy(this.refundPolicy).checkInTime(this.checkInTime).checkOutTime(this.checkOutTime)
-				.guests(this.guests).mainImage(mainImage).additionalImages(additionalImages).build();
+	    return RoomDetailDTO.builder()
+	        .placeId(this.place != null ? this.place.getId() : null)
+	        .id(this.id)
+	        .roomName(this.roomName)
+	        .roomInformation(this.roomInformation)
+	        .roomPrice(this.roomPrice)
+	        .roomStatus(this.roomStatus != null ? this.roomStatus.getKoName() : null)
+	        .refundPolicy(this.refundPolicy)
+	        .checkInTime(this.checkInTime)
+	        .checkOutTime(this.checkOutTime)
+	        .guests(this.guests)
+	        .mainImage(mainImage)
+	        .additionalImages(additionalImages)
+	        .build();
 	}
 }
