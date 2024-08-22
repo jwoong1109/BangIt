@@ -125,7 +125,12 @@ button {
     margin: 0;
 }
 
-
+.reservation-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
 
 .reservation-info li {
     display: flex;
@@ -180,3 +185,10 @@ button {
 .reservation-info span:nth-child(3) { width: 30%; } /* 예약일 */
 .reservation-info span:nth-child(4) { width: 20%; } /* 예약금액 */
 .reservation-info span:nth-child(5) { width: 15%; } /* 예약상태 */
+
+/*이미지 크기*/
+.resized-image {
+    max-width: 100%;
+    height: auto;
+    width: 500px;
+}

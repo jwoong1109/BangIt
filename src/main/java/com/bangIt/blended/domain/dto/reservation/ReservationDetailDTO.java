@@ -19,8 +19,7 @@ public class ReservationDetailDTO {
     private Long roomPrice;
     private Long totalPrice;
     private ReservationStatus reservationStatus;
-    private String imageUrl;
     private long nights;
-
+    private String placeMainImageUrl;
 
 }

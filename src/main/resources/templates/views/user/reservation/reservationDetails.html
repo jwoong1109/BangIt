@@ -1,8 +1,8 @@
 
 <div th:fragment="reservationDetailsFragment">
     <h2 th:text="${reservation.placeName}">호텔 이름</h2>
-    <img th:if="${reservation.imageUrl}" th:src="${reservation.imageUrl}"
-        alt="호텔 이미지">
+    <img th:if="${reservation.placeMainImageUrl}" th:src="${reservation.placeMainImageUrl}" alt="숙소 메인 이미지"
+     class="resized-image">
     <p>
         <strong>객실:</strong> <span th:text="${reservation.roomName}">객실 이름</span>
     </p>
@@ -22,6 +22,6 @@
                 th:text="${#numbers.formatDecimal(reservation.totalPrice, 0, 'COMMA', 0, 'POINT')} + '원'"></strong>
         </p>
         <button th:if="${reservation.reservationStatus.name() == 'CONFIRMED'}"
-            class="cancel-btn">예약 취소</button>
+            class="cancel-btn">결제 취소</button>
     </div>
 </div>

@@ -95,8 +95,16 @@ public class ReservationEntity {
             .build();
     }
 
+    private static final String BASE_URL = "https://s3.ap-northeast-2.amazonaws.com/nowon.images.host0521/";
+
     public ReservationDetailDTO toReservationDetailDTO() {
     	Duration duration = Duration.between(checkInDate, checkOutDate);
+    	
+    	String placeMainImageUrl = this.room.getPlace().getImages().stream()
+                .filter(image -> image.getImageType() == ImageEntity.ImageType.PLACE_MAIN)
+                .findFirst()
+                .map(image -> BASE_URL + image.getImageUrl())
+                .orElse(null);
         
         // Duration의 초를 일수로 변환
         long nights = duration.toDays();  // 소수점 이하 버림
@@ -108,9 +116,10 @@ public class ReservationEntity {
             .checkOutDate(this.checkOutDate)
             .reservationPeople(this.reservationPeople)
             .roomPrice(room.getRoomPrice())
-            .totalPrice(room.getRoomPrice()*nights) // payment가 null인 경우 0으로 설정
+            .totalPrice(room.getRoomPrice()*nights)
             .reservationStatus(this.reservationStatus)
             .nights(nights)
+            .placeMainImageUrl(placeMainImageUrl)  
             // 필요한 다른 정보들 추가
             .build();
     }
