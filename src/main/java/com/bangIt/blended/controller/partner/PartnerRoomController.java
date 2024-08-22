@@ -63,6 +63,6 @@ public class PartnerRoomController {
 	        model.addAttribute("rooms", rooms);
 	        model.addAttribute("placeStatus", placeStatus);
 
-	        return "views/partner/room/roomDetails :: roomListContent";
+	        return "views/partner/room/roomList :: roomListContent";
 	    }
 }
