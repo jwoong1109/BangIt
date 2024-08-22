@@ -7,6 +7,31 @@ function closeModal() {
 	document.getElementById('roomModal').style.display = "none";
 }
 
+function openModal(roomId) {
+    fetch(`/rooms/${roomId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(room => {
+            document.getElementById('modalRoomName').textContent = room.roomName;
+            document.getElementById('modalRoomInfo').textContent = room.roomInformation;
+            document.getElementById('modalCheckIn').textContent = room.checkInTime.substring(0, 5);
+    document.getElementById('modalCheckOut').textContent = room.checkOutTime.substring(0, 5);
+            document.getElementById('modalGuests').textContent = room.guests + '명';
+            document.getElementById('modalPrice').textContent = room.roomPrice.toLocaleString() + '원 / 박';
+            document.getElementById('modalRefundPolicy').textContent = room.refundPolicy;
+
+            document.getElementById('roomModal').style.display = 'block';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('방 정보를 불러오는 데 실패했습니다.');
+        });
+}
+
 // 모달 창 외부 클릭 시 닫기
 window.onclick = function(event) {
 	var modal = document.getElementById('roomModal');
