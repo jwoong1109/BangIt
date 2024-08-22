@@ -22,4 +22,6 @@ public interface PartnerRoomService {
 
 	void detailProcess(Long id, Model model);
 
+	void deleteProcess(long id);
+
 }

@@ -61,20 +61,27 @@
 				<!-- 방 메인 이미지 표시 -->
 				<div class="form-group">
 					<label for="mainImage">방 메인 이미지:</label>
-					<div class="image-preview-container">
+					<div id="mainImagePreview" class="image-preview-container">
 						<img th:if="${room.mainImage}" th:src="${room.mainImage}"
 							alt="메인 이미지 미리보기">
 					</div>
 				</div>
 
 				<!-- 방 추가 이미지 표시 -->
-				<div class="form-group" th:if="${room.additionalImages}">
+				<div class="form-group">
 					<p>추가 이미지</p>
-					<div class="additional-images-container">
-						<div th:each="additionalImage : ${room.additionalImages}"
-							class="image-preview-container">
-							<img th:src="${additionalImage}" alt="추가 이미지 미리보기">
-						</div>
+					<div class="image-upload-container">
+						<th:block
+							th:each="additionalImage, iterStat : ${room.additionalImages}">
+							<label class="btn-file">
+								<div class="image-preview-container">
+									<img th:src="${additionalImage}" alt="추가 이미지 미리보기">
+								</div>
+							</label>
+						</th:block>
+						<label class="btn-file">
+							<div class="image-preview-container"></div>
+						</label>
 					</div>
 				</div>
 

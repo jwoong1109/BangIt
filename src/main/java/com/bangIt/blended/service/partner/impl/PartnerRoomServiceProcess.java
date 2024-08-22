@@ -143,5 +143,11 @@ public class PartnerRoomServiceProcess implements PartnerRoomService{
 		RoomEntity room = roomRepository.findById(id).orElseThrow(() -> new RuntimeException("Notice not found with id: " + id));            
 		model.addAttribute("room", room.toRoomDetailDTO());
 	}
+
+	@Override
+	public void deleteProcess(long id) {
+		roomRepository.delete(roomRepository.findById(id).orElseThrow());
+		
+	}
 	
 }

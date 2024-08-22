@@ -86,5 +86,12 @@ public class RoomServiceProcess implements RoomService {
             .additionalImages(additionalImages)
             .build();
     }
+
+	@Override
+    public RoomDetailDTO getRoomDetailById(long roomId) {
+        return roomRepository.findById(roomId)
+            .map(RoomEntity::toRoomDetailDTO)
+            .orElseThrow(() -> new EntityNotFoundException("Room not found with id: " + roomId));
+    }
 }
 
