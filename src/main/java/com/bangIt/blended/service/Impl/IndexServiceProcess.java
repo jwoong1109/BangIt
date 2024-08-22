@@ -5,11 +5,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.bangIt.blended.domain.dto.place.HotelListDTO;
 import com.bangIt.blended.domain.entity.PlaceEntity;
+import com.bangIt.blended.domain.enums.PlaceStatus;
 import com.bangIt.blended.domain.repository.PlaceEntityRepository;
 import com.bangIt.blended.service.IndexService;
 
@@ -23,8 +26,8 @@ public class IndexServiceProcess implements IndexService {
 
 	@Override
 	public List<HotelListDTO> getLatestHotels() {
-		// 최신 호텔 5곳을 생성 날짜 순서로 가져옵니다.
-		List<PlaceEntity> latestPlaces = placeRepository.findTop5ByOrderByCreatedAtDesc();
+		 // 승인된 최신 호텔 5곳을 생성 날짜 순서로 가져옵니다.
+	    List<PlaceEntity> latestPlaces = placeRepository.findTop5ByStatusOrderByCreatedAtDesc(PlaceStatus.APPROVED);
 
 		// PlaceEntity를 HotelListDTO로 변환하여 리스트로 반환합니다.
 		return latestPlaces.stream()
@@ -34,14 +37,18 @@ public class IndexServiceProcess implements IndexService {
 
 	@Override
 	public List<HotelListDTO> TopPriceHotelList(Model model) {
-		// 가장 높은 가격의 호텔들을 가져옵니다.
-		List<PlaceEntity> topPriceHotels = placeRepository.findTopByOrderByRoomPriceDesc();
+	    // 상위 4개의 가장 높은 가격의 호텔들을 가져오기 위해 Pageable 설정
+	    Pageable topFour = PageRequest.of(0, 4); // 첫 번째 페이지의 상위 4개 항목
 
-		// PlaceEntity를 거리 정보 없이 HotelListDTO로 변환하여 리스트로 반환합니다.
-		return topPriceHotels.stream()
-			.map(PlaceEntity::toHotelListDTOWithoutDistance) // 거리 정보 없이 DTO로 변환
-			.collect(Collectors.toList());
+	    // 상위 4개의 호텔들을 가져옵니다.
+	    List<PlaceEntity> topPriceHotels = placeRepository.findTopByOrderByRoomPriceDesc(topFour);
+
+	    // PlaceEntity를 거리 정보 없이 HotelListDTO로 변환하여 리스트로 반환합니다.
+	    return topPriceHotels.stream()
+	        .map(PlaceEntity::toHotelListDTOWithoutDistance) // 거리 정보 없이 DTO로 변환
+	        .collect(Collectors.toList());
 	}
+
 
 	// 두 좌표 간의 거리를 계산하는 메서드 (Haversine 공식 사용)
 	private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
