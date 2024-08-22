@@ -21,13 +21,13 @@ public class KomoranConfig {
      * @return Komoran 형태소 분석기 객체
      */
     @Bean
-    public Komoran komoran() {
+    Komoran komoran() {
         // Komoran 객체를 FULL 모델로 초기화합니다.
         Komoran komoran = new Komoran(DEFAULT_MODEL.FULL);
 
         try {
             // 클래스패스에서 user.dic 파일을 로드합니다.
-            Resource resource = new ClassPathResource("user.dic");
+            Resource resource = new ClassPathResource("/static/user.dic");
             
             // Resource에서 파일의 절대 경로를 얻습니다.
             String userDicPath = resource.getFile().getAbsolutePath();

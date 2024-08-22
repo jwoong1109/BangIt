@@ -1,0 +1,27 @@
+
+<div th:fragment="reservationDetailsFragment">
+    <h2 th:text="${reservation.placeName}">호텔 이름</h2>
+    <img th:if="${reservation.placeMainImageUrl}" th:src="${reservation.placeMainImageUrl}" alt="숙소 메인 이미지"
+     class="resized-image">
+    <p>
+        <strong>객실:</strong> <span th:text="${reservation.roomName}">객실 이름</span>
+    </p>
+    <p>
+        <strong>일정:</strong> <span th:text="${#temporals.format(reservation.checkInDate, 'yyyy-MM-dd')}">체크인</span>
+        ~ <span th:text="${#temporals.format(reservation.checkOutDate, 'yyyy-MM-dd')}">체크아웃</span>
+        (<span th:text="${reservation.nights}"></span>박)
+    </p>
+    <div class="payment-info">
+        <h2>결제 정보</h2>
+        <p>
+            객실 가격: <strong
+                th:text="${#numbers.formatDecimal(reservation.roomPrice, 0, 'COMMA', 0, 'POINT')} + '원'"></strong>
+        </p>
+        <p>
+            총 결제 금액: <strong
+                th:text="${#numbers.formatDecimal(reservation.totalPrice, 0, 'COMMA', 0, 'POINT')} + '원'"></strong>
+        </p>
+        <button th:if="${reservation.reservationStatus.name() == 'CONFIRMED'}"
+            class="cancel-btn">결제 취소</button>
+    </div>
+</div>

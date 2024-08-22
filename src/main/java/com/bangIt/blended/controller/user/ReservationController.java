@@ -2,6 +2,7 @@ package com.bangIt.blended.controller.user;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.bangIt.blended.common.security.CustomUserDetails;
@@ -10,6 +11,7 @@ import com.bangIt.blended.service.user.ReservationService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -26,10 +28,18 @@ public class ReservationController {
         return "redirect:/payment?reservationId=" + reservationId;
     }
 	
-	//예약 조회
+	//예약 목록 조회
 	@GetMapping("/reservation")
-	public String getMethodName() {
+	public String reservationList(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
+			service.listProcess(userDetails.getId(), model);
 		return "views/user/reservation/reservationList";
 	}
+	
+	// 예약 상세정보 조회
+    @GetMapping("/reservationDetails/{id}")
+    public String reservationDetail(@PathVariable("id") Long id, Model model) {
+        service.detailProcess(id, model);
+        return "views/user/reservation/reservationDetails :: reservationDetailsFragment";
+    }
 	
 }
