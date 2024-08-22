@@ -5,17 +5,18 @@ body {
 	padding-top: 80px; /* 고정된 헤더 아래에 여백 추가 */
 }
 
-.container {
-	width: 90%;
-	max-width: 1200px;
-	margin: 0 auto;
-	position: relative;
+.reservation-container {
+width: 90%;
+max-width: 1200px;
+margin: 0 auto;
+position: relative;
 }
 
 .main-content {
 	display: flex;
 	justify-content: space-between;
 	margin-top: 20px;
+	min-height: 650px;
 }
 
 .left-section, .right-section {
@@ -105,28 +106,6 @@ button {
 	border-radius: 8px;
 }
 
-/* 모달 창 스타일 */
-.payment-modal {
-	display: none;
-	position: fixed;
-	z-index: 1000;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	overflow: auto;
-	background-color: rgba(0, 0, 0, 0.5);
-}
-
-.payment-modal-content {
-	background-color: #fefefe;
-	margin: 10% auto;
-	padding: 20px;
-	border: 1px solid #888;
-	width: 80%;
-	max-width: 800px;
-}
-
 .close-btn {
 	color: #aaa;
 	float: right;
@@ -140,77 +119,76 @@ button {
 	cursor: pointer;
 }
 
-/*
-.modal {
-  display: none; 기본적으로 숨김
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4); 배경 흐리게
+.reservation-info ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
 }
 
-모달 콘텐츠 스타일
-.modal-content {
-  background-color: #fff;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  max-width: 400px;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  font-family: Arial, sans-serif;
-  line-height: 1.5;
-  position: relative; 닫기 버튼 위치를 위한 설정
+.reservation-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-닫기 버튼 스타일
-.modal-content .close-btn {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  color: #aaa;
-  font-size: 1.5em;
-  font-weight: bold;
-  cursor: pointer;
+.reservation-info li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
 }
 
-.modal-content h2 {
-  margin-top: 0;
-  font-size: 1.5em;
-  margin-bottom: 15px;
-  color: #333;
+.reservation-info li:last-child {
+    border-bottom: none;
 }
 
-.modal-content p {
-  margin-bottom: 15px;
-  color: #555;
+.reservation-info .header {
+    font-weight: bold;
+    background-color: #f8f9fa;
+    padding: 10px 0;
+    border-bottom: 2px solid #ddd;
 }
 
-.modal-content .important-note {
-  color: #e74c3c;
-  font-weight: bold;
+.reservation-info span {
+    text-align: center;
+    padding: 0 10px;
 }
 
-.modal-content button {
-  padding: 10px 20px;
-  margin-top: 10px;
-  margin-right: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+/* 예약 상태에 따른 스타일 */
+.reservation-status {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: bold;
 }
 
-#cancel-btn {
-  background-color: #ddd;
+.status-confirmed {
+    background-color: #e6f7ff;
+    color: #1890ff;
 }
 
-#confirm-btn {
-  background-color: #007bff;
-  color: #fff;
+.status-pending {
+    background-color: #fff7e6;
+    color: #fa8c16;
 }
- */
+
+.status-cancelled {
+    background-color: #fff1f0;
+    color: #f5222d;
+}
+
+/* 항목별 넓이 비율 조절 */
+.reservation-info span:nth-child(1) { width: 20%; } /* 숙소명 */
+.reservation-info span:nth-child(2) { width: 17%; } /* 객실명 */
+.reservation-info span:nth-child(3) { width: 30%; } /* 예약일 */
+.reservation-info span:nth-child(4) { width: 20%; } /* 예약금액 */
+.reservation-info span:nth-child(5) { width: 15%; } /* 예약상태 */
+
+/*이미지 크기*/
+.resized-image {
+    max-width: 100%;
+    height: auto;
+    width: 500px;
+}
