@@ -27,7 +27,7 @@ public class KomoranConfig {
 
         try {
             // 클래스패스에서 user.dic 파일을 로드합니다.
-            Resource resource = new ClassPathResource("user.dic");
+            Resource resource = new ClassPathResource("/static/user.dic");
             
             // Resource에서 파일의 절대 경로를 얻습니다.
             String userDicPath = resource.getFile().getAbsolutePath();
