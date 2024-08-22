@@ -1,4 +1,4 @@
-<header>
+<header th:fragment="partnerHeader">
 	<div class="main-nav-wrap" >
 		<div class="logo">
 			<h1><a href="/partner"><img alt="방_it" src="/images/logo.png"></a></h1>	
@@ -12,7 +12,7 @@
 		<div class="user-information">
 		
 			<img alt="" src="https://www.filmmakers.co.kr/files/attach/images/2021/05/25/59a2cc7dfc00d60f2697f8d739ccfea2.jpg">
-			<p>이유진</p>		
+			<p sec:authentication="principal.name">이유진</p>		
 		</div>
 		<div class="nav-wrap">
 			<nav>
