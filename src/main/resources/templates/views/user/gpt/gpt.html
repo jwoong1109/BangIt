@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	th:replace="~{views/common/layout :: layout(~{::head} ,~{::main} ) }">
+<head>
+<meta charset="utf-8" />
+<meta name="_csrf" content="${_csrf.token}">
+<meta name="_csrf_header" content="${_csrf.headerName}">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<script>
+$(document).ready(function() {
+    let conversationHistory = [];
+
+    function sendQuestion() {
+        const question = $('#question').val();
+        if (!question.trim()) return; // 빈 질문은 무시
+
+        // 사용자 질문을 대화 기록에 추가
+        addMessageToChat('user', question);
+
+        // 이전 대화 기록을 포함하여 API 요청
+        $.ajax({
+            url: '/ask',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                messages: conversationHistory
+            }),
+            beforeSend: function(xhr) {
+                var token = $("meta[name='_csrf']").attr("content");
+                var header = $("meta[name='_csrf_header']").attr("content");
+                xhr.setRequestHeader(header, token);
+            },
+            success: function(response) {
+                try {
+                    const jsonResponse = JSON.parse(response);
+                    const aiResponse = jsonResponse.choices[0].message.content;
+                    addMessageToChat('assistant', aiResponse);
+                } catch (e) {
+                    addMessageToChat('error', "Error parsing response: " + e.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                addMessageToChat('error', 'Error occurred while fetching response: ' + error);
+            }
+        });
+
+        // 입력 필드 초기화
+        $('#question').val('');
+    }
+
+    // 질문 버튼 클릭 시
+    $('#askButton').click(sendQuestion);
+
+    // Enter 키를 눌렀을 때
+    $('#question').keypress(function(e) {
+        if (e.which === 13 && !e.shiftKey) { // Enter 키를 눌렀고 Shift 키를 누르지 않은 경우
+            e.preventDefault(); // 기본 엔터 동작 방지 (폼 제출 등)
+            sendQuestion();
+        }
+    });
+
+    function addMessageToChat(role, content) {
+        const messageDiv = $('<div>').addClass('chat-message').addClass(role);
+        messageDiv.text(content);
+        $('#chatContainer').append(messageDiv);
+
+        // 대화 기록 업데이트
+        conversationHistory.push({ role: role, content: content });
+
+        // 스크롤을 최신 메시지로 이동
+        $('#chatContainer').scrollTop($('#chatContainer')[0].scrollHeight);
+    }
+});
+</script>
+<style>
+body {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	background-color: #f7f7f8;
+	margin: 0;
+	padding: 0;
+	color: #333;
+}
+
+.gpt-container {
+	max-width: 800px;
+	margin: 40px auto;
+	margin-top: 100px;
+	padding: 20px;
+	background-color: #ffffff;
+	border-radius: 8px;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	display: flex;
+	flex-direction: column;
+	height: 80vh;
+}
+
+h1 {
+	color: #333;
+	font-size: 24px;
+	margin-bottom: 20px;
+}
+
+#chatContainer {
+	flex-grow: 1;
+	overflow-y: auto;
+	margin-bottom: 20px;
+	padding: 10px;
+	border: 1px solid #e0e0e0;
+	border-radius: 4px;
+}
+
+.chat-message {
+	margin-bottom: 10px;
+	padding: 10px;
+	border-radius: 4px;
+	white-space: pre-wrap; /* 추가: 줄바꿈 유지 */
+	word-wrap: break-word; /* 추가: 긴 단어 줄바꿈 */
+}
+
+.chat-message.user {
+	background-color: #e6f3ff;
+	align-self: flex-end;
+	margin-left: auto;
+    max-width: 80%; /* 최대 넓이 */
+}
+
+
+.chat-message.assistant {
+	background-color: #f0f0f0;
+	align-self: flex-start;
+    max-width: 80%; /* 최대 넓이 */
+}
+
+.chat-message.error {
+	background-color: #ffe6e6;
+	color: #ff0000;
+}
+
+.input-container {
+	display: flex;
+}
+
+.input-field {
+	flex-grow: 1;
+	padding: 12px;
+	margin-right: 10px;
+	border: 1px solid #e0e0e0;
+	border-radius: 4px;
+	font-size: 16px;
+}
+.details-btn {
+    background-color: white;
+    color: #ff5a5f;
+    padding: 10px 20px;
+    border-color: #ff5a5f;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.button:hover {
+	background-color: #0d8c6f;
+}
+</style>
+</head>
+
+<body>
+	<main>
+		<div class="gpt-container">
+			<h1>인공지능 맞춤 서비스</h1>
+			<div id="chatContainer"></div>
+			<div class="input-container">
+				<input type="text" class="input-field" id="question"
+					placeholder="질문을 입력해 주세요.">
+				<button class="details-btn" id="askButton">질문</button>
+			</div>
+		</div>
+	</main>
+</body>
+</html>
