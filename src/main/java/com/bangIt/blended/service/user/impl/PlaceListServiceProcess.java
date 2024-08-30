@@ -44,15 +44,6 @@ public class PlaceListServiceProcess implements PlaceListService {
     }
     
     
-    //디테일 페이지에서 카테고리 검색
-    @Override
-    public void applyFilters(SearchPlaceDTO dto, List<String> accommodationTypes, List<String> themes, Model model) {
-        dto.setAccommodationTypes(accommodationTypes);
-        dto.setThemes(themes);
-        List<PlaceDTO> places = placeMapper.findprocess(dto);
-        model.addAttribute("placeList", places);
-        model.addAttribute("searchDto", dto);
-    }
 
     
     
