@@ -50,18 +50,7 @@ public class PlaceListServiceProcess implements PlaceListService {
     	    
     	    List<WeatherDTO> weather = weatherUtil.getWeatherForPeriod(checkinDate, checkoutDate, region);
     	    
-    	    for (int i = 0; i < weather.size(); i++) {
-    	        WeatherDTO dto2 = weather.get(i);
-    	        System.out.println("날짜: " + dto2.getDate() +
-    	                           ", 날씨: " + dto2.getWeather() +
-    	                           ", 온도: " + dto2.getTemperature() +
-    	                           ", 최고기온: " + dto2.getMaxTemperature() +
-    	                           ", 최저기온: " + dto2.getMinTemperature() +
-    	                           ", 예보유형: " + dto2.getForecastType());
-    	    }
-
-    	    System.out.println("총 " + weather.size() + "일의 날씨 정보가 조회되었습니다.");
-    	    
+    	  
     	    model.addAttribute("placeList", places);
     	    model.addAttribute("searchDto", dto);
     	    model.addAttribute("weather", weather);
