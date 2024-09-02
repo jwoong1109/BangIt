@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.bangIt.blended.common.security.CustomUserDetails;
+import com.bangIt.blended.common.security.BangItUserDetails;
 import com.bangIt.blended.domain.dto.place.ReviewCreateDTO;
 import com.bangIt.blended.service.user.ReviewService;
 
@@ -20,7 +20,7 @@ public class ReviewController {
 	private final ReviewService reviewService;
 
 	@PostMapping("/create")
-    public String createReview(@AuthenticationPrincipal CustomUserDetails userDetails, 
+    public String createReview(@AuthenticationPrincipal BangItUserDetails userDetails, 
                                @ModelAttribute ReviewCreateDTO dto) {
         reviewService.createReview(userDetails.getId(), dto);
         return "redirect:/place/detail/" + dto.getPlaceId();

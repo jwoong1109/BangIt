@@ -1,5 +1,7 @@
 package com.bangIt.blended.controller.user;
 
+import java.io.IOException;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +29,7 @@ public class PlaceListController {
 		    detailRecordExpression = "#args[0].region"
 		)
     @GetMapping("/search/places")
-    public String searchPlaces(SearchPlaceDTO dto, Model model) {
+    public String searchPlaces(SearchPlaceDTO dto, Model model) throws IOException {
         placeListService.findPlaceProcess(dto, model);
         return "views/user/placeList/placelist";
     }
