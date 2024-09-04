@@ -35,7 +35,7 @@ h1 {
 }
 
 .chat-message {
-	margin-bottom: 10px;
+	margin-bottom: 20px;
 	padding: 10px;
 	border-radius: 4px;
 	white-space: pre-wrap; /* 추가: 줄바꿈 유지 */

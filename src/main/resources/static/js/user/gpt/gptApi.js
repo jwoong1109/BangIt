@@ -59,7 +59,7 @@ $(document).ready(function() {
                     addMessageToChat('assistant', aiResponse);
                 } catch (e) {
                     console.error("Error processing response:", e);
-                    addMessageToChat('error', "Error processing response: " + e.message);
+                    addMessageToChat('error', "죄송합니다. 정상적으로 처리할수 없으니 새로고침(F5)을 눌러주세요.");
                 }
             },
             error: function(xhr, status, error) {
